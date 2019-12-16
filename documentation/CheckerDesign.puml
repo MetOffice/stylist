@@ -1,0 +1,197 @@
+@startuml Checker Class Diagram
+
+skinparam class {
+    BackgroundColor<<unwritten>> AlliceBlue
+    BorderColor<<unwritten>> LightSkyBlue
+}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' inspector.source module
+
+class source.ProcessChain {
+    +textChain: List <<SourceText <<class>>>>
+    +parser: SourceTree
+}
+
+class source.Factory {
+    -{static}extension_map: Map <<String, ProcessChain>>
+    +{static}read_file(filename: String): source.SourceTree
+    +{static}read_file(file: File): source.SourceTree
+    +{static}add_extension_mapping(extension: String, parser: SourceTree<<class>>, processors[]: SourceText<<class>>)
+}
+
+
+abstract class source.SourceText {
+    +{abstract}get_text(): String
+}
+
+abstract class source.TextProcessor {
+    -processor: TextProcessor
+    +<<create>>__init__(source: SourceText)
+}
+source.SourceText <|-- source.TextProcessor
+source.TextProcessor o- source.SourceText
+
+class source.FileReader {
+    +get_text(): String
+}
+source.SourceText <|-- source.FileReader
+
+class source.CPreProcessor {
+    +get_text(): String
+}
+source.TextProcessor <|-- source.CPreProcessor
+
+class source.FortranPreProcessor {
+    +get_text(): String
+}
+source.TextProcessor <|-- source.FortranPreProcessor
+
+class source.pFUnitProcessor {
+    +get_text(): String
+}
+source.TextProcessor <|-- source.pFUnitProcessor
+
+
+abstract class source.SourceTree {
+    -text: SourceText
+    +<<create>>__init__( text: SourceText )
+    +get_text(): String
+    +{abstract}get_tree()
+    }
+
+class source.FortranTree {
+    -tree: fparser.Fortran2003.Program
+    +get_tree()
+    +{static}path( start: fparser.Fortran2003.*, path: String ): fparser.Fortran2003.*
+    +get_default_extensions() String <<collection>>
+    }
+source.SourceTree <|-- source.FortranTree
+
+class source.CeeTree {
+    -tree: pycparse.Whatever
+    +get_tree()
+    }
+source.SourceTree <|-- source.CeeTree
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' inspector.rule module
+
+abstract class rule.Rule {
+    +{abstract}examine( subject: SourceTree ): Issue<<collection>>
+    }
+
+abstract class rule.FortranRule {
+    +{abstract}examine( subject: FortranTree ): Issue<<collection>>
+    }
+rule.Rule <|-- rule.FortranRule
+
+class rule.MissingVisibility <<unwritten>> {
+    +__init__( default: Visibility )
+    }
+rule.FortranRule <|-- rule.MissingVisibility
+
+class rule.MissingImplicit {
+    +__init__( default: Implicit )
+    }
+rule.FortranRule <|-- rule.MissingImplicit
+
+class rule.MissingLegalNotice <<unwritten>> {
+    +__init__( notice: String )
+    }
+rule.FortranRule <|-- rule.MissingLegalNotice
+
+class rule.FortranCharacterset {
+    __init__()
+}
+rule.FortranRule <|-- rule.FortranCharacterset
+
+class rule.CommaSpace <<unwritten>> {
+    __init__()
+}
+rule.FortranRule <|-- rule.CommaSpace
+
+class rule.PointersNullOnDeclaration <<unwritten>> {
+    __init__()
+    }
+rule.FortranRule <|-- rule.PointersNullOnDeclaration
+
+abstract class rule.CeeRule {
+    +{abstract}examine( subject: CeeTree ): Issue<<collection>>
+    }
+rule.Rule <|-- rule.CeeRule
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' inspector.style module
+
+abstract class style.Style {
+    -rules: Rule<<collection>>
+    +__init__( rules: Rule<<collection>> )
+    +check( source: Source ): Issue<<collection>>
+    }
+rule.Rule "+" -o style.Style
+
+class style.LFRicStyle {
+    +__init__()
+    }
+style.Style <|-- style.LFRicStyle
+
+class style.UMStyle <<unwritten>> {
+    +__init__()
+    }
+style.Style <|-- style.UMStyle
+
+class style.BespokeStyle <<unwritten>> {
+    +__init__()
+    +addRule( rule: Rule )
+    +removeRule( rule: Rule )
+    }
+style.Style <|-- style.BespokeStyle
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' inspector.engine module
+
+class engine.CheckEngine {
+    -styles: Style<<collection>>
+    +__init__( styles: Style<<collection>>)
+    +check( filename: String <<collection>> ): Issue<<collection>>
+    }
+style.Style "+" -o engine.CheckEngine
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' inspector.issue module
+
+class issue.Issue {
+    -description: String
+    +__init__( description: String )
+    +__str__(): String
+    }
+
+@enduml
+
+
+@startuml Checker Sequence Diagram
+participant UserInterface
+
+UserInterface -> style.LFRicStyle : <<instantiate>>
+activate style.LFRicStyle
+
+style.LFRicStyle -> rule.MissingImplicit : MissingImplicit(None)
+activate rule.MissingImplicit
+
+UserInterface -> engine.CheckEngine : CheckEngine(LFRicStyle)
+activate engine.CheckEngine
+
+UserInterface -> engine.CheckEngine : check(SourceFile)
+
+engine.CheckEngine -> style.LFRicStyle : check(Program)
+
+style.LFRicStyle -> rule.MissingImplicit : examine(Program)
+
+rule.MissingImplicit --> style.Style : Issues[]
+
+style.Style --> engine.CheckEngine : Issues[]
+
+engine.CheckEngine --> UserInterface : Issues[]
+
+@enduml

@@ -1,0 +1,119 @@
+@startuml Styler Class Diagram
+
+skinparam class {
+    BackgroundColor<<unwritten>> AlliceBlue
+    BorderColor<<unwritten>> LightSkyBlue
+}
+
+' inspector.rule module
+
+abstract class rule.Rule {
+    }
+
+abstract class rule.TreeRule {
+    +{abstract}examine( program: fParser.Program ): Issue<<collection>>
+    }
+
+rule.Rule <|-- rule.TreeRule
+
+class rule.MissingImplicit {
+    +__init__( default: Implicit )
+    }
+rule.TreeRule <|-- rule.MissingImplicit
+
+class rule.MissingLegalNotice <<unwritten>> {
+    +__init__( notice: String )
+    }
+rule.TreeRule <|-- rule.MissingLegalNotice
+
+class rule.MissingVisibility <<unwritten>> {
+    +__init__( default: Visibility )
+    }
+rule.TreeRule <|-- rule.MissingVisibility
+
+abstract class rule.PatternRule {
+    +{abstract}examine( source: String ): Issue<<collection>>
+    }
+rule.Rule <|-- rule.PatternRule
+
+class rule.FortranCharacterset <<unwritten>> {
+    }
+rule.PatternRule <|-- rule.FortranCharacterset
+
+class rule.IndentSize <<unwritten>>{
+    +__init__( width: Integer )
+    }
+rule.PatternRule <|-- rule.IndentSize
+
+class rule.CommaSpace <<unwritten>> {
+    }
+rule.PatternRule <|-- rule.CommaSpace
+
+
+' inspector.style module
+
+abstract class style.Style {
+    -patternRules: PatternRule<<collection>>
+    -treeRules: TreeRul<<collection>>
+    +__init__( rules: Rule<<collection>> )
+    +check( program: fParser.Program ): Issue<<collection>>
+    }
+rule.Rule "+"- style.Style
+
+class style.LFRicStyle {
+    +def __init__()
+    }
+style.Style <|-- style.LFRicStyle
+
+class style.BespokeStyle <<unwritten>> {
+    +def __init__()
+    +addRule( rule: Rule )
+    +removeRule( rule: Rule )
+    }
+style.Style <|-- style.BespokeStyle
+
+
+class engine.CheckEngine {
+    -styles: Style<<collection>>
+    +__init__( styles: Style<<collection>>)
+    +check( source: File ): Issue<<collection>>
+    }
+style.Style "+"- engine.CheckEngine
+
+
+' inspector.issue module
+
+class issue.Issue {
+    +__init__( description: String )
+    +getDescription()
+    }
+
+@enduml
+
+
+@startuml Styler Sequence Diagram
+
+participant UserInterface
+
+UserInterface -> style.LFRicStyle : <<instantiate>>
+activate style.LFRicStyle
+
+style.LFRicStyle -> rule.MissingImplicit : MissingImplicit(None)
+activate rule.MissingImplicit
+
+UserInterface -> engine.CheckEngine : CheckEngine(LFRicStyle)
+activate engine.CheckEngine
+
+UserInterface -> engine.CheckEngine : check(SourceFile)
+
+engine.CheckEngine -> style.LFRicStyle : check(Program)
+
+style.LFRicStyle -> style.MissingImplicit : examine(Program)
+
+style.MissingImplicit --> style.Style : Issues[]
+
+style.Style --> engine.CheckEngine : Issues[]
+
+engine.CheckEngine --> UserInterface : Issues[]
+
+@enduml
