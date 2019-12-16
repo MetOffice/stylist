@@ -22,7 +22,7 @@ from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
 from stylist.style import LFRicStyle
 
 
-def cli():
+def parse_cli():
     '''
     Parse the command line. Returns a dictionary of arguments.
     '''
@@ -82,7 +82,7 @@ def _add_extensions(additional_extensions):
                                     *preproc_objects)
 
 
-def main(arguments):
+def process(arguments):
     '''
     Examines files for style compliance.
 
@@ -126,5 +126,10 @@ def main(arguments):
         sys.exit(1)
 
 
+def main():
+    '''Main entry point.'''
+    return process(parse_cli())
+
+
 if __name__ == '__main__':
-    main(cli())
+    main()
