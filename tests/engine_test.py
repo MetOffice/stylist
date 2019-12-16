@@ -7,7 +7,6 @@
 '''
 Ensures the 'engine' module functions as expected.
 '''
-from __future__ import absolute_import, division, print_function
 
 import tempfile
 

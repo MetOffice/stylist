@@ -7,7 +7,6 @@
 '''
 Ensures the 'style' module functions as expected.
 '''
-from __future__ import absolute_import, division, print_function
 
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader

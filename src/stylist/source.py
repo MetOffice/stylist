@@ -7,12 +7,10 @@
 '''
 Manages source code in various flavours.
 '''
-from __future__ import absolute_import, division, print_function
 
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
-from six import add_metaclass
 
 import fparser.common.readfortran as readfortran
 import fparser.two.Fortran2003
@@ -20,8 +18,7 @@ from fparser.two.parser import ParserFactory
 from fparser.two.utils import FparserException
 
 
-@add_metaclass(ABCMeta)
-class SourceText(object):
+class SourceText(object, metaclass=ABCMeta):
     # pylint: disable=too-few-public-methods
     '''
     Handles source code at the text level. Makes use of the decorator pattern
@@ -70,8 +67,7 @@ class SourceStringReader(SourceText):
         return self._source_string
 
 
-@add_metaclass(ABCMeta)
-class TextProcessor(SourceText):
+class TextProcessor(SourceText, metaclass=ABCMeta):
     # pylint: disable=too-few-public-methods, abstract-method
     '''
     Preprocessor decorators inherit from this.
@@ -148,8 +144,7 @@ class PFUnitProcessor(TextProcessor):
         return text
 
 
-@add_metaclass(ABCMeta)
-class SourceTree(object):
+class SourceTree(object, metaclass=ABCMeta):
     '''
     Abstract parent of all actual language source files.
     '''

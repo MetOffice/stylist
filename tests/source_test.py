@@ -7,11 +7,6 @@
 '''
 Checks source code management classes.
 '''
-from __future__ import absolute_import, division, print_function
-
-import os.path
-import shutil
-import tempfile
 
 import fparser.two.Fortran2003
 import pytest
@@ -258,10 +253,10 @@ END PROGRAM test'''
         unit_under_test = FortranSource(reader)
         wanted = fparser.two.Fortran2003.Module_Subprogram
         result = unit_under_test.find_all(wanted)
-        assert str(result.next().content[0].items[1]) == 'one'
-        assert str(result.next().content[0].items[1]) == 'two'
+        assert str(next(result).content[0].items[1]) == 'one'
+        assert str(next(result).content[0].items[1]) == 'two'
         with pytest.raises(StopIteration):
-            result.next()
+            next(result)
 
 
 class TestCSource(object):

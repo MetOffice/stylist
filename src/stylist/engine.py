@@ -7,8 +7,6 @@
 '''
 Core of the Fortran style checking tool.
 '''
-from __future__ import absolute_import, division, print_function
-
 import logging
 
 import stylist.source
