@@ -28,4 +28,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install .[test]
-        pytest --cov src
+        pytest --cov stylist --cov-fail-under=75
