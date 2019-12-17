@@ -7,12 +7,10 @@
 '''
 A collection of style rules.
 '''
-from __future__ import absolute_import, division, print_function
 
 from abc import ABCMeta, abstractmethod
 import logging
 import re
-from six import add_metaclass
 
 import fparser.two.Fortran2003
 import fparser.common.readfortran
@@ -20,8 +18,7 @@ from stylist.issue import Issue
 from stylist.source import FortranSource
 
 
-@add_metaclass(ABCMeta)
-class Rule(object):
+class Rule(object, metaclass=ABCMeta):
     # pylint: disable=too-few-public-methods
     '''
     Abstract parent of all rules.
@@ -113,7 +110,9 @@ class TrailingWhitespace(Rule):
 
     def examine(self, subject):
         '''
-        Examines the text for white space at the end of lines. This includes empty lines.
+        Examines the text for white space at the end of lines.
+
+        This includes empty lines.
         :param subject: File contents as Source object.
         :return: List of issues or empty list.
         '''
@@ -131,8 +130,7 @@ class TrailingWhitespace(Rule):
         return issues
 
 
-@add_metaclass(ABCMeta)
-class FortranRule(Rule):
+class FortranRule(Rule, metaclass=ABCMeta):
     '''
     Parent for style rules pertaining to Fortran source.
     '''

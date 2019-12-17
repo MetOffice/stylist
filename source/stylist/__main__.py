@@ -8,8 +8,6 @@
 Tool for checking code style.
 '''
 
-from __future__ import absolute_import, division, print_function
-
 import argparse
 import logging
 import os.path
@@ -22,7 +20,7 @@ from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
 from stylist.style import LFRicStyle
 
 
-def cli():
+def parse_cli():
     '''
     Parse the command line. Returns a dictionary of arguments.
     '''
@@ -82,7 +80,7 @@ def _add_extensions(additional_extensions):
                                     *preproc_objects)
 
 
-def main(arguments):
+def process(arguments):
     '''
     Examines files for style compliance.
 
@@ -126,5 +124,6 @@ def main(arguments):
         sys.exit(1)
 
 
-if __name__ == '__main__':
-    main(cli())
+def main():
+    '''Main entry point.'''
+    return process(parse_cli())

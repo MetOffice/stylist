@@ -7,7 +7,6 @@
 '''
 Tests of the stylist.rule module.
 '''
-from __future__ import absolute_import, division, print_function
 
 import fparser.two.Fortran2003
 import stylist.rule
@@ -121,7 +120,7 @@ program some_trailing_whitespace
   write( output_unit, '("Hello ", A)' ) 'world'
   
 end program some_trailing_whitespace
-'''
+'''  # noqa: W291, W293
 
 _PF_TWS = '''module trailing_whitespace_in_unit_tests
 
@@ -146,7 +145,8 @@ contains
  
   end subroutine test_thing
 
-end module trailing_whitespace_in_unit_tests'''
+end module trailing_whitespace_in_unit_tests'''  # noqa: W291, W293
+
 
 class TestTrailingWhitespace(object):
     '''
@@ -172,9 +172,11 @@ class TestTrailingWhitespace(object):
         reader = SourceStringReader(example_source[0])
         source = FortranSource(reader)
         issues = unit_under_test.examine(source)
-        assert [str(issue) for issue in issues] \
-               == [str(eln) + ': Found trailing white space'
-                   for eln in example_source[1]]
+        assert (
+            [str(issue) for issue in issues]
+            == [str(eln) + ': Found trailing white space'
+                for eln in example_source[1]]
+        )
 
 
 class TestMissingImplicit(object):
@@ -392,7 +394,7 @@ class TestMissingOnly(object):
         '''
         Parameter fixture giving program unit types.
         '''
-        #pylint: disable=no-self-use
+        # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -409,8 +411,8 @@ class TestMissingOnly(object):
                             [('missing_mod', [])],
                             [('present_mod', ['stuff'])],
                             [('multi_mod', ['one', 'two'])],
-                            [('missing_mod', []),('present_mod', ['stuff'])],
-                            [('present_mod', ['stuff']),('missing_mod',[])]])
+                            [('missing_mod', []), ('present_mod', ['stuff'])],
+                            [('present_mod', ['stuff']), ('missing_mod', [])]])
     def unit_usage(self, request):
         '''
         Parameter fixture giving permutations of "use" statements.
@@ -423,8 +425,8 @@ class TestMissingOnly(object):
                             [('missing_mod', [])],
                             [('present_mod', ['stuff'])],
                             [('multi_mod', ['one', 'two'])],
-                            [('missing_mod', []),('present_mod', ['stuff'])],
-                            [('present_mod', ['stuff']),('missing_mod',[])]])
+                            [('missing_mod', []), ('present_mod', ['stuff'])],
+                            [('present_mod', ['stuff']), ('missing_mod', [])]])
     def procedure_usage(self, request):
         '''
         Parameter fixture giving permutations of "use" statements.
@@ -437,7 +439,7 @@ class TestMissingOnly(object):
         Checks that the rule reports missing "use" clauses correctly.
         '''
         # pylint: disable=no-self-use
-        def prepare( params ):
+        def prepare(params):
             usage = []
             expectations = []
             for details in params:
