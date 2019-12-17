@@ -127,7 +127,3 @@ def process(arguments):
 def main():
     '''Main entry point.'''
     return process(parse_cli())
-
-
-if __name__ == '__main__':
-    main()
