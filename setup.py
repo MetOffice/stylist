@@ -1,22 +1,28 @@
 """Setup Stylist for distribution on PyPI."""
 
+from ast import literal_eval
 import os
 from setuptools import setup, find_packages
 
 # Get the long description from the README file
+HERE = os.path.dirname(__file__)
+with open(os.path.join(HERE, 'README.md'), encoding='utf-8',) as handle:
+    LONG_DESCRIPTION = handle.read()
 with open(
-    os.path.join(os.path.dirname(__file__), 'README.md'),
+    os.path.join(HERE, 'source', 'stylist', '__init__.py'),
     encoding='utf-8',
 ) as handle:
-    LONG_DESCRIPTION = handle.read()
+    for line in handle:
+        items = line.split('=', 1)
+        if items[0].strip() == '__version__':
+            VERSION = literal_eval(items[1].strip())
+            break
+    else:
+        raise RuntimeError('Cannot determine package version.')
 
 setup(
     name='stylist',
-    # TODO:
-    # For a discussion on single-sourcing the version across setup.py and the
-    # project code, see
-    # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1',
+    version=VERSION,
     description=(
         'Extensible code style checker'
         ' currently supporting Fortran, PSyclone DSL, etc'

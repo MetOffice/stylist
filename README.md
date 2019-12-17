@@ -1,3 +1,5 @@
+![](https://github.com/MetOffice/stylist/workflows/Python%20package/badge.svg)
+
 # Stylist
 
 The immediate need was for a code style checking tool which understood Fortran.
