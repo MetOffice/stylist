@@ -17,7 +17,10 @@ setup(
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
     version='0.1',
-    description='Style checking for Fortran, PSyclone DSL, etc',
+    description=(
+        'Extensible code style checker'
+        ' currently supporting Fortran, PSyclone DSL, etc'
+    ),
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     url='https://github.com/MetOffice/stylist',
