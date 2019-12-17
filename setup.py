@@ -35,8 +35,8 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     keywords='linter fortran psyclone',
-    package_dir={'': 'src'},
-    packages=find_packages(where='src'),
+    package_dir={'': 'source'},
+    packages=find_packages(where='source'),
     python_requires='>=3.6, <4',
     install_requires=['fparser'],
     extras_require={
