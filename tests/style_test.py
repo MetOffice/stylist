@@ -8,6 +8,7 @@
 Ensures the 'style' module functions as expected.
 '''
 
+import stylist.fortran
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader
 import stylist.style
