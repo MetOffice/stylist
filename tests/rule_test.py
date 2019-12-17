@@ -8,7 +8,6 @@
 Tests of the generic rules.
 '''
 
-import fparser.two.Fortran2003
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader
 import pytest

@@ -12,8 +12,6 @@ from abc import ABCMeta, abstractmethod
 import logging
 import re
 
-import fparser.two.Fortran2003
-import fparser.common.readfortran
 from stylist.issue import Issue
 from stylist.source import FortranSource
 

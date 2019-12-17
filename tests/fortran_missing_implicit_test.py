@@ -8,6 +8,7 @@
 Tests of the rule for missing implicit statements.
 '''
 
+import fparser
 import pytest
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -198,7 +199,6 @@ class TestMissingImplicit(object):
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation
-
 
     def test_implicit_double(self, containing_program_unit,
                              subprogram_implicit,
