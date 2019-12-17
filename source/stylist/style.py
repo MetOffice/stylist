@@ -11,6 +11,7 @@ Classes relating to styles made up of rules.
 from abc import ABCMeta
 import logging
 
+import stylist.fortran
 import stylist.issue
 import stylist.rule
 
@@ -53,8 +54,8 @@ class LFRicStyle(Style):
     LFRic project's list of rules.
     '''
     def __init__(self):
-        rules = [stylist.rule.FortranCharacterset(),
+        rules = [stylist.fortran.FortranCharacterset(),
                  stylist.rule.TrailingWhitespace(),
-                 stylist.rule.MissingImplicit('none'),
-                 stylist.rule.MissingOnly(ignore=['pfunit_mod', 'xios'])]
+                 stylist.fortran.MissingImplicit('none'),
+                 stylist.fortran.MissingOnly(ignore=['pfunit_mod', 'xios'])]
         super(LFRicStyle, self).__init__(rules)
