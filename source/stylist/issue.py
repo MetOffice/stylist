@@ -30,6 +30,9 @@ class Issue(object):
                              line=self._line,
                              description=self._description)
 
+    def __lt__(self, other):
+        return str(self) < str(other)
+
     def set_filename(self, filename):
         '''
         Attaches a filename to this issue.
