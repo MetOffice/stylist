@@ -10,9 +10,7 @@ Rules relating to Fortran source.
 
 from abc import ABCMeta, abstractmethod
 from typing import List
-
-import fparser  # type: ignore
-
+import fparser.two.Fortran2003  # type: ignore
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
@@ -121,7 +119,7 @@ class MissingImplicit(FortranRule):
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     '''
-    def __init__(self, default: str):
+    def __init__(self, default='none'):
         '''
         Constructor taking a default implication.
 
@@ -193,5 +191,93 @@ class MissingOnly(FortranRule):
                 if onlies is None:
                     description = 'Usage of "{module}" without "only" clause.'
                     issues.append(Issue(description.format(module=module)))
+
+        return issues
+
+
+class MissingPointerInit(FortranRule):
+    '''
+    Catches cases where a pointer is declared without being initialised.
+    '''
+    def __init__(self, default='null()'):
+        '''
+        Constructs a MissingPointerInit rule object taking a default assignment.
+
+        Todo: Obviously the default is not used as we don't support coercing
+              source at the moment.
+
+        @param default: Target to be used if missing assignment found.
+        '''
+        self._default = default
+
+    def _look_for_pointer_declaration(self, subject, location, nature):
+        issues = []
+
+        if location == 'declaration':
+            if nature == 'variable':
+                candidates = subject.find_all(
+                    fparser.two.Fortran2003.Type_Declaration_Stmt)
+            elif nature == 'procedure':
+                candidates = subject.find_all(
+                    fparser.two.Fortran2003.Procedure_Declaration_Stmt)
+            else:
+                raise Exception('Unrecognised declaration nature: '
+                                + nature)
+        elif location == 'component':
+            if nature == 'variable':
+                candidates = subject.find_all(
+                    fparser.two.Fortran2003.Data_Component_Def_Stmt)
+            elif nature == 'procedure':
+                candidates = subject.find_all(
+                    fparser.two.Fortran2003.Proc_Component_Def_Stmt)
+            else:
+                raise Exception('Unrecognised declaration nature: '
+                                + nature)
+        else:
+            raise Exception('Unrecognised declaration location: ' + location)
+
+        for statement in candidates:
+            attributes = statement.items[1]
+            if attributes is None:
+                continue
+            cannon_attr = list(str(item).lower().replace(' ', '')
+                               for item in attributes.items)
+            print(statement)
+            argument_def = 'intent(in)' in cannon_attr \
+                           or 'intent(out)' in cannon_attr \
+                           or 'intent(inout)' in cannon_attr
+            if 'pointer' in cannon_attr and not argument_def:
+                for variable in statement.items[2].items:
+                    if nature == 'variable':
+                        name = str(variable.items[0])
+                        init = variable.items[3]
+                        if init is None:
+                            description = 'Declaration of pointer "' + name \
+                                          + '" without initialisation.'
+                            issues.append(Issue(description))
+                    elif nature == 'procedure':
+                        name = str(variable)
+                        if isinstance(variable, fparser.two.Fortran2003.Name):
+                            description = 'Declaration of pointer "' + name \
+                                          + '" without initialisation.'
+                            issues.append(Issue(description))
+
+        return issues
+
+    def examine_fortran(self, subject):
+        issues = []
+        issues.extend(self._look_for_pointer_declaration(subject,
+                                                         'component',
+                                                         'variable'))
+        issues.extend(self._look_for_pointer_declaration(subject,
+                                                         'component',
+                                                         'procedure'))
+        issues.extend(self._look_for_pointer_declaration(subject,
+                                                         'declaration',
+                                                         'variable'))
+        issues.extend(self._look_for_pointer_declaration(subject,
+                                                         'declaration',
+                                                         'procedure'))
+        issues.sort()
 
         return issues

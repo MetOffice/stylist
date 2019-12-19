@@ -5,7 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 '''
-Tests of the rule for missing "only" clauses.
+Test of the rule for missing "only" clauses.
 '''
 
 import pytest
@@ -95,7 +95,7 @@ class TestMissingOnly(object):
                      implicit none
                    end subroutine foo
                  end {type} test
-                      '''
+               '''
         reader = SourceStringReader(text.format(type=unit_type,
                                                 uusage='\n'.join(unit_lines),
                                                 pusage='\n'.join(proc_lines)))
