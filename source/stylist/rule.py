@@ -11,9 +11,10 @@ A collection of style rules.
 from abc import ABCMeta, abstractmethod
 import logging
 import re
+from typing import List
 
 from stylist.issue import Issue
-from stylist.source import FortranSource
+from stylist.source import FortranSource, SourceText
 
 
 class Rule(object, metaclass=ABCMeta):
@@ -22,7 +23,7 @@ class Rule(object, metaclass=ABCMeta):
     Abstract parent of all rules.
     '''
     @abstractmethod
-    def examine(self, subject):
+    def examine(self, subject) -> List[Issue]:
         '''
         Examines the provided source code object for an issue.
 
@@ -40,7 +41,7 @@ class TrailingWhitespace(Rule):
     '''
     _TRAILING_SPACE_PATTERN = re.compile(r'\s+$')
 
-    def examine(self, subject):
+    def examine(self, subject: SourceText) -> List[Issue]:
         '''
         Examines the text for white space at the end of lines.
 
@@ -67,7 +68,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
     Parent for style rules pertaining to Fortran source.
     '''
     # pylint: disable=too-few-public-methods, abstract-method
-    def examine(self, subject):
+    def examine(self, subject: FortranSource) -> List[Issue]:
         issues = super(FortranRule, self).examine(subject)
 
         if not isinstance(subject, FortranSource):
@@ -84,7 +85,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
         return issues
 
     @abstractmethod
-    def examine_fortran(self, subject):
+    def examine_fortran(self, subject: FortranSource):
         '''
         Examines the provided Fortran source code object for an issue.
 

@@ -12,15 +12,17 @@ import argparse
 import logging
 import os.path
 import sys
+from typing import Any, Iterable, List, Mapping
 
 from stylist.engine import CheckEngine
+from stylist.issue import Issue
 from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
                            FortranSource, PFUnitProcessor, \
                            SourceFactory
 from stylist.style import LFRicStyle
 
 
-def parse_cli():
+def parse_cli() -> dict:
     '''
     Parse the command line. Returns a dictionary of arguments.
     '''
@@ -50,7 +52,7 @@ _PREPROCESSOR_MAP = {'cpp': CPreProcessor,
                      'pfp': PFUnitProcessor}
 
 
-def _add_extensions(additional_extensions):
+def _add_extensions(additional_extensions: Iterable[str]) -> None:
     # This application always expects pFUnit source to be present so it adds
     # a rule for that.
     #
@@ -80,7 +82,7 @@ def _add_extensions(additional_extensions):
                                     *preproc_objects)
 
 
-def process(arguments):
+def process(arguments: Mapping[str, Any]) -> List[Issue]:
     '''
     Examines files for style compliance.
 
@@ -115,6 +117,13 @@ def process(arguments):
         else:  # Is a file
             issues.extend(engine.check(filename))
 
+    return issues
+
+
+def main() -> None:
+    '''Main entry point.'''
+    issues = process(parse_cli())
+
     for issue in issues:
         print(str(issue), file=sys.stderr)
     if (len(issues) > 0) or arguments.verbose:
@@ -122,8 +131,5 @@ def process(arguments):
 
     if issues:
         sys.exit(1)
-
-
-def main():
-    '''Main entry point.'''
-    return process(parse_cli())
+    else:
+        sys.exit(0)

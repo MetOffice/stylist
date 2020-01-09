@@ -11,6 +11,7 @@ Manages source code in various flavours.
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
+from typing import ClassVar, Generator, IO, Iterable, Union
 
 import fparser.common.readfortran as readfortran
 import fparser.two.Fortran2003
@@ -25,7 +26,7 @@ class SourceText(object, metaclass=ABCMeta):
     to perform text level preprocessing.
     '''
     @abstractmethod
-    def get_text(self):
+    def get_text(self) -> str:
         '''
         Gets the source file as a string.
         '''
@@ -37,7 +38,7 @@ class SourceFileReader(SourceText):
     '''
     Reads source from a file.
     '''
-    def __init__(self, sourceFile):
+    def __init__(self, sourceFile: Union[IO[str], str]):
         '''
         Constructor.
         Accepts either a filename or file-like object.
@@ -48,7 +49,7 @@ class SourceFileReader(SourceText):
         else:
             self._cache = sourceFile.read()
 
-    def get_text(self):
+    def get_text(self) -> str:
         return self._cache
 
 
@@ -57,13 +58,13 @@ class SourceStringReader(SourceText):
     '''
     Reads source from a string.
     '''
-    def __init__(self, source_string):
+    def __init__(self, source_string: str):
         '''
         Constructor.
         '''
         self._source_string = source_string
 
-    def get_text(self):
+    def get_text(self) -> str:
         return self._source_string
 
 
@@ -74,7 +75,7 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
 
     @param source The SourceText object which this object decorates.
     '''
-    def __init__(self, source):
+    def __init__(self, source: str):
         self._source = source
 
 
@@ -93,7 +94,7 @@ class CPreProcessor(TextProcessor):
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
 
-    def get_text(self):
+    def get_text(self) -> str:
         '''
         Strips preprocessor directives from the text.
         '''
@@ -118,7 +119,7 @@ class FortranPreProcessor(TextProcessor):
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
 
-    def get_text(self):
+    def get_text(self) -> str:
         '''
         Strips preprocessor directives from the text.
         '''
@@ -135,7 +136,7 @@ class PFUnitProcessor(TextProcessor):
     '''
     _DIRECTIVE_PATTERN = re.compile(r'^(\s*)(@\w+.*)$', re.MULTILINE)
 
-    def get_text(self):
+    def get_text(self) -> str:
         '''
         Strips processor directives from the text.
         '''
@@ -148,7 +149,7 @@ class SourceTree(object, metaclass=ABCMeta):
     '''
     Abstract parent of all actual language source files.
     '''
-    def __init__(self, text):
+    def __init__(self, text: SourceText):
         if not isinstance(text, SourceText):
             raise Exception('text argument must derive from SourceText.')
 
@@ -157,20 +158,20 @@ class SourceTree(object, metaclass=ABCMeta):
         self._tree_error = 'Not parsed yet'
 
     @abstractmethod
-    def get_tree(self):
+    def get_tree(self) -> str:
         '''
         Gets a parse-tree representation of the source file.
         '''
         raise NotImplementedError()
 
     @abstractmethod
-    def get_tree_error(self):
+    def get_tree_error(self) -> str:
         '''
         Gets any errors raised while building the parse tree.
         '''
         raise NotImplementedError()
 
-    def get_text(self):
+    def get_text(self) -> str:
         '''
         Gets the original source text.
         '''
@@ -181,7 +182,7 @@ class FortranSource(SourceTree):
     '''
     Holds a Fortran source file as both a text block and parse tree.
     '''
-    def get_tree(self):
+    def get_tree(self) -> fparser.two.Fortran2003.Program_Unit:
         if not self._tree:
             # We don't use the tree directly. Instead we let all the decorators
             # have a go first.
@@ -196,10 +197,11 @@ class FortranSource(SourceTree):
                 self._tree_error = str(ex)
         return self._tree
 
-    def get_tree_error(self):
+    def get_tree_error(self) -> str:
         return self._tree_error
 
-    def get_first_statement(self, root=None):
+    def get_first_statement(self, root: fparser.two.Fortran2003.Block = None) \
+            -> fparser.two.Fortran2003.StmtBase:
         '''
         Gets the first "statement" part of the syntax tree or part thereof.
         '''
@@ -224,7 +226,9 @@ class FortranSource(SourceTree):
                 raise Exception(message.format(candidate.__class__.__name__))
         return None
 
-    def path(self, path, root=None):
+    def path(self, path: Union[Iterable, str],
+             root: fparser.two.Fortran2003.Block = None) \
+            -> fparser.two.Fortran2003.Base:
         # pylint: disable=too-many-branches
         '''
         Returns the tree node described by the given path. The path may be
@@ -282,7 +286,10 @@ class FortranSource(SourceTree):
                         raise Exception(message.format(candidate_name))
         return found
 
-    def find_all(self, find_node, root=None):
+    def find_all(self,
+                 find_node: ClassVar[fparser.two.Fortran2003.Base],
+                 root: fparser.two.Fortran2003.Base = None) \
+            -> Generator[fparser.two.Fortran2003.Base, None, None]:
         '''
         Returns a generator which loops over all instances if the specified
         parse element below the root.
@@ -308,11 +315,13 @@ class FortranSource(SourceTree):
                     pass
 
     @staticmethod
-    def _ast_match(candidate, saught_class):
-        if candidate.__class__.__name__ == saught_class.__name__:
+    def _ast_match(candidate: fparser.two.Fortran2003.Base,
+                   sought_class: ClassVar[fparser.two.Fortran2003.Base]) \
+            -> bool:
+        if candidate.__class__.__name__ == sought_class.__name__:
             return True
 
-        considering = [saught_class]
+        considering = [sought_class]
         for consideration in considering:
             if candidate.__class__.__name__ == consideration.__name__:
                 return True
@@ -321,7 +330,8 @@ class FortranSource(SourceTree):
                                 for name in consideration.subclass_names])
 
     @staticmethod
-    def print_tree(children, indent=0):
+    def print_tree(children: fparser.two.Fortran2003.Base,
+                   indent: int = 0) -> None:
         '''
         Dumps a textual representation of the tree to standard out.
         Intended for debug use.
@@ -341,7 +351,7 @@ class CSource(SourceTree):
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
-    def get_tree_error(self):
+    def get_tree_error(self) -> str:
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
@@ -351,7 +361,8 @@ class _SourceChain(object):
     Holds the chain of objects needed to understand a particular file
     extension.
     '''
-    def __init__(self, extension, parser, *preprocessors):
+    def __init__(self, extension: str,
+                 parser: SourceTree, *preprocessors: SourceText):
         if extension[0] == '.':
             extension = extension[1:]
         self.extension = extension
@@ -371,7 +382,7 @@ class _SourceChain(object):
 
 class SourceFactory(object):
     '''
-    Manaages the handling of source file. Knows what chains of objects are
+    Manages the handling of source file. Knows what chains of objects are
     needed to each file extension.
     '''
     # It is hard to lay down hard and fast rules about what should go in the
@@ -412,7 +423,8 @@ class SourceFactory(object):
                       'cpp': _SourceChain('cpp', CSource, CPreProcessor)}
 
     @classmethod
-    def add_extension(cls, extension, source, *preprocessors):
+    def add_extension(cls, extension: str,
+                      source: SourceTree, *preprocessors: SourceText) -> None:
         '''
         Adds a mapping between source file extension and source handling
         classes.
@@ -430,14 +442,14 @@ class SourceFactory(object):
                                                      *preprocessors)
 
     @classmethod
-    def get_extensions(cls):
+    def get_extensions(cls) -> Iterable[str]:
         '''
         Gets the list of file extensions recognised by the read_file() method.
         '''
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file):
+    def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
         '''
         Creates a Source object from a file.
 

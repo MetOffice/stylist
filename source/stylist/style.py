@@ -10,6 +10,7 @@ Classes relating to styles made up of rules.
 
 from abc import ABCMeta
 import logging
+from typing import List
 
 import stylist.fortran
 import stylist.issue
@@ -28,13 +29,14 @@ class Style(object):
             rules = [rules]
         self._rules = rules
 
-    def list_rules(self):
+    def list_rules(self) -> List[str]:
         '''
         Gets a list of the rules which make up this style.
         '''
         return [rule.__class__.__name__ for rule in self._rules]
 
-    def check(self, source):
+    def check(self,
+              source: stylist.source.Source) -> List[stylist.issue.Issue]:
         '''
         Applies every rule in this style to the parse tree.
 
