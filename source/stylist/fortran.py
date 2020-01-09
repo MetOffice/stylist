@@ -10,7 +10,7 @@ Rules relating to Fortran source.
 
 from typing import List
 
-import fparser
+import fparser  # type: ignore
 
 from stylist.issue import Issue
 from stylist.rule import Rule, FortranRule

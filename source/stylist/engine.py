@@ -8,7 +8,7 @@
 Core of the Fortran style checking tool.
 '''
 import logging
-from typing import List
+from typing import Sequence
 
 import stylist.issue
 import stylist.source
@@ -21,7 +21,7 @@ class CheckEngine(object):
     Manages the checking of Fortran source files against style lists.
     '''
 
-    def __init__(self, styles: List[stylist.style.Style]):
+    def __init__(self, styles: Sequence[stylist.style.Style]):
         '''
         Constructs a CheckEngine object from list of style lists.
 
@@ -29,7 +29,7 @@ class CheckEngine(object):
         '''
         self._styles = styles
 
-    def check(self, source_filename: str) -> List[stylist.issue.Issue]:
+    def check(self, source_filename: str) -> Sequence[stylist.issue.Issue]:
         '''
         Passes the eyes of all registered style lists over the source file.
 

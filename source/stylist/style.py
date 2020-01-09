@@ -44,7 +44,7 @@ class Style(object):
                object.
         '''
         logging.getLogger(__name__).info('Style: ' + self.__class__.__name__)
-        issues = []
+        issues: List[stylist.issue.Issue] = []
         for rule in self._rules:
             issues.extend(rule.examine(source))
         return issues
