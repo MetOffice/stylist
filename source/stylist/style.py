@@ -36,7 +36,7 @@ class Style(object):
         return [rule.__class__.__name__ for rule in self._rules]
 
     def check(self,
-              source: stylist.source.Source) -> List[stylist.issue.Issue]:
+              source: stylist.source.SourceTree) -> List[stylist.issue.Issue]:
         '''
         Applies every rule in this style to the parse tree.
 
