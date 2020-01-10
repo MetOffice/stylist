@@ -8,13 +8,45 @@
 Rules relating to Fortran source.
 '''
 
+from abc import ABCMeta, abstractmethod
 from typing import List
 
 import fparser  # type: ignore
 
 from stylist.issue import Issue
-from stylist.rule import Rule, FortranRule
+from stylist.rule import Rule
 from stylist.source import FortranSource
+
+
+class FortranRule(Rule, metaclass=ABCMeta):
+    '''
+    Parent for style rules pertaining to Fortran source.
+    '''
+    # pylint: disable=too-few-public-methods, abstract-method
+    def examine(self, subject: FortranSource) -> List[Issue]:
+        issues = super(FortranRule, self).examine(subject)
+
+        if not isinstance(subject, FortranSource):
+            description = '"{0}" passed to a Fortran rule'
+            raise Exception(description.format(subject.get_language()))
+
+        if not subject.get_tree():
+            description = 'Unable to perform {} as source didn\'t parse: {}'
+            issues.append(Issue(description.format(self.__class__.__name__,
+                                                   subject.get_tree_error())))
+            return issues
+
+        issues.extend(self.examine_fortran(subject))
+        return issues
+
+    @abstractmethod
+    def examine_fortran(self, subject: FortranSource):
+        '''
+        Examines the provided Fortran source code object for an issue.
+
+        Returns a list of stylist.issue.Issue objects.
+        '''
+        raise NotImplementedError()
 
 
 class FortranCharacterset(Rule):
