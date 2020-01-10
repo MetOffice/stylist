@@ -8,9 +8,13 @@
 Rules relating to Fortran source.
 '''
 
-import fparser
+from typing import List
+
+import fparser  # type: ignore
+
 from stylist.issue import Issue
 from stylist.rule import Rule, FortranRule
+from stylist.source import FortranSource
 
 
 class FortranCharacterset(Rule):
@@ -29,7 +33,7 @@ class FortranCharacterset(Rule):
     _NEWLINE = '\n'
     _QUOTE = '"'
 
-    def examine(self, subject):
+    def examine(self, subject: FortranSource) -> List[Issue]:
         # pylint: disable=too-many-branches
         '''
         Examines the source code for none Fortran characters.
@@ -85,7 +89,7 @@ class MissingImplicit(FortranRule):
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     '''
-    def __init__(self, default):
+    def __init__(self, default: str):
         '''
         Constructor taking a default implication.
 
@@ -108,7 +112,7 @@ class MissingImplicit(FortranRule):
                    fparser.two.Fortran2003.Subroutine_Stmt: 'Subroutine',
                    fparser.two.Fortran2003.Function_Stmt: 'Function'}
 
-    def examine_fortran(self, subject):
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
 
         scope_units = subject.path('Program_Unit')
@@ -139,7 +143,7 @@ class MissingOnly(FortranRule):
     '''
     Catches cases where a "use" statement is present but has no "only" claus.
     '''
-    def __init__(self, ignore=[]):
+    def __init__(self, ignore: List[str] = []):
         '''
         Constructs a "MissingOnly" rule object taking a list of exception
         modules which are not required to have an "only" clause.
@@ -147,7 +151,7 @@ class MissingOnly(FortranRule):
         assert isinstance(ignore, list)
         self._ignore = ignore
 
-    def examine_fortran(self, subject):
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
 
         for statement in subject.find_all(fparser.two.Fortran2003.Use_Stmt):
