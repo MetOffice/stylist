@@ -89,13 +89,13 @@ def _add_extensions(additional_extensions: Iterable[str]) -> None:
                                     *preproc_objects)
 
 
-def process(styles: Sequence[Style],
-            candidates: List[str]) -> List[Issue]:
+def process(candidates: List[str]) -> List[Issue]:
     '''
     Examines files for style compliance.
 
     Any directories specified will be descended looking for files to examine.
     '''
+    styles = [LFRicStyle()]
     engine = CheckEngine(styles)
 
     hot_extensions = SourceFactory.get_extensions()
@@ -132,9 +132,7 @@ def main() -> None:
 
     _add_extensions(arguments.map_extension)
 
-    styles = [LFRicStyle()]
-
-    issues = process(styles, arguments.source)
+    issues = process(arguments.source)
 
     for issue in issues:
         print(str(issue), file=sys.stderr)
