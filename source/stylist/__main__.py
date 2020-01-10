@@ -12,15 +12,17 @@ import argparse
 import logging
 import os.path
 import sys
+from typing import Iterable, List, Mapping, Type
 
 from stylist.engine import CheckEngine
+from stylist.issue import Issue
 from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
                            FortranSource, PFUnitProcessor, \
-                           SourceFactory
+                           SourceFactory, SourceTree, TextProcessor
 from stylist.style import LFRicStyle
 
 
-def parse_cli():
+def parse_cli() -> argparse.Namespace:
     '''
     Parse the command line. Returns a dictionary of arguments.
     '''
@@ -42,15 +44,17 @@ def parse_cli():
     return cli_parser.parse_args()
 
 
-_LANGUAGE_MAP = {'c': CSource,
-                 'cxx': CSource,
-                 'fortran': FortranSource}
-_PREPROCESSOR_MAP = {'cpp': CPreProcessor,
-                     'fpp': FortranPreProcessor,
-                     'pfp': PFUnitProcessor}
+_LANGUAGE_MAP: Mapping[str, Type[SourceTree]] \
+    = {'c': CSource,
+       'cxx': CSource,
+       'fortran': FortranSource}
+_PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
+    = {'cpp': CPreProcessor,
+       'fpp': FortranPreProcessor,
+       'pfp': PFUnitProcessor}
 
 
-def _add_extensions(additional_extensions):
+def _add_extensions(additional_extensions: Iterable[str]) -> None:
     # This application always expects pFUnit source to be present so it adds
     # a rule for that.
     #
@@ -72,15 +76,14 @@ def _add_extensions(additional_extensions):
 
     for mapping in additional_extensions:
         extension, language, preprocessors = mapping.split(':', 2)
-        preprocessors = preprocessors.split(':')
         preproc_objects = [_PREPROCESSOR_MAP[ident.lower()]
-                           for ident in preprocessors]
+                           for ident in preprocessors.split(':')]
         SourceFactory.add_extension(extension.lower(),
                                     _LANGUAGE_MAP[language.lower()],
                                     *preproc_objects)
 
 
-def process(arguments):
+def process(arguments: argparse.Namespace) -> List[Issue]:
     '''
     Examines files for style compliance.
 
@@ -102,7 +105,7 @@ def process(arguments):
     hot_extensions = SourceFactory.get_extensions()
 
     candidates = arguments.source
-    issues = []
+    issues: List[Issue] = []
     while candidates:
         filename = candidates.pop(0)
         if os.path.isdir(filename):
@@ -115,6 +118,14 @@ def process(arguments):
         else:  # Is a file
             issues.extend(engine.check(filename))
 
+    return issues
+
+
+def main() -> None:
+    '''Main entry point.'''
+    arguments = parse_cli()
+    issues = process(arguments)
+
     for issue in issues:
         print(str(issue), file=sys.stderr)
     if (len(issues) > 0) or arguments.verbose:
@@ -122,8 +133,5 @@ def process(arguments):
 
     if issues:
         sys.exit(1)
-
-
-def main():
-    '''Main entry point.'''
-    return process(parse_cli())
+    else:
+        sys.exit(0)
