@@ -90,7 +90,7 @@ def _add_extensions(additional_extensions: Iterable[str]) -> None:
 
 
 def process(styles: Sequence[Style],
-            candidates: Sequence[str]) -> List[Issue]:
+            candidates: List[str]) -> List[Issue]:
     '''
     Examines files for style compliance.
 
