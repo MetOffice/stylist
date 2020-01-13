@@ -28,7 +28,8 @@ Find the project at https://github.com/MetOffice/stylist
 
 ## Installation
 
-Installation can be as simple as `pip install stylist`.
+Installation can be as simple as `pip install stylist` or
+`conda install -c conda-forge stylist`.
 
 As always it is also possible to install from the project source by running
 `python setup.py`. The source may be obtained by downloading a tarball or by
