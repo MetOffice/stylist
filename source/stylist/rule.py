@@ -14,7 +14,7 @@ import re
 from typing import List
 
 from stylist.issue import Issue
-from stylist.source import FortranSource, SourceText
+from stylist.source import SourceText
 
 
 class Rule(object, metaclass=ABCMeta):

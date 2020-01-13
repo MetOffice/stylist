@@ -12,14 +12,14 @@ import argparse
 import logging
 import os.path
 import sys
-from typing import Iterable, List, Mapping, Sequence, Type
+from typing import Iterable, List, Mapping, Type
 
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
 from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
                            FortranSource, PFUnitProcessor, \
                            SourceFactory, SourceTree, TextProcessor
-from stylist.style import LFRicStyle, Style
+from stylist.style import LFRicStyle
 
 
 def parse_cli() -> argparse.Namespace:
