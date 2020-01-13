@@ -79,7 +79,12 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
         self._source = source
 
 
-class CPreProcessor(TextProcessor):
+class MetaCPreProcessor(TextProcessor.__class__):
+    def __str__(self):
+        return "C preprocessor"
+
+
+class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
     # pylint: disable=too-few-public-methods
     '''
     Strips out preprocessor directives.
@@ -104,7 +109,12 @@ class CPreProcessor(TextProcessor):
         return text
 
 
-class FortranPreProcessor(TextProcessor):
+class MetaFortranPreProcessor(TextProcessor.__class__):
+    def __str__(self):
+        return "Fortran preprocessor"
+
+
+class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
     # pylint: disable=too-few-public-methods
     '''
     Strips out preprocessor directives.
@@ -129,7 +139,12 @@ class FortranPreProcessor(TextProcessor):
         return text
 
 
-class PFUnitProcessor(TextProcessor):
+class MetaPFUnitProcessor(TextProcessor.__class__):
+    def __str__(self):
+        return "pFUnit preprocessor"
+
+
+class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
     # pylint: disable=too-few-public-methods
     '''
     Strips out pFUnit directives.
@@ -178,7 +193,12 @@ class SourceTree(object, metaclass=ABCMeta):
         return self._text.get_text()
 
 
-class FortranSource(SourceTree):
+class MetaFortranSource(SourceTree.__class__):
+    def __str__(self):
+        return 'Fortran source'
+
+
+class FortranSource(SourceTree, metaclass=MetaFortranSource):
     '''
     Holds a Fortran source file as both a text block and parse tree.
     '''
@@ -348,7 +368,12 @@ class FortranSource(SourceTree):
                 FortranSource.print_tree(child.items, indent+1)
 
 
-class CSource(SourceTree):
+class MetaCSource(SourceTree.__class__):
+    def __str__(self):
+        return "C source"
+
+
+class CSource(SourceTree, metaclass=MetaCSource):
     '''
     Holds a C/C++ source file as both a text block and parse tree.
     '''
