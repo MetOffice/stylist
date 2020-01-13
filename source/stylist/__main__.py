@@ -24,7 +24,7 @@ from stylist.style import LFRicStyle
 
 def parse_cli() -> argparse.Namespace:
     '''
-    Parse the command line. Returns a dictionary of arguments.
+    Parse the command line for stylist arguments.
     '''
     description = 'Perform various code style checks on source code.'
     cli_parser = argparse.ArgumentParser(add_help=False,
@@ -55,6 +55,12 @@ _PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
 
 
 def _add_extensions(additional_extensions: Iterable[str]) -> None:
+    '''
+    Makes the package aware of new extensions and how to deal with them.
+
+    This includes a few used by the LFRic project. Obviously these should not
+    be hard coded in here.
+    '''
     # This application always expects pFUnit source to be present so it adds
     # a rule for that.
     #
@@ -83,28 +89,17 @@ def _add_extensions(additional_extensions: Iterable[str]) -> None:
                                     *preproc_objects)
 
 
-def process(arguments: argparse.Namespace) -> List[Issue]:
+def process(candidates: List[str]) -> List[Issue]:
     '''
     Examines files for style compliance.
 
     Any directories specified will be descended looking for files to examine.
     '''
-    logger = logging.getLogger('stylist')
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    if arguments.verbose:
-        logger.setLevel(logging.INFO)
-    else:
-        logger.setLevel(logging.WARNING)
-
-    _add_extensions(arguments.map_extension)
-
     styles = [LFRicStyle()]
     engine = CheckEngine(styles)
 
     hot_extensions = SourceFactory.get_extensions()
 
-    candidates = arguments.source
     issues: List[Issue] = []
     while candidates:
         filename = candidates.pop(0)
@@ -122,9 +117,22 @@ def process(arguments: argparse.Namespace) -> List[Issue]:
 
 
 def main() -> None:
-    '''Main entry point.'''
+    '''
+    Command-line tool entry point.
+    '''
+    logger = logging.getLogger('stylist')
+    logger.addHandler(logging.StreamHandler(sys.stdout))
+
     arguments = parse_cli()
-    issues = process(arguments)
+
+    if arguments.verbose:
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.WARNING)
+
+    _add_extensions(arguments.map_extension)
+
+    issues = process(arguments.source)
 
     for issue in issues:
         print(str(issue), file=sys.stderr)

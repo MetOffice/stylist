@@ -5,7 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 '''
-Core of the Fortran style checking tool.
+Core of the style checking tool.
 '''
 import logging
 from typing import Sequence
@@ -18,22 +18,18 @@ import stylist.style
 class CheckEngine(object):
     # pylint: disable=too-few-public-methods
     '''
-    Manages the checking of Fortran source files against style lists.
+    Manages the checking of source files against style lists.
     '''
 
     def __init__(self, styles: Sequence[stylist.style.Style]):
         '''
         Constructs a CheckEngine object from list of style lists.
-
-        styles (list) Style object for each style list to use in checks.
         '''
         self._styles = styles
 
     def check(self, source_filename: str) -> Sequence[stylist.issue.Issue]:
         '''
         Passes the eyes of all registered style lists over the source file.
-
-        source_filename (string or file-like) Fortran source file to check.
         '''
         issues = []
         with open(source_filename, 'rt') as source_file:

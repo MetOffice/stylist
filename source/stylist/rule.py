@@ -5,7 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 '''
-A collection of style rules.
+None language specific rules.
 '''
 
 from abc import ABCMeta, abstractmethod
@@ -14,7 +14,7 @@ import re
 from typing import List
 
 from stylist.issue import Issue
-from stylist.source import FortranSource, SourceText
+from stylist.source import SourceText
 
 
 class Rule(object, metaclass=ABCMeta):
@@ -26,9 +26,6 @@ class Rule(object, metaclass=ABCMeta):
     def examine(self, subject) -> List[Issue]:
         '''
         Examines the provided source code object for an issue.
-
-        Returns a list of stylist.issue.Issue. Naturally this may be an
-        empty list if all was well.
         '''
         message = 'Rule: {name}'.format(name=str(self.__class__.__name__))
         logging.getLogger(__name__).info(message)
@@ -44,10 +41,7 @@ class TrailingWhitespace(Rule):
     def examine(self, subject: SourceText) -> List[Issue]:
         '''
         Examines the text for white space at the end of lines.
-
-        This includes empty lines.
-        :param subject: File contents as Source object.
-        :return: List of issues or empty list.
+        This includes lines which consist entirely of white space.
         '''
         issues = super(TrailingWhitespace, self).examine(subject)
 
@@ -61,34 +55,3 @@ class TrailingWhitespace(Rule):
                 issues.append(Issue(description, line=line_tally))
 
         return issues
-
-
-class FortranRule(Rule, metaclass=ABCMeta):
-    '''
-    Parent for style rules pertaining to Fortran source.
-    '''
-    # pylint: disable=too-few-public-methods, abstract-method
-    def examine(self, subject: FortranSource) -> List[Issue]:
-        issues = super(FortranRule, self).examine(subject)
-
-        if not isinstance(subject, FortranSource):
-            description = '"{0}" passed to a Fortran rule'
-            raise Exception(description.format(subject.get_language()))
-
-        if not subject.get_tree():
-            description = 'Unable to perform {} as source didn\'t parse: {}'
-            issues.append(Issue(description.format(self.__class__.__name__,
-                                                   subject.get_tree_error())))
-            return issues
-
-        issues.extend(self.examine_fortran(subject))
-        return issues
-
-    @abstractmethod
-    def examine_fortran(self, subject: FortranSource):
-        '''
-        Examines the provided Fortran source code object for an issue.
-
-        Returns a list of stylist.issue.Issue objects.
-        '''
-        raise NotImplementedError()

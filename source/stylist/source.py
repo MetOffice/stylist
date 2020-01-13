@@ -71,11 +71,13 @@ class SourceStringReader(SourceText):
 class TextProcessor(SourceText, metaclass=ABCMeta):
     # pylint: disable=too-few-public-methods, abstract-method
     '''
-    Preprocessor decorators inherit from this.
-
-    @param source The SourceText object which this object decorates.
+    Preprocessor decorators inherit from this. This is part of the decorator
+    pattern.
     '''
     def __init__(self, source: SourceText):
+        '''
+        Constructs a preprocessor object which decorates a source of text.
+        '''
         self._source = source
 
 
@@ -158,7 +160,7 @@ class SourceTree(object, metaclass=ABCMeta):
         self._tree_error: Union[str, None] = 'Not parsed yet'
 
     @abstractmethod
-    def get_tree(self) -> str:
+    def get_tree(self):
         '''
         Gets a parse-tree representation of the source file.
         '''
@@ -205,6 +207,8 @@ class FortranSource(SourceTree):
             -> fortran2003.StmtBase:
         '''
         Gets the first "statement" part of the syntax tree or part thereof.
+
+        @param root Optionally specify a subtree to use.
         '''
         if not root:
             root = self._tree.content
@@ -230,14 +234,17 @@ class FortranSource(SourceTree):
     def path(self,
              path: Union[Iterable, str],
              root: fortran2003.Block = None) \
-            -> fortran2003.Base:
+            -> List[fortran2003.Base]:
         # pylint: disable=too-many-branches
         '''
-        Returns the tree node described by the given path. The path may be
-        presented as either a list of node name strings or as a '/' delimited
-        string of node names.
+        Returns the tree nodes described by the given path.
 
-        If the path is not found in the tree, returns an empty list.
+        @todo This functionality might be provided by fparser at some point
+
+        @param path The path may beeither a list of node name strings or a '/'
+                    delimited string of node names.
+        @param root Optionally specify a subtree to use.
+        @return List of tree nodes or empty list.
         '''
         if isinstance(path, str):
             path = path.split('/')
@@ -297,6 +304,8 @@ class FortranSource(SourceTree):
         parse element below the root.
 
         The search descends the tree but that descent is terminated by a match.
+
+        @todo This functionality might be provided by fparser at some point
         '''
         if root:
             candidates = [root]
@@ -320,6 +329,9 @@ class FortranSource(SourceTree):
     def _ast_match(candidate: Type[fortran2003.Base],
                    sought_class: Type[fortran2003.Base]) \
             -> bool:
+        '''
+        Determines whether a node is a given type or a child thereof.
+        '''
         if candidate.__class__.__name__ == sought_class.__name__:
             return True
 
@@ -369,6 +381,13 @@ class _SourceChain(object):
                  extension: str,
                  parser: Type[SourceTree],
                  *preprocessors: Type[TextProcessor]):
+        '''
+        Creates a SourceChain object from file extension and source objects.
+
+        @param extension File extension which identifies this chain.
+        @param parser Underlying language parser.
+        @param preprocessors Any preprocessors to apply before parsing.
+        '''
         if extension[0] == '.':
             extension = extension[1:]
         self.extension = extension
@@ -411,7 +430,7 @@ class SourceFactory(object):
     # Instead we follow the convention that ".f90" means "free format" source
     # while ".f" continues to mean "fixed format".
     #
-    # On the other hand commonality means including the most commonly used
+    # On the other hand commodity means including the most commonly used
     # extensions. That is why both ".cc" and ".cpp" are listed for C++ source.
     #
     # If your particular application needs to support some odd-ball extensions
@@ -437,9 +456,9 @@ class SourceFactory(object):
         Adds a mapping between source file extension and source handling
         classes.
 
-        extension: str() File extension.
-        source: class(LanguageSource) Source handler class.
-        *preprocessors: class(SourceProcessor) Preprocessors to apply.
+        @param extension File extension which identifies this chain.
+        @param source Underlying language parser.
+        @param preprocessors Any preprocessors to apply before parsing.
         '''
         if extension in cls._extension_map:
             raise Exception('Extension "{}" already mapped to a handler'
@@ -462,7 +481,7 @@ class SourceFactory(object):
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
-        not work on "files" which do not have filenames.
+        not work on "files" which do not have a filename.
         '''
         if isinstance(source_file, str):
             filename = source_file
