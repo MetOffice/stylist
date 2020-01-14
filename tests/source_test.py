@@ -278,6 +278,7 @@ class TestCSource(object):
     '''
     def test_name(self):
         assert str(CSource) == 'C source'
+
     def test_constructor(self):
         '''
         Checks that the source file is correctly parsed on construction.

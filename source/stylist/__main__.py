@@ -27,9 +27,12 @@ def parse_cli() -> argparse.Namespace:
     Parse the command line. Returns a dictionary of arguments.
     '''
     description = 'Perform various code style checks on source code.'
-    parsers = [key + ' ' * (8 - len(key)) + '- ' + str(parser)
+
+    max_key_length: int = max(len(key) for key in _LANGUAGE_MAP.keys())
+    parsers = [key.ljust(max_key_length) + ' - ' + str(parser)
                for key, parser in _LANGUAGE_MAP.items()]
-    preproc = [key + ' ' * (8 - len(key)) + '- ' + str(proc)
+    max_key_length = max(len(key) for key in _PREPROCESSOR_MAP.keys())
+    preproc = [key.ljust(max_key_length) + ' - ' + str(proc)
                for key, proc in _PREPROCESSOR_MAP.items()]
     epilog = '''\
 IDs used in specifying extension pipelines:
