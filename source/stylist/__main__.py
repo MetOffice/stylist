@@ -27,14 +27,32 @@ def parse_cli() -> argparse.Namespace:
     Parse the command line for stylist arguments.
     '''
     description = 'Perform various code style checks on source code.'
+
+    max_key_length: int = max(len(key) for key in _LANGUAGE_MAP.keys())
+    parsers = [key.ljust(max_key_length) + ' - ' + str(parser)
+               for key, parser in _LANGUAGE_MAP.items()]
+    max_key_length = max(len(key) for key in _PREPROCESSOR_MAP.keys())
+    preproc = [key.ljust(max_key_length) + ' - ' + str(proc)
+               for key, proc in _PREPROCESSOR_MAP.items()]
+    epilog = '''\
+IDs used in specifying extension pipelines:
+  Parsers:
+    {parsers}
+  Preprocessors:
+    {preproc}
+    '''.format(parsers='\n    '.join(parsers),
+               preproc='\n    '.join(preproc))
+    formatter_class = argparse.RawDescriptionHelpFormatter
     cli_parser = argparse.ArgumentParser(add_help=False,
-                                         description=description)
+                                         description=description,
+                                         epilog=epilog,
+                                         formatter_class=formatter_class)
     cli_parser.add_argument('-help', '-h', '--help', action='help')
     cli_parser.add_argument('-verbose', '-v', action="store_true",
                             help='Produce a running commentary on progress')
-    message = 'Add a mapping between file extension and language'
+    message = 'Add a mapping between file extension and pipeline'
     cli_parser.add_argument('-map-extension',
-                            metavar='EXTENSION:LANGUAGE[:PREPROCESSOR]',
+                            metavar='EXTENSION:PARSER[:PREPROCESSOR]',
                             dest='map_extension',
                             default=[],
                             action='append',

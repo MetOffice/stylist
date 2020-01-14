@@ -61,6 +61,9 @@ class TestSourceText(object):
 
 
 class TestPPFortranSource(object):
+    def test_name(self):
+        assert str(FortranPreProcessor) == 'Fortran preprocessor'
+
     def test_preprocessed_fortran_source(self):
         # pylint: disable=no-self-use
         source = '''! Some things happen, others don't
@@ -99,6 +102,9 @@ end module test_mod
 
 
 class TestPPpFUnitSource(object):
+    def test_name(self):
+        assert str(PFUnitProcessor) == 'pFUnit preprocessor'
+
     def test_preprocessed_pfunit_source(self):
         # pylint: disable=no-self-use
         source = '''! Test all the things
@@ -127,6 +133,9 @@ end module test_mod
 
 
 class TestPPCSource(object):
+    def test_name(self):
+        assert str(CPreProcessor) == 'C preprocessor'
+
     def test_preprocessed_c_source(self):
         # pylint: disable=no-self-use
         source = '''/* Some things happen, others don't */
@@ -162,6 +171,9 @@ class TestFortranSource(object):
     '''
     Checks the Fortran source class.
     '''
+    def test_name(self):
+        assert str(FortranSource) == 'Fortran source'
+
     def test_constructor(self):
         '''
         Checks that the source file is correctly parsed on construction.
@@ -264,6 +276,9 @@ class TestCSource(object):
     '''
     Checks the C/C++ source class.
     '''
+    def test_name(self):
+        assert str(CSource) == 'C source'
+
     def test_constructor(self):
         '''
         Checks that the source file is correctly parsed on construction.
