@@ -106,25 +106,6 @@ class TestStyle(object):
         assert rule_two.examined == ['module foo\nend module foo\n']
 
 
-class TestLFRicStyle(object):
-    # pylint: disable=too-few-public-methods
-    """
-    Tests the LFRicStyle class contains the correct rules.
-    """
-    def test_rules(self):
-        # pylint: disable=no-self-use
-        """
-        Checks that the style contains the correct rules.
-        """
-        unit_under_test = stylist.style.LFRicStyle()
-
-        assert unit_under_test.list_rules() == ['FortranCharacterset',
-                                                'TrailingWhitespace',
-                                                'MissingImplicit',
-                                                'MissingOnly',
-                                                'MissingPointerInit']
-
-
 class TestReadStyle:
     """
     Ensures a style can be read from a configuration file.

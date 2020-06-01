@@ -396,6 +396,23 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
+class MetaPlaintText(SourceTree.__class__):
+    def __str__(self):
+        return "plain text"
+
+
+class PlainText(SourceTree, metaclass=MetaPlaintText):
+    """
+    Holds a plain text file as though it were source.
+    """
+    def get_tree(self) -> Generator[str, None, None]:
+        for line in self.get_text().splitlines():
+            yield line
+
+    def get_tree_error(self) -> Union[str, None]:
+        return None
+
+
 class _SourceChain(object):
     # pylint: disable=too-few-public-methods
     '''

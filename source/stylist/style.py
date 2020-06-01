@@ -52,20 +52,6 @@ class Style(object, metaclass=ABCMeta):
         return issues
 
 
-class LFRicStyle(Style):
-    # pylint: disable=too-few-public-methods
-    """
-    LFRic project's list of rules.
-    """
-    def __init__(self):
-        rules = [stylist.fortran.FortranCharacterset(),
-                 stylist.rule.TrailingWhitespace(),
-                 stylist.fortran.MissingImplicit('none'),
-                 stylist.fortran.MissingOnly(ignore=['pfunit_mod', 'xios']),
-                 stylist.fortran.MissingPointerInit()]
-        super(LFRicStyle, self).__init__(rules)
-
-
 def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
     configuration = configparser.ConfigParser()
     try:
