@@ -180,7 +180,12 @@ def main() -> None:
     for issue in issues:
         print(str(issue), file=sys.stderr)
     if (len(issues) > 0) or arguments.verbose:
-        print('Found {number} issues'.format(number=len(issues)))
+        tally = len(issues)
+        if tally > 1:
+            plural = 's'
+        else:
+            plural = ''
+        print(f"Found {tally} issue{plural}")
 
     if issues:
         sys.exit(1)

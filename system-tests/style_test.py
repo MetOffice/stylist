@@ -5,7 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 """
-System tests simple operation.
+System tests using a style from configuration.
 """
 from pathlib import Path
 import subprocess
@@ -16,7 +16,12 @@ from pytest import fixture  # type: ignore
 
 class TestSystem(object):
     @fixture(scope='class',
-             params=[('simple', 'Single file, no problem', ['nice.txt'])])
+             params=[('simple', 'Single file, no problem', ['nice.txt'], 0),
+                     ('simple', 'Dual file, no problem', ['nice.txt',
+                                                          'fluffy.txt'], 0),
+                     ('simple', 'Single file, problem', ['naughty.txt'], 1),
+                     ('simple', 'Dual file, mixed', ['nice.txt',
+                                                     'naughty.txt'], 1)])
     def case(self, request):
         yield request.param
 
@@ -24,6 +29,7 @@ class TestSystem(object):
         test_style: str = case[0]
         test_name: str = case[1]
         test_files: List[str] = case[2]
+        expected_rc: int = case[3]
 
         test_dir = Path(__file__).parent / test_style
 
@@ -32,10 +38,10 @@ class TestSystem(object):
         expected_error = []
         buffer = expected_output
         expected_file = test_dir / f'expected.{expected_tag}.txt'
-        for line in expected_file.read_text().splitlines():
-            if line == 'stdout':
+        for line in expected_file.read_text().splitlines(keepends=True):
+            if line == 'stdout\n':
                 buffer = expected_output
-            elif line == 'stderr':
+            elif line == 'stderr\n':
                 buffer = expected_error
             else:
                 buffer.append(line.replace('$$', str(test_dir)))
@@ -47,8 +53,8 @@ class TestSystem(object):
         process = subprocess.run(command,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-        assert process.returncode == 0
+        assert process.returncode == expected_rc
         assert process.stdout.decode('utf-8').strip() \
-            == '\n'.join(expected_output)
+            == ''.join(expected_output).strip()
         assert process.stderr.decode('utf-8').strip() \
-            == '\n'.join(expected_error)
+            == ''.join(expected_error).strip()
