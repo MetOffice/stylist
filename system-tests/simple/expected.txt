@@ -1,0 +1,10 @@
+Considering nice.txt
+Examining: nice.txt
+Style: simple
+Rule: TrailingWhitespace
+Considering naughty.txt
+Examining: naughty.txt
+Style: simple
+Rule: TrailingWhitespace
+Found 1 issues
+naughty.txt: 2: Found trailing white space
