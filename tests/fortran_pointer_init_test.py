@@ -83,16 +83,22 @@ class TestMissingPointerInit(object):
   type(foo_type){unit_attr} :: unit_{unit_decl}
   procedure(some_if){unit_attr} :: unit_proc_{unit_decl}
 contains
-  subroutine bar()
-    implicit none
-    type(foo_type){proc_attr} :: proc_{proc_decl}
-    procedure(some_if){proc_attr} :: proc_proc_{proc_decl}
-  end subroutine bar
+  ! A comment for the function
+  !
   function qux() result(answer)
     implicit none
     ! It isn't possible to initialise function return variables
     real, pointer :: answer(:)
   end function qux
+  !
+  ! Comment for the subroutine
+  !
+  subroutine bar()
+    implicit none
+    type(foo_type){proc_attr} :: proc_{proc_decl}
+    procedure(some_if){proc_attr} :: proc_proc_{proc_decl}
+    integer{proc_attr} :: proc_var_{proc_decl}
+  end subroutine bar
   logical function whatev()
     ! Functions may also be declared this way.
     implicit none
@@ -124,7 +130,8 @@ end {prog_unit} test
                                 message.format('type_bare')])
         if proc_pointer == 'pointer':
             expectation.extend([message.format('proc_bare'),
-                                message.format('proc_proc_bare')])
+                                message.format('proc_proc_bare'),
+                                message.format('proc_var_bare')])
         if unit_pointer == 'pointer':
             expectation.extend([message.format('unit_bare'),
                                 message.format('unit_proc_bare')])

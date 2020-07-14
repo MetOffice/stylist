@@ -215,7 +215,7 @@ class MissingPointerInit(FortranRule):
         """
         self._default = default
 
-    def examine_fortran(self, subject):
+    def examine_fortran(self, subject: FortranSource):
         issues: List[Issue] = []
 
         candidates: List[Fortran2003.StmtBase] = []
@@ -233,16 +233,25 @@ class MissingPointerInit(FortranRule):
             subject.find_all(Fortran2003.Type_Declaration_Stmt))
 
         return_variable = ''
-        for statement in candidates:
-            if isinstance(statement,  # Is variable
+        for candidate in candidates:
+            if isinstance(candidate,  # Is variable
                           (Fortran2003.Data_Component_Def_Stmt,
                            Fortran2003.Type_Declaration_Stmt)):
-                if isinstance(statement.parent.parent,
+                if isinstance(candidate.parent.parent,
                               Fortran2003.Function_Subprogram):
                     # Is contained in a function
                     function_block: Fortran2003.Function_Subprogram \
-                        = statement.parent.parent
-                    suffix = function_block.children[0].items[3]
+                        = candidate.parent.parent
+                    statement = None
+                    for thing in function_block.children:
+                        if isinstance(thing, Fortran2003.Function_Stmt):
+                            statement = thing
+                            break
+                    if statement is None:
+                        message = "Malformed parse tree: Function subprogram" \
+                                  " without Function statement"
+                        raise Exception(message)
+                    suffix = statement.items[3]
                     if isinstance(suffix, Fortran2003.Suffix):
                         if isinstance(suffix.items[0], Fortran2003.Name):
                             # Is return variable
@@ -250,7 +259,7 @@ class MissingPointerInit(FortranRule):
 
             problem = 'Declaration of pointer "{0}" without initialisation.'
 
-            attributes = statement.items[1]
+            attributes = candidate.items[1]
             if attributes is None:
                 continue
             cannon_attr = list(str(item).lower().replace(' ', '')
@@ -259,8 +268,8 @@ class MissingPointerInit(FortranRule):
                            or 'intent(out)' in cannon_attr \
                            or 'intent(inout)' in cannon_attr
             if 'pointer' in cannon_attr and not argument_def:
-                for variable in statement.items[2].items:
-                    if isinstance(statement,  # Is variable
+                for variable in candidate.items[2].items:
+                    if isinstance(candidate,  # Is variable
                                   (Fortran2003.Data_Component_Def_Stmt,
                                    Fortran2003.Type_Declaration_Stmt)):
                         name = str(variable.items[0])
@@ -269,7 +278,7 @@ class MissingPointerInit(FortranRule):
                         init = variable.items[3]
                         if init is None:
                             issues.append(Issue(problem.format(name)))
-                    elif isinstance(statement,  # Is procedure
+                    elif isinstance(candidate,  # Is procedure
                                     (Fortran2003.Proc_Component_Def_Stmt,
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
