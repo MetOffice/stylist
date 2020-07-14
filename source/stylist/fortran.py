@@ -4,13 +4,14 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Rules relating to Fortran source.
-'''
-
+"""
 from abc import ABCMeta, abstractmethod
 from typing import List
-import fparser.two.Fortran2003  # type: ignore
+
+import fparser.two.Fortran2003 as Fortran2003  # type: ignore
+
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
@@ -49,9 +50,9 @@ class FortranRule(Rule, metaclass=ABCMeta):
 
 class FortranCharacterset(Rule):
     # pylint: disable=too-few-public-methods
-    '''
+    """
     Scans the source for characters which are not supported by Fortran.
-    '''
+    """
     _FORTRAN_LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     _FORTRAN_DIGIT = '0123456789'
     _FORTRAN_ALPHANUMERIC = _FORTRAN_LETTER + _FORTRAN_DIGIT + '_'
@@ -65,13 +66,13 @@ class FortranCharacterset(Rule):
 
     def examine(self, subject: FortranSource) -> List[Issue]:
         # pylint: disable=too-many-branches
-        '''
+        """
         Examines the source code for none Fortran characters.
 
         This is complicated by the fact that the source must consist of only
         certain characters except comments and strings. These may contain
         anything.
-        '''
+        """
         issues = super(FortranCharacterset, self).examine(subject)
 
         text = subject.get_text()
@@ -115,12 +116,13 @@ class FortranCharacterset(Rule):
 
 class MissingImplicit(FortranRule):
     # pylint: disable=too-few-public-methods
-    '''
+    """
     Catches cases where code blocks which could have an "implicit" statement
     don't.
-    '''
+    """
+
     def __init__(self, default='none'):
-        '''
+        """
         Constructor taking a default implication.
 
         Todo: This rule was designed to check merely for the presence of an
@@ -133,14 +135,14 @@ class MissingImplicit(FortranRule):
         Todo: At the moment the default is not used. In the future we may want
         to allow rules to enforce style rather than simply reporting it. In
         this case the default would be used where none is present.
-        '''
+        """
         assert default.lower() in ('none', 'private', 'public')
         self._default = default.lower()
 
-    _NATURE_MAP = {fparser.two.Fortran2003.Program_Stmt: 'Program',
-                   fparser.two.Fortran2003.Module_Stmt: 'Module',
-                   fparser.two.Fortran2003.Subroutine_Stmt: 'Subroutine',
-                   fparser.two.Fortran2003.Function_Stmt: 'Function'}
+    _NATURE_MAP = {Fortran2003.Program_Stmt: 'Program',
+                   Fortran2003.Module_Stmt: 'Module',
+                   Fortran2003.Subroutine_Stmt: 'Subroutine',
+                   Fortran2003.Function_Stmt: 'Function'}
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -170,21 +172,22 @@ class MissingImplicit(FortranRule):
 
 
 class MissingOnly(FortranRule):
-    '''
+    """
     Catches cases where a "use" statement is present but has no "only" claus.
-    '''
+    """
+
     def __init__(self, ignore: List[str] = []):
-        '''
+        """
         Constructs a "MissingOnly" rule object taking a list of exception
         modules which are not required to have an "only" clause.
-        '''
+        """
         assert isinstance(ignore, list)
         self._ignore = ignore
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
 
-        for statement in subject.find_all(fparser.two.Fortran2003.Use_Stmt):
+        for statement in subject.find_all(Fortran2003.Use_Stmt):
             module = statement.items[2]
             onlies = statement.items[4]
             if str(module).lower() not in self._ignore:
@@ -196,88 +199,86 @@ class MissingOnly(FortranRule):
 
 
 class MissingPointerInit(FortranRule):
-    '''
+    """
     Catches cases where a pointer is declared without being initialised.
-    '''
+    """
+
     def __init__(self, default='null()'):
-        '''
-        Constructs a MissingPointerInit rule object taking a default assignment.
+        """
+        Constructs a MissingPointerInit rule object taking a default
+        assignment.
 
         Todo: Obviously the default is not used as we don't support coercing
               source at the moment.
 
         @param default: Target to be used if missing assignment found.
-        '''
+        """
         self._default = default
 
-    def _look_for_pointer_declaration(self, subject, location, nature):
-        issues = []
+    def examine_fortran(self, subject):
+        issues: List[Issue] = []
 
-        if location == 'declaration':
-            if nature == 'variable':
-                candidates = subject.find_all(
-                    fparser.two.Fortran2003.Type_Declaration_Stmt)
-            elif nature == 'procedure':
-                candidates = subject.find_all(
-                    fparser.two.Fortran2003.Procedure_Declaration_Stmt)
-            else:
-                raise Exception('Unrecognised declaration nature: '
-                                + nature)
-        elif location == 'component':
-            if nature == 'variable':
-                candidates = subject.find_all(
-                    fparser.two.Fortran2003.Data_Component_Def_Stmt)
-            elif nature == 'procedure':
-                candidates = subject.find_all(
-                    fparser.two.Fortran2003.Proc_Component_Def_Stmt)
-            else:
-                raise Exception('Unrecognised declaration nature: '
-                                + nature)
-        else:
-            raise Exception('Unrecognised declaration location: ' + location)
+        candidates: List[Fortran2003.StmtBase] = []
+        # Component variables
+        candidates.extend(
+            subject.find_all(Fortran2003.Data_Component_Def_Stmt))
+        # Component Procedure
+        candidates.extend(
+            subject.find_all(Fortran2003.Proc_Component_Def_Stmt))
+        # Procedure declaration
+        candidates.extend(
+            subject.find_all(Fortran2003.Procedure_Declaration_Stmt))
+        # Variable declaration
+        candidates.extend(
+            subject.find_all(Fortran2003.Type_Declaration_Stmt))
 
+        return_variable = ''
         for statement in candidates:
+            if isinstance(statement,  # Is variable
+                          (Fortran2003.Data_Component_Def_Stmt,
+                           Fortran2003.Type_Declaration_Stmt)):
+                if isinstance(statement.parent.parent,
+                              Fortran2003.Function_Subprogram):
+                    # Is contained in a function
+                    function_block: Fortran2003.Function_Subprogram \
+                        = statement.parent.parent
+                    suffix = function_block.children[0].items[3]
+                    if isinstance(suffix, Fortran2003.Suffix):
+                        if isinstance(suffix.items[0], Fortran2003.Name):
+                            # Is return variable
+                            return_variable = str(suffix.items[0])
+
+            problem = 'Declaration of pointer "{0}" without initialisation.'
+
             attributes = statement.items[1]
             if attributes is None:
                 continue
             cannon_attr = list(str(item).lower().replace(' ', '')
                                for item in attributes.items)
-            print(statement)
             argument_def = 'intent(in)' in cannon_attr \
                            or 'intent(out)' in cannon_attr \
                            or 'intent(inout)' in cannon_attr
             if 'pointer' in cannon_attr and not argument_def:
                 for variable in statement.items[2].items:
-                    if nature == 'variable':
+                    if isinstance(statement,  # Is variable
+                                  (Fortran2003.Data_Component_Def_Stmt,
+                                   Fortran2003.Type_Declaration_Stmt)):
                         name = str(variable.items[0])
+                        if name == return_variable:
+                            continue  # Return variables cannot be initialised.
                         init = variable.items[3]
                         if init is None:
-                            description = 'Declaration of pointer "' + name \
-                                          + '" without initialisation.'
-                            issues.append(Issue(description))
-                    elif nature == 'procedure':
+                            issues.append(Issue(problem.format(name)))
+                    elif isinstance(statement,  # Is procedure
+                                    (Fortran2003.Proc_Component_Def_Stmt,
+                                     Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
-                        if isinstance(variable, fparser.two.Fortran2003.Name):
-                            description = 'Declaration of pointer "' + name \
-                                          + '" without initialisation.'
-                            issues.append(Issue(description))
+                        if isinstance(variable, Fortran2003.Name):
+                            issues.append(Issue(problem.format(name)))
+                    else:
+                        message \
+                            = f"Unexpected source element: {repr(statement)}"
+                        raise Exception(message)
 
-        return issues
-
-    def examine_fortran(self, subject):
-        issues = []
-        issues.extend(self._look_for_pointer_declaration(subject,
-                                                         'component',
-                                                         'variable'))
-        issues.extend(self._look_for_pointer_declaration(subject,
-                                                         'component',
-                                                         'procedure'))
-        issues.extend(self._look_for_pointer_declaration(subject,
-                                                         'declaration',
-                                                         'variable'))
-        issues.extend(self._look_for_pointer_declaration(subject,
-                                                         'declaration',
-                                                         'procedure'))
         issues.sort()
-
         return issues

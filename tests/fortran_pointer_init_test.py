@@ -4,52 +4,53 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Test of the rule for missing pointer initialisation.
-'''
+"""
 from typing import List
 
 import pytest
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
+
 class TestMissingPointerInit(object):
-    '''
+    """
     Tests the checker of missing pointer initialisation.
-    '''
+    """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
     def prog_unit(self, request):
-        '''
+        """
         Parameter fixture giving program unit types.
-        '''
+        """
         # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
     def type_pointer(self, request):
-        '''
+        """
         Parameter fixture giving pointer type for program unit.
-        '''
+        """
         # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
     def unit_pointer(self, request):
-        '''
+        """
         Parameter fixture giving pointer type for program unit.
-        '''
+        """
         # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
     def proc_pointer(self, request):
-        '''
+        """
         Parameter fixture giving pointer type for procedure.
-        '''
+        """
         # pylint: disable=no-self-use
         yield request.param
 
@@ -65,62 +66,69 @@ class TestMissingPointerInit(object):
                           type_pointer,
                           unit_pointer,
                           proc_pointer):
-        '''
+        """
         Checks that the rule reports missing pointer initialisation correctly.
-        '''
+        """
         template = '''
-               {prog_unit} test
-                 use foo_mod, only : foo_type
-                 implicit none
-                 private
-                 type foo_type
-                   private
-                   integer{type_attr} :: type_{type_decl}
-                   procedure(some_if), nopass{type_attr} :: type_proc_{type_decl}, &
-                       other_type_proc => null()
-                 end type foo_type
-                 type(foo_type){unit_attr} :: unit_{unit_decl}
-                 procedure(some_if){unit_attr} :: unit_proc_{unit_decl}
-               contains
-                 subroutine bar()
-                   implicit none
-                   type(foo_type){proc_attr} :: proc_{proc_decl}
-                   procedure(some_if){proc_attr} :: proc_proc_{proc_decl}
-                 end subroutine bar
-                 function qux() result(answer)
-                   implicit none
-                   ! It isn't possible to initialise function return variables
-                   real, pointer :: answer(:)
-                 end function qux
-                 subroutine baz( thing, thang, thong, bong )
-                   implicit none
-                   ! Intent in arguments aren't initialised
-                   type(foo_type), intent(in), pointer :: thing
-                   procedure(some_if), intent(in), pointer :: thang
-                   ! Oddly intent out arguments can't be initialised either
-                   logical, intent(out), pointer :: bong
-                   !Intent inout arguments aren't initialised
-                   real, intent(in out), pointer :: thong(:)
-                 end subroutine baz
-               end {prog_unit} test
-               '''
+{prog_unit} test
+  implicit none
+  private
+  type foo_type
+    private
+    integer{type_attr} :: type_{type_decl}, second_type_{type_decl}
+    ! Procedure pointers have to be pointers.
+    procedure(some_if), nopass, pointer :: type_proc_pointer_{type_decl}, &
+                                           other_type_proc_pointer_{type_decl}
+  end type foo_type
+  type(foo_type){unit_attr} :: unit_{unit_decl}
+  procedure(some_if){unit_attr} :: unit_proc_{unit_decl}
+contains
+  subroutine bar()
+    implicit none
+    type(foo_type){proc_attr} :: proc_{proc_decl}
+    procedure(some_if){proc_attr} :: proc_proc_{proc_decl}
+  end subroutine bar
+  function qux() result(answer)
+    implicit none
+    ! It isn't possible to initialise function return variables
+    real, pointer :: answer(:)
+  end function qux
+  logical function whatev()
+    ! Functions may also be declared this way.
+    implicit none
+    whatev = .true.
+  end function whatev
+  subroutine baz( thing, thang, thong, bong )
+    implicit none
+    ! Intent in arguments aren't initialised
+    type(foo_type), intent(in), pointer :: thing
+    procedure(some_if), intent(in), pointer :: thang
+    ! Oddly intent out arguments can't be initialised either
+    logical, intent(out), pointer :: bong
+    !Intent inout arguments aren't initialised
+    real, intent(in out), pointer :: thong(:)
+  end subroutine baz
+end {prog_unit} test
+'''
 
         expectation: List[str] = []
-        if proc_pointer == 'pointer':
-            expectation.append(
-                'Declaration of pointer "proc_bare" without initialisation.')
-            expectation.append(
-                'Declaration of pointer "proc_proc_bare" without initialisation.')
+        message = 'Declaration of pointer "{0}" without initialisation.'
+        if type_pointer != 'nullpointer':
+            suffix = self._DECL_MAP[type_pointer].partition(' ')[0]
+            expectation.extend([
+                message.format(f'other_type_proc_pointer_{suffix}'),
+                message.format(f'type_proc_pointer_{suffix}')
+            ])
         if type_pointer == 'pointer':
-            expectation.append(
-                'Declaration of pointer "type_bare" without initialisation.')
-            expectation.append(
-                'Declaration of pointer "type_proc_bare" without initialisation.')
+            expectation.extend([message.format('second_type_bare'),
+                                message.format('type_bare')])
+        if proc_pointer == 'pointer':
+            expectation.extend([message.format('proc_bare'),
+                                message.format('proc_proc_bare')])
         if unit_pointer == 'pointer':
-            expectation.append(
-                'Declaration of pointer "unit_bare" without initialisation.')
-            expectation.append(
-                'Declaration of pointer "unit_proc_bare" without initialisation.')
+            expectation.extend([message.format('unit_bare'),
+                                message.format('unit_proc_bare')])
+        expectation.sort()
 
         text = template.format(
             prog_unit=prog_unit,
