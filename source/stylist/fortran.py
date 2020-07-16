@@ -167,7 +167,8 @@ class MissingImplicit(FortranRule):
                 description = "{thing} '{name}' is missing " \
                               + "an implicit statement"
                 description = description.format(thing=nature, name=name)
-                issues.append(Issue(description, line=scope_statement.item.span[0]))
+                issues.append(Issue(description,
+                                    line=scope_statement.item.span[0]))
         return issues
 
 
@@ -288,7 +289,7 @@ class MissingPointerInit(FortranRule):
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
                         if isinstance(variable, Fortran2003.Name):
-                            line_number=candidate.item.span[0]
+                            line_number = candidate.item.span[0]
                             message = problem.format(line=line_number,
                                                      name=name)
                             issues.append(Issue(message))

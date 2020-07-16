@@ -78,8 +78,8 @@ class TestMissingOnly(object):
                         line += ', only : {0}'.format(', '.join(details[1]))
                         line_number += 1
                     elif details[0] not in ignorance:
-                        message = f"{line_number}: Usage of \"{details[0]}\" " \
-                                  f"without \"only\" clause."
+                        message = f'{line_number}: Usage of "{details[0]}" ' \
+                                  f'without "only" clause.'
                         expectations.append(message)
                         line_number += 1
                 if line:
@@ -108,8 +108,8 @@ class TestMissingOnly(object):
         expectation = list(unit_expects)
         expectation.extend(proc_expects)
         print(text.format(type=unit_type,
-                                                uusage='\n'.join(unit_lines),
-                                                pusage='\n'.join(proc_lines)))
+                          uusage='\n'.join(unit_lines),
+                          pusage='\n'.join(proc_lines)))
         print(expectation)
         if ignorance:
             unit_under_test = stylist.fortran.MissingOnly(ignore=ignorance)

@@ -145,7 +145,8 @@ end {prog_unit} test
                                                name='unit_bare'),
                                 message.format(line=13,
                                                name='unit_proc_bare')])
-        expectation.sort(key=lambda x:(int(x.split(':', 1)[0]), x.split(':', 1)))
+        expectation.sort(key=lambda x: (int(x.split(':', 1)[0]),
+                                        x.split(':', 1)))
 
         text = template.format(
             prog_unit=prog_unit,
@@ -161,7 +162,8 @@ end {prog_unit} test
         unit_under_test = stylist.fortran.MissingPointerInit()
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
-        issue_descriptions.sort(key=lambda x:(int(x.split(':', 1)[0]), x.split(':', 1)))
+        issue_descriptions.sort(key=lambda x: (int(x.split(':', 1)[0]),
+                                               x.split(':', 1)))
         print(issue_descriptions)
         print(expectation)
         assert issue_descriptions == expectation

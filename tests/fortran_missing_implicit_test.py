@@ -215,11 +215,13 @@ class TestMissingImplicit(object):
         reader = SourceStringReader(text)
         source = FortranSource(reader)
 
-        insert_line = containing_program_unit[0].count('\n', 0, containing_program_unit[0].find('{procedure}')) + 1
+        insert_point = containing_program_unit[0].find('{procedure}')
+        insert_line = containing_program_unit[0].count('\n',
+                                                       0,
+                                                       insert_point) + 1
         first_len = subprogram_implicit[0].count('\n')
         if first_len > 0:
-            first_len +=1
-        second_len = second_subprogram_implicit[0].count('\n') + 1
+            first_len += 1
 
         expectation = []
         for thing in containing_program_unit[1]:
