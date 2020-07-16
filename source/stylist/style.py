@@ -59,5 +59,6 @@ class LFRicStyle(Style):
         rules = [stylist.fortran.FortranCharacterset(),
                  stylist.rule.TrailingWhitespace(),
                  stylist.fortran.MissingImplicit('none'),
-                 stylist.fortran.MissingOnly(ignore=['pfunit_mod', 'xios'])]
+                 stylist.fortran.MissingOnly(ignore=['pfunit_mod', 'xios']),
+                 stylist.fortran.MissingPointerInit()]
         super(LFRicStyle, self).__init__(rules)

@@ -44,7 +44,7 @@ setup(
     package_dir={'': 'source'},
     packages=find_packages(where='source'),
     python_requires='>=3.6, <4',
-    install_requires=['fparser'],
+    install_requires=['fparser > 0.0.10'],
     extras_require={
         'dev': ['check-manifest', 'flake8'],
         'test': ['pytest', 'pytest-cov'],

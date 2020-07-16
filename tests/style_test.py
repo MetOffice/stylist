@@ -107,4 +107,5 @@ class TestLFRicStyle(object):
         assert unit_under_test.list_rules() == ['FortranCharacterset',
                                                 'TrailingWhitespace',
                                                 'MissingImplicit',
-                                                'MissingOnly']
+                                                'MissingOnly',
+                                                'MissingPointerInit']

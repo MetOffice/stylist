@@ -81,7 +81,7 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
         self._source = source
 
 
-class MetaCPreProcessor(TextProcessor.__class__):
+class MetaCPreProcessor(ABCMeta):
     def __str__(self):
         return "C preprocessor"
 
@@ -111,7 +111,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
         return text
 
 
-class MetaFortranPreProcessor(TextProcessor.__class__):
+class MetaFortranPreProcessor(ABCMeta):
     def __str__(self):
         return "Fortran preprocessor"
 
@@ -141,7 +141,7 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
         return text
 
 
-class MetaPFUnitProcessor(TextProcessor.__class__):
+class MetaPFUnitProcessor(ABCMeta):
     def __str__(self):
         return "pFUnit preprocessor"
 
@@ -195,7 +195,7 @@ class SourceTree(object, metaclass=ABCMeta):
         return self._text.get_text()
 
 
-class MetaFortranSource(SourceTree.__class__):
+class MetaFortranSource(ABCMeta):
     def __str__(self):
         return 'Fortran source'
 
@@ -380,7 +380,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                 FortranSource.print_tree(child.items, indent+1)
 
 
-class MetaCSource(SourceTree.__class__):
+class MetaCSource(ABCMeta):
     def __str__(self):
         return "C source"
 

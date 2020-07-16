@@ -5,7 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 '''
-Tests of the rule for missing "only" clauses.
+Test of the rule for missing "only" clauses.
 '''
 
 import pytest
@@ -64,11 +64,10 @@ class TestMissingOnly(object):
         yield request.param
 
     def test_use(self, unit_type, unit_usage, procedure_usage, ignorance):
-        '''
+        """
         Checks that the rule reports missing "use" clauses correctly.
-        '''
-        # pylint: disable=no-self-use
-        def prepare(params):
+        """
+        def prepare(line_number: int, params):
             usage = []
             expectations = []
             for details in params:
@@ -77,15 +76,16 @@ class TestMissingOnly(object):
                     line = 'use {0}'.format(details[0])
                     if details[1]:
                         line += ', only : {0}'.format(', '.join(details[1]))
+                        line_number += 1
                     elif details[0] not in ignorance:
-                        message = 'Usage of "{0}" without "only" clause.'
-                        expectations.append(message.format(details[0]))
+                        message = f'{line_number}: Usage of "{details[0]}" ' \
+                                  f'without "only" clause.'
+                        expectations.append(message)
+                        line_number += 1
                 if line:
                     usage.append(line)
-            return usage, expectations
+            return usage, expectations, line_number
 
-        unit_lines, unit_expects = prepare(unit_usage)
-        proc_lines, proc_expects = prepare(procedure_usage)
         text = '''{type} test
                    {uusage}
                    implicit none
@@ -95,7 +95,11 @@ class TestMissingOnly(object):
                      implicit none
                    end subroutine foo
                  end {type} test
-                      '''
+               '''
+        unit_lines, unit_expects, last_line = prepare(2, unit_usage)
+        if len(unit_lines) == 0:
+            last_line += 1
+        proc_lines, proc_expects, _ = prepare(last_line + 3, procedure_usage)
         reader = SourceStringReader(text.format(type=unit_type,
                                                 uusage='\n'.join(unit_lines),
                                                 pusage='\n'.join(proc_lines)))
@@ -103,7 +107,10 @@ class TestMissingOnly(object):
 
         expectation = list(unit_expects)
         expectation.extend(proc_expects)
-
+        print(text.format(type=unit_type,
+                          uusage='\n'.join(unit_lines),
+                          pusage='\n'.join(proc_lines)))
+        print(expectation)
         if ignorance:
             unit_under_test = stylist.fortran.MissingOnly(ignore=ignorance)
         else:
