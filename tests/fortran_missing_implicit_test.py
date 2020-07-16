@@ -193,7 +193,9 @@ class TestMissingImplicit(object):
         reader = SourceStringReader(empty_program_unit_implicit[0])
         source = FortranSource(reader)
 
-        expectation = empty_program_unit_implicit[1]
+        expectation = []
+        for thing in empty_program_unit_implicit[1]:
+            expectation.append(f"1: {thing}")
 
         unit_under_test = stylist.fortran.MissingImplicit('none')
         issues = unit_under_test.examine(source)
@@ -208,15 +210,24 @@ class TestMissingImplicit(object):
         '''
         # pylint: disable=no-self-use
         procedure = '\n'.join([subprogram_implicit[0],
-                               second_subprogram_implicit[0]])
+                               second_subprogram_implicit[0]]).strip()
         text = containing_program_unit[0].format(procedure=procedure)
         reader = SourceStringReader(text)
         source = FortranSource(reader)
 
+        insert_line = containing_program_unit[0].count('\n', 0, containing_program_unit[0].find('{procedure}')) + 1
+        first_len = subprogram_implicit[0].count('\n')
+        if first_len > 0:
+            first_len +=1
+        second_len = second_subprogram_implicit[0].count('\n') + 1
+
         expectation = []
-        expectation.extend(containing_program_unit[1])
-        expectation.extend(subprogram_implicit[1])
-        expectation.extend(second_subprogram_implicit[1])
+        for thing in containing_program_unit[1]:
+            expectation.append(f"1: {thing}")
+        for thing in subprogram_implicit[1]:
+            expectation.append(f"{insert_line}: {thing}")
+        for thing in second_subprogram_implicit[1]:
+            expectation.append(f"{insert_line + first_len}: {thing}")
 
         unit_under_test = stylist.fortran.MissingImplicit('none')
         issues = unit_under_test.examine(source)

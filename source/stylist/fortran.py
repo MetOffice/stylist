@@ -167,7 +167,7 @@ class MissingImplicit(FortranRule):
                 description = "{thing} '{name}' is missing " \
                               + "an implicit statement"
                 description = description.format(thing=nature, name=name)
-                issues.append(Issue(description))
+                issues.append(Issue(description, line=scope_statement.item.span[0]))
         return issues
 
 
@@ -193,7 +193,8 @@ class MissingOnly(FortranRule):
             if str(module).lower() not in self._ignore:
                 if onlies is None:
                     description = 'Usage of "{module}" without "only" clause.'
-                    issues.append(Issue(description.format(module=module)))
+                    issues.append(Issue(description.format(module=module),
+                                        line=statement.item.span[0]))
 
         return issues
 
@@ -257,7 +258,8 @@ class MissingPointerInit(FortranRule):
                             # Is return variable
                             return_variable = str(suffix.items[0])
 
-            problem = 'Declaration of pointer "{0}" without initialisation.'
+            problem = '{line}: Declaration of pointer ' \
+                      '"{name}" without initialisation.'
 
             attributes = candidate.items[1]
             if attributes is None:
@@ -277,13 +279,19 @@ class MissingPointerInit(FortranRule):
                             continue  # Return variables cannot be initialised.
                         init = variable.items[3]
                         if init is None:
-                            issues.append(Issue(problem.format(name)))
+                            line_number = candidate.item.span[0]
+                            message = problem.format(line=line_number,
+                                                     name=name)
+                            issues.append(Issue(message))
                     elif isinstance(candidate,  # Is procedure
                                     (Fortran2003.Proc_Component_Def_Stmt,
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
                         if isinstance(variable, Fortran2003.Name):
-                            issues.append(Issue(problem.format(name)))
+                            line_number=candidate.item.span[0]
+                            message = problem.format(line=line_number,
+                                                     name=name)
+                            issues.append(Issue(message))
                     else:
                         message \
                             = f"Unexpected source element: {repr(statement)}"

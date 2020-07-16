@@ -118,24 +118,34 @@ end {prog_unit} test
 '''
 
         expectation: List[str] = []
-        message = 'Declaration of pointer "{0}" without initialisation.'
+        message = '{line}: Declaration of pointer ' \
+                  '"{name}" without initialisation.'
         if type_pointer != 'nullpointer':
             suffix = self._DECL_MAP[type_pointer].partition(' ')[0]
             expectation.extend([
-                message.format(f'other_type_proc_pointer_{suffix}'),
-                message.format(f'type_proc_pointer_{suffix}')
+                message.format(line=9,
+                               name=f'other_type_proc_pointer_{suffix}'),
+                message.format(line=9,
+                               name=f'type_proc_pointer_{suffix}')
             ])
         if type_pointer == 'pointer':
-            expectation.extend([message.format('second_type_bare'),
-                                message.format('type_bare')])
+            expectation.extend([message.format(line=7,
+                                               name='second_type_bare'),
+                                message.format(line=7,
+                                               name='type_bare')])
         if proc_pointer == 'pointer':
-            expectation.extend([message.format('proc_bare'),
-                                message.format('proc_proc_bare'),
-                                message.format('proc_var_bare')])
+            expectation.extend([message.format(line=27,
+                                               name='proc_bare'),
+                                message.format(line=28,
+                                               name='proc_proc_bare'),
+                                message.format(line=29,
+                                               name='proc_var_bare')])
         if unit_pointer == 'pointer':
-            expectation.extend([message.format('unit_bare'),
-                                message.format('unit_proc_bare')])
-        expectation.sort()
+            expectation.extend([message.format(line=12,
+                                               name='unit_bare'),
+                                message.format(line=13,
+                                               name='unit_proc_bare')])
+        expectation.sort(key=lambda x:(int(x.split(':', 1)[0]), x.split(':', 1)))
 
         text = template.format(
             prog_unit=prog_unit,
@@ -151,4 +161,7 @@ end {prog_unit} test
         unit_under_test = stylist.fortran.MissingPointerInit()
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
+        issue_descriptions.sort(key=lambda x:(int(x.split(':', 1)[0]), x.split(':', 1)))
+        print(issue_descriptions)
+        print(expectation)
         assert issue_descriptions == expectation
