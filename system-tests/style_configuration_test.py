@@ -54,7 +54,7 @@ class TestSystem(object):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
         assert process.returncode == expected_rc
-        assert process.stdout.decode('utf-8').strip() \
-            == ''.join(expected_output).strip()
         assert process.stderr.decode('utf-8').strip() \
             == ''.join(expected_error).strip()
+        assert process.stdout.decode('utf-8').strip() \
+            == ''.join(expected_output).strip()

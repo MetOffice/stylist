@@ -259,8 +259,7 @@ class MissingPointerInit(FortranRule):
                             # Is return variable
                             return_variable = str(suffix.items[0])
 
-            problem = '{line}: Declaration of pointer ' \
-                      '"{name}" without initialisation.'
+            problem = 'Declaration of pointer "{name}" without initialisation.'
 
             attributes = candidate.items[1]
             if attributes is None:
@@ -280,23 +279,21 @@ class MissingPointerInit(FortranRule):
                             continue  # Return variables cannot be initialised.
                         init = variable.items[3]
                         if init is None:
+                            message = problem.format(name=name)
                             line_number = candidate.item.span[0]
-                            message = problem.format(line=line_number,
-                                                     name=name)
-                            issues.append(Issue(message))
+                            issues.append(Issue(message, line=line_number))
                     elif isinstance(candidate,  # Is procedure
                                     (Fortran2003.Proc_Component_Def_Stmt,
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
                         if isinstance(variable, Fortran2003.Name):
                             line_number = candidate.item.span[0]
-                            message = problem.format(line=line_number,
-                                                     name=name)
-                            issues.append(Issue(message))
+                            message = problem.format(name=name)
+                            issues.append(Issue(message, line=line_number))
                     else:
                         message \
-                            = f"Unexpected source element: {repr(statement)}"
+                            = f"Unexpected source element: {repr(candidate)}"
                         raise Exception(message)
 
-        issues.sort()
+        issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues

@@ -17,7 +17,8 @@ from pytest import fixture  # type: ignore
 class TestFortranRules(object):
     @fixture(scope='class', params=['bad_character',
                                     'missing_implicit',
-                                    'missing_only'])
+                                    'missing_only',
+                                    'missing_pointer_init'])
     def rule(self, request):
         return request.param
 
@@ -43,9 +44,9 @@ class TestFortranRules(object):
         process = subprocess.run(command,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-        print(process.stdout)
+
         assert process.returncode == 1
-        assert process.stdout.decode('utf-8').strip() \
-            == ''.join(expected_output).strip()
         assert process.stderr.decode('utf-8').strip() \
             == ''.join(expected_error).strip()
+        assert process.stdout.decode('utf-8').strip() \
+            == ''.join(expected_output).strip()
