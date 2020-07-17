@@ -2,11 +2,11 @@ stdout
 Considering $$/missing_pointer_init.f90
 Found 8 issues
 stderr
-$$/missing_pointer_init.f90: 3: Declaration of pointer "common_bar" without initialisation.
-$$/missing_pointer_init.f90: 4: Declaration of pointer "common_proc" without initialisation.
-$$/missing_pointer_init.f90: 7: Declaration of pointer "foo" without initialisation.
-$$/missing_pointer_init.f90: 14: Declaration of pointer "what_is_foo" without initialisation.
-$$/missing_pointer_init.f90: 47: Declaration of pointer "common_bar" without initialisation.
-$$/missing_pointer_init.f90: 48: Declaration of pointer "common_proc" without initialisation.
-$$/missing_pointer_init.f90: 51: Declaration of pointer "foo" without initialisation.
-$$/missing_pointer_init.f90: 58: Declaration of pointer "what_is_foo" without initialisation.
+$$/missing_pointer_init.f90: 5: Declaration of pointer "common_bar" without initialisation.
+$$/missing_pointer_init.f90: 6: Declaration of pointer "common_proc" without initialisation.
+$$/missing_pointer_init.f90: 9: Declaration of pointer "foo" without initialisation.
+$$/missing_pointer_init.f90: 17: Declaration of pointer "what_is_foo" without initialisation.
+$$/missing_pointer_init.f90: 56: Declaration of pointer "common_bar" without initialisation.
+$$/missing_pointer_init.f90: 57: Declaration of pointer "common_proc" without initialisation.
+$$/missing_pointer_init.f90: 60: Declaration of pointer "foo" without initialisation.
+$$/missing_pointer_init.f90: 68: Declaration of pointer "what_is_foo" without initialisation.
