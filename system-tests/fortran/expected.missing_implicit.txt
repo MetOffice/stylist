@@ -2,5 +2,5 @@ stdout
 Considering $$/missing_implicit.f90
 Found 2 issues
 stderr
-$$/missing_implicit.f90: Module 'stuff_mod' is missing an implicit statement
-$$/missing_implicit.f90: Program 'missing_implicit' is missing an implicit statement
+$$/missing_implicit.f90: 1: Module 'stuff_mod' is missing an implicit statement
+$$/missing_implicit.f90: 10: Program 'missing_implicit' is missing an implicit statement
