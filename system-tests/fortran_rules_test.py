@@ -9,7 +9,6 @@ System test of Fortran rules.
 """
 from pathlib import Path
 import subprocess
-from typing import List
 
 from pytest import fixture  # type: ignore
 
