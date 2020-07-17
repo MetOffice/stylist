@@ -18,16 +18,16 @@ from stylist.source import FortranSource
 
 
 class FortranRule(Rule, metaclass=ABCMeta):
-    '''
+    """
     Parent for style rules pertaining to Fortran source.
-    '''
+    """
     # pylint: disable=too-few-public-methods, abstract-method
     def examine(self, subject: FortranSource) -> List[Issue]:
         issues = super(FortranRule, self).examine(subject)
 
         if not isinstance(subject, FortranSource):
-            description = '"{0}" passed to a Fortran rule'
-            raise Exception(description.format(subject.get_language()))
+            description = 'None Fortran source passed to a Fortran rule'
+            raise Exception(description)
 
         if not subject.get_tree():
             description = 'Unable to perform {} as source didn\'t parse: {}'

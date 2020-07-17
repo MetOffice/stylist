@@ -52,6 +52,18 @@ class Style(object, metaclass=ABCMeta):
         return issues
 
 
+def _all_subclasses(cls):
+    children = set()
+    to_examine = [cls]
+    while len(to_examine) > 0:
+        this_class = to_examine.pop()
+        for child in this_class.__subclasses__():
+            if child not in children:
+                to_examine.append(child)
+                children.add(child)
+    return children
+
+
 def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
     configuration = configparser.ConfigParser()
     try:
@@ -79,7 +91,7 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
     #       worked out how yet.
     #
     potential_rules: Dict[str, Type[stylist.rule.Rule]] \
-        = {cls.__name__: cls for cls in stylist.rule.Rule.__subclasses__()}
+        = {cls.__name__: cls for cls in _all_subclasses(stylist.rule.Rule)}
 
     rules: List[stylist.rule.Rule] = []
     rule_string = configuration['style.' + style_name]['rules']

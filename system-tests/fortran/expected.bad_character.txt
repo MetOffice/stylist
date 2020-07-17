@@ -1,0 +1,5 @@
+stdout
+Considering $$/bad_character.f90
+Found 1 issue
+stderr
+$$/bad_character.f90: 5: Found character '\t' not in Fortran character set
