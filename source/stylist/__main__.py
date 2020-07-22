@@ -141,7 +141,6 @@ def process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     issues: List[Issue] = []
     while candidates:
         filename = candidates.pop(0).strip()
-        print(f"Considering {filename}")
         if os.path.isdir(filename):
             for leaf in os.listdir(filename):
                 leaf_filename = os.path.join(filename, leaf)

@@ -1,8 +1,4 @@
 stdout
-Considering $$/bad_character.f90
-Considering $$/missing_implicit.f90
-Considering $$/missing_only.f90
-Considering $$/missing_pointer_init.f90
 Found 13 issues
 stderr
 $$/bad_character.f90: 5: Found character '\t' not in Fortran character set

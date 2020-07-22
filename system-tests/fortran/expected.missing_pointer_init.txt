@@ -1,5 +1,4 @@
 stdout
-Considering $$/missing_pointer_init.f90
 Found 8 issues
 stderr
 $$/missing_pointer_init.f90: 5: Declaration of pointer "common_bar" without initialisation.

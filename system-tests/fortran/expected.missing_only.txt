@@ -1,5 +1,4 @@
 stdout
-Considering $$/missing_only.f90
 Found 2 issues
 stderr
 $$/missing_only.f90: 3: Usage of "iso_fortran_env" without "only" clause.

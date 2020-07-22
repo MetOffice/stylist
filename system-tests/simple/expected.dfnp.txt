@@ -1,4 +1,2 @@
 stdout
-Considering $$/nice.txt
-Considering $$/fluffy.txt
 stderr

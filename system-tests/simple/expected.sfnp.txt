@@ -1,4 +1,3 @@
 stdout
-Considering $$/nice.txt
 stderr
 
