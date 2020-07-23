@@ -7,7 +7,6 @@
 '''
 Manages source code in various flavours.
 '''
-
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
@@ -396,7 +395,7 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
-class MetaPlaintText(SourceTree.__class__):
+class MetaPlaintText(ABCMeta):
     def __str__(self):
         return "plain text"
 

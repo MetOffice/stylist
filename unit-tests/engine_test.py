@@ -7,7 +7,6 @@
 '''
 Ensures the 'engine' module functions as expected.
 '''
-
 import tempfile
 
 import stylist.engine

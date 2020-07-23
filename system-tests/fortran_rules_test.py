@@ -9,6 +9,7 @@ System test of Fortran rules.
 """
 from pathlib import Path
 import subprocess
+from typing import List
 
 from pytest import fixture  # type: ignore
 
@@ -25,8 +26,8 @@ class TestFortranRules(object):
 
     @staticmethod
     def _get_expected(test_dir: Path, name: str):
-        expected_output = []
-        expected_error = []
+        expected_output: List[str] = []
+        expected_error: List[str] = []
         buffer = expected_output
         expected_file = test_dir / f'expected.{name}.txt'
         for line in expected_file.read_text().splitlines(keepends=True):

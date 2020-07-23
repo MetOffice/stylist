@@ -9,7 +9,7 @@ Test of the rule for missing pointer initialisation.
 """
 from typing import List
 
-import pytest
+import pytest  # type: ignore
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 

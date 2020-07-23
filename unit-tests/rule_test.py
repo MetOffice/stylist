@@ -7,10 +7,10 @@
 '''
 Tests of the generic rules.
 '''
+import pytest  # type: ignore
 
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader
-import pytest
 
 
 _NO_TWS = '''

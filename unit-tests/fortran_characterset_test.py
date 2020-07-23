@@ -8,7 +8,7 @@
 Tests of the Fortran character set rule.
 '''
 
-import pytest
+import pytest  # type: ignore
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
