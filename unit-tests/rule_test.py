@@ -10,7 +10,7 @@ Tests of the generic rules.
 import pytest  # type: ignore
 
 import stylist.rule
-from stylist.source import FortranSource, SourceStringReader
+from stylist.source import SourceStringReader
 
 
 _NO_TWS = '''
@@ -84,8 +84,7 @@ class TestTrailingWhitespace(object):
         """
         unit_under_test = stylist.rule.TrailingWhitespace()
         reader = SourceStringReader(example_source[0])
-        source = FortranSource(reader)
-        issues = unit_under_test.examine(source)
+        issues = unit_under_test.examine(reader)
         assert (
             [str(issue) for issue in issues]
             == [str(eln) + ': Found trailing white space'

@@ -8,7 +8,7 @@
 Rules relating to Fortran source.
 """
 from abc import ABCMeta, abstractmethod
-from typing import List, Optional
+from typing import Dict, List, Optional, Type
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 
@@ -134,10 +134,11 @@ class MissingImplicit(FortranRule):
         assert default.lower() in ('none', 'private', 'public')
         self._default = default.lower()
 
-    _NATURE_MAP = {Fortran2003.Program_Stmt: 'Program',
-                   Fortran2003.Module_Stmt: 'Module',
-                   Fortran2003.Subroutine_Stmt: 'Subroutine',
-                   Fortran2003.Function_Stmt: 'Function'}
+    _NATURE_MAP: Dict[Type[Fortran2003.StmtBase], str] \
+        = {Fortran2003.Program_Stmt: 'Program',
+           Fortran2003.Module_Stmt: 'Module',
+           Fortran2003.Subroutine_Stmt: 'Subroutine',
+           Fortran2003.Function_Stmt: 'Function'}
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -149,6 +150,7 @@ class MissingImplicit(FortranRule):
         scope_units.extend(subject.path(['Module',
                                          'Module_Subprogram_Part',
                                          'Module_Subprogram']))
+        scope: Fortran2003.Block
         for scope in scope_units:
             scope_statement = subject.get_first_statement(root=scope)
 
@@ -216,7 +218,7 @@ class MissingPointerInit(FortranRule):
     def examine_fortran(self, subject: FortranSource):
         issues: List[Issue] = []
 
-        candidates: List[Fortran2003.StmtBase] = []
+        candidates: List[Fortran2003.Base] = []
         # Component variables
         candidates.extend(
             subject.find_all(Fortran2003.Data_Component_Def_Stmt))

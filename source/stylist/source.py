@@ -10,12 +10,14 @@ Manages source code in various flavours.
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
-from typing import Generator, IO, Iterable, List, Type, Union
+from typing import Generator, IO, Iterable, List, Optional, Type, Union
 
 import fparser.common.readfortran as readfortran  # type: ignore
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 from fparser.two.parser import ParserFactory  # type:ignore
 from fparser.two.utils import FparserException  # type: ignore
+
+from stylist import StylistException
 
 
 class SourceText(object, metaclass=ABCMeta):
@@ -164,7 +166,7 @@ class SourceTree(object, metaclass=ABCMeta):
 
         self._text = text
         self._tree = None
-        self._tree_error: Union[str, None] = 'Not parsed yet'
+        self._tree_error: Optional[str] = 'Not parsed yet'
 
     @abstractmethod
     def get_tree(self):
@@ -174,7 +176,7 @@ class SourceTree(object, metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_tree_error(self) -> Union[str, None]:
+    def get_tree_error(self) -> Optional[str]:
         """
         Gets any errors raised while building the parse tree.
         """
@@ -196,26 +198,30 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
     """
     Holds a Fortran source file as both a text block and parse tree.
     """
-    def get_tree(self) -> Fortran2003.Program_Unit:
+    def get_tree(self) -> Optional[Fortran2003.Program]:
         if not self._tree:
             # We don't use the tree directly. Instead we let all the decorators
             # have a go first.
             reader = readfortran.FortranStringReader(self._text.get_text(),
                                                      ignore_comments=False)
-            fortran_parser = ParserFactory().create(std='f2008')
+            # Pycharm complains about a type mismatch at this point but MyPy
+            # doesn't.
+            #
+            fortran_parser: Type[Fortran2003.Program] \
+                = ParserFactory().create(std='f2008')
             try:
-                self._tree: Fortran2003.Program_Unit = fortran_parser(reader)
+                self._tree: Fortran2003.Program = fortran_parser(reader)
                 self._tree_error = None
             except FparserException as ex:
                 self._tree = None
                 self._tree_error = str(ex)
         return self._tree
 
-    def get_tree_error(self) -> Union[str, None]:
+    def get_tree_error(self) -> Optional[str]:
         return self._tree_error
 
     def get_first_statement(self,
-                            root: Fortran2003.Block = None) \
+                            root: Optional[Fortran2003.Block] = None) \
             -> Fortran2003.StmtBase:
         """
         Gets the first "statement" part of the syntax tree or part thereof.
@@ -241,18 +247,18 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
             else:
                 message = 'Unexpected candidate type: {0}'
                 raise Exception(message.format(candidate.__class__.__name__))
-        return None
+        raise StylistException("Block without any statements.")
 
     def path(self,
              path: Union[Iterable, str],
-             root: Fortran2003.Block = None) \
+             root: Optional[Fortran2003.Block] = None) \
             -> List[Fortran2003.Base]:
         """
         Returns the tree nodes described by the given path.
 
         @todo This functionality might be provided by fparser at some point
 
-        @param path The path may beeither a list of node name strings or a '/'
+        @param path The path may be either a list of node name strings or a '/'
                     delimited string of node names.
         @param root Optionally specify a subtree to use.
         @return List of tree nodes or empty list.
@@ -266,7 +272,11 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         if root:
             next_candidates = root
         else:
-            next_candidates = list(self.get_tree().content)
+            tree = self.get_tree()
+            if tree is None:
+                return []
+            else:
+                next_candidates = list(tree.content)
 
         while path:
             node_name = path.pop(0)
@@ -320,7 +330,11 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         if root:
             candidates = [root]
         else:
-            candidates = list(self.get_tree().content)
+            tree = self.get_tree()
+            if tree is None:
+                return None
+            else:
+                candidates = list(tree.content)
 
         while candidates:
             candidate = candidates.pop(0)
@@ -361,6 +375,9 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         Dumps a textual representation of the tree to standard out.
         Intended for debug use.
         """
+        # Argument "children" confuses Pycharm as it does not appear as
+        # iterable even though it is. MyPy is not bothered.
+        #
         for child in children:
             print(' ' * indent + child.__class__.__name__)
             if isinstance(child, Fortran2003.BlockBase):
@@ -381,7 +398,7 @@ class CSource(SourceTree, metaclass=MetaCSource):
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
-    def get_tree_error(self) -> Union[str, None]:
+    def get_tree_error(self) -> Optional[str]:
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
@@ -398,7 +415,7 @@ class PlainText(SourceTree, metaclass=MetaPlainText):
         for line in self.get_text().splitlines():
             yield line
 
-    def get_tree_error(self) -> Union[str, None]:
+    def get_tree_error(self) -> Optional[str]:
         return None
 
 

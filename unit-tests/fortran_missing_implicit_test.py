@@ -7,34 +7,9 @@
 """
 Tests of the rule for missing implicit statements.
 """
-import fparser  # type: ignore
 import pytest  # type: ignore
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
-
-
-@pytest.fixture
-def simple_source():
-    """
-    Parameter fixture giving a simple Fortran source example.
-    """
-    source = '''
-            program fred
-                use iso_fortran_env, only : output_unit
-                implicit none
-                call greeting()
-                call farwell()
-            contains
-                subroutine greeting()
-                write(output_unit,'("Hello world")')
-                end subroutine greeting
-                subroutine farewell()
-                write(output_unit, '("Good bye")')
-                end subroutine farewell
-            end program fred
-            '''
-    reader = fparser.common.readfortran.FortranStringReader(source)
-    return fparser.two.Fortran2003.Program(reader)
 
 
 @pytest.fixture(scope='module',
