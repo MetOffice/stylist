@@ -101,6 +101,7 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
         rule_name, _, rule_arguments_string = rule_description.partition('(')
         rule_name = rule_name.strip()
         rule_arguments_string, _, _ = rule_arguments_string.partition(')')
+        rule_arguments: List[str] = []
         if rule_arguments_string.strip():
             rule_arguments = [thing.strip()
                               for thing in rule_arguments_string.split(',')]

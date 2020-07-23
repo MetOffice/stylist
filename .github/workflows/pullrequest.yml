@@ -1,4 +1,4 @@
-name: Python package
+name: Pull Request Validation
 
 on:
   push:
@@ -18,12 +18,12 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install
+    - name: Prepare environment
       run: |
         python3 -m pip install --upgrade pip
         pip install -e .
@@ -31,6 +31,10 @@ jobs:
       run: |
         pip install -e .[dev]
         flake8 . --count --show-source --statistics
+    - name: Check with MyPy
+      run: |
+        pip install .[dev]
+        mypy source unit-tests system-tests setup.py
     - name: Test with pytest
       run: |
         pip install .[test]
