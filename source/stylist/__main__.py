@@ -7,7 +7,6 @@
 """
 Tool for checking code style.
 """
-
 import argparse
 from io import StringIO
 import logging
@@ -36,13 +35,13 @@ def parse_cli() -> argparse.Namespace:
     max_key_length = max(len(key) for key in _PREPROCESSOR_MAP.keys())
     preproc = [key.ljust(max_key_length) + ' - ' + str(proc)
                for key, proc in _PREPROCESSOR_MAP.items()]
-    epilog = '''\
+    epilog = """"\
 IDs used in specifying extension pipelines:
   Parsers:
     {parsers}
   Preprocessors:
     {preproc}
-    '''.format(parsers='\n    '.join(parsers),
+    """.format(parsers='\n    '.join(parsers),
                preproc='\n    '.join(preproc))
     formatter_class = argparse.RawDescriptionHelpFormatter
     cli_parser = argparse.ArgumentParser(add_help=False,

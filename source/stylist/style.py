@@ -21,7 +21,6 @@ import stylist.source
 
 
 class Style(object, metaclass=ABCMeta):
-    # pylint: disable=too-few-public-methods
     """
     Abstract parent of all style lists.
     """

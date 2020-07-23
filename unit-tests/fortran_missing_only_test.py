@@ -4,9 +4,9 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Test of the rule for missing "only" clauses.
-'''
+"""
 import pytest  # type: ignore
 
 import stylist.fortran
@@ -14,25 +14,23 @@ from stylist.source import FortranSource, SourceStringReader
 
 
 class TestMissingOnly(object):
-    '''
+    """
     Tests the checker of missing "use" clauses.
-    '''
+    """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
     def unit_type(self, request):
-        '''
+        """
         Parameter fixture giving program unit types.
-        '''
-        # pylint: disable=no-self-use
+        """
         yield request.param
 
     @pytest.fixture(scope='class',
                     params=[[], ['missing_mod']])
     def ignorance(self, request):
-        '''
+        """
         Parameter fixture giving ignore lists.
-        '''
-        # pylint: disable=no-self-use
+        """
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -43,10 +41,9 @@ class TestMissingOnly(object):
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
     def unit_usage(self, request):
-        '''
+        """
         Parameter fixture giving permutations of "use" statements.
-        '''
-        # pylint: disable=no-self-use
+        """
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -57,10 +54,9 @@ class TestMissingOnly(object):
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
     def procedure_usage(self, request):
-        '''
+        """
         Parameter fixture giving permutations of "use" statements.
-        '''
-        # pylint: disable=no-self-use
+        """
         yield request.param
 
     def test_use(self, unit_type, unit_usage, procedure_usage, ignorance):

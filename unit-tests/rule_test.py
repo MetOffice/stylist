@@ -4,9 +4,9 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Tests of the generic rules.
-'''
+"""
 import pytest  # type: ignore
 
 import stylist.rule
@@ -64,25 +64,24 @@ end module trailing_whitespace_in_unit_tests'''  # noqa: W291, W293
 
 
 class TestTrailingWhitespace(object):
-    '''
+    """
     Tests the checker of trailing whitespace.
-    '''
+    """
     @pytest.fixture(scope='class',
                     params=[(_NO_TWS, []),
                             (_SOME_TWS, [6, 9]),
                             (_PF_TWS, [5, 21])])
     def example_source(self, request):
-        # pylint: disable=no-self-use
-        '''
+        """
         Parameter fixture giving Fortran source with various
         trailing whitespace issues.
-        '''
+        """
         yield request.param
 
     def test_examples(self, example_source):
-        '''
+        """
         Ensures trailing whitespace is detected on the correct lines.
-        '''
+        """
         unit_under_test = stylist.rule.TrailingWhitespace()
         reader = SourceStringReader(example_source[0])
         source = FortranSource(reader)

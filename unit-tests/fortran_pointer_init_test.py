@@ -24,7 +24,6 @@ class TestMissingPointerInit(object):
         """
         Parameter fixture giving program unit types.
         """
-        # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -33,7 +32,6 @@ class TestMissingPointerInit(object):
         """
         Parameter fixture giving pointer type for program unit.
         """
-        # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -42,7 +40,6 @@ class TestMissingPointerInit(object):
         """
         Parameter fixture giving pointer type for program unit.
         """
-        # pylint: disable=no-self-use
         yield request.param
 
     @pytest.fixture(scope='class',
@@ -51,7 +48,6 @@ class TestMissingPointerInit(object):
         """
         Parameter fixture giving pointer type for procedure.
         """
-        # pylint: disable=no-self-use
         yield request.param
 
     _ATTR_MAP = {'': '',

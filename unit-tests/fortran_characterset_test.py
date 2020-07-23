@@ -4,10 +4,9 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Tests of the Fortran character set rule.
-'''
-
+"""
 import pytest  # type: ignore
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -74,24 +73,22 @@ _SIMPLE_FORMAT = '''
                         (_SIMPLE_STRINGS, []),
                         (_SIMPLE_FORMAT, [])])
 def simple_source(request):
-    '''
+    """
     Parameter fixture giving a simple Fortran source with various
     caracterset issues.
-    '''
-    # pylint: disable=no-self-use
+    """
     yield request.param
 
 
 class TestFortranCharacterset(object):
-    '''
+    """
     Tests the rule which ensures none Fortran characters do not appear in the
     source.
-    '''
+    """
     def test_simple(self, simple_source):
-        # pylint: disable=no-self-use
-        '''
+        """
         Ensures a given input source generates the correct issue list.
-        '''
+        """
         unit_under_test = stylist.fortran.FortranCharacterset()
         reader = SourceStringReader(simple_source[0])
         source = FortranSource(reader)

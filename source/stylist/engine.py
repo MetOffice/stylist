@@ -16,7 +16,6 @@ from stylist.style import Style
 
 
 class CheckEngine(object):
-    # pylint: disable=too-few-public-methods
     """
     Manages the checking of source files against style lists.
     """
