@@ -10,7 +10,7 @@ Ensures the 'style' module functions as expected.
 from pathlib import Path
 from textwrap import dedent
 
-import pytest
+import pytest  # type: ignore
 
 from stylist import StylistException
 import stylist.fortran

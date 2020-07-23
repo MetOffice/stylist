@@ -7,7 +7,6 @@
 """
 Classes relating to styles made up of rules.
 """
-
 from abc import ABCMeta
 import configparser
 import logging
@@ -99,12 +98,12 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
     rules: List[stylist.rule.Rule] = []
     rule_string = configuration['style.' + style_name]['rules']
     for rule_description in rule_string.split(','):
-        rule_name, _, rule_arguments = rule_description.partition('(')
+        rule_name, _, rule_arguments_string = rule_description.partition('(')
         rule_name = rule_name.strip()
-        rule_arguments, _, _ = rule_arguments.partition(')')
-        if rule_arguments.strip():
+        rule_arguments_string, _, _ = rule_arguments_string.partition(')')
+        if rule_arguments_string.strip():
             rule_arguments = [thing.strip()
-                              for thing in rule_arguments.split(',')]
+                              for thing in rule_arguments_string.split(',')]
         if rule_name not in potential_rules:
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:

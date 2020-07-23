@@ -7,8 +7,8 @@
 '''
 Test of the rule for missing "only" clauses.
 '''
+import pytest  # type: ignore
 
-import pytest
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 

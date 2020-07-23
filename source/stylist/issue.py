@@ -7,6 +7,7 @@
 """
 Issues found in the source.
 """
+from typing import Optional
 
 
 class Issue(object):
@@ -16,8 +17,8 @@ class Issue(object):
     """
     def __init__(self,
                  description: str,
-                 line: int = None,
-                 filename: str = None):
+                 line: Optional[int] = None,
+                 filename: Optional[str] = None):
         self._filename = filename
         self._line = line
         self._description = description
@@ -34,11 +35,11 @@ class Issue(object):
                              description=self._description)
 
     @property
-    def filename(self) -> str:
+    def filename(self) -> Optional[str]:
         return self._filename
 
     @property
-    def line(self) -> int:
+    def line(self) -> Optional[int]:
         return self._line
 
     @property

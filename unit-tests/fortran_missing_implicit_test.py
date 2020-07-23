@@ -7,9 +7,8 @@
 '''
 Tests of the rule for missing implicit statements.
 '''
-
-import fparser
-import pytest
+import fparser  # type: ignore
+import pytest  # type: ignore
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 

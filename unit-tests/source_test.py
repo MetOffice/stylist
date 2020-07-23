@@ -7,9 +7,8 @@
 '''
 Checks source code management classes.
 '''
-
-import fparser.two.Fortran2003
-import pytest
+import fparser.two.Fortran2003  # type: ignore
+import pytest  # type: ignore
 
 from stylist.source import CPreProcessor, CSource, \
                            FortranPreProcessor, FortranSource, \
