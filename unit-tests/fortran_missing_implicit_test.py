@@ -4,9 +4,9 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Tests of the rule for missing implicit statements.
-'''
+"""
 import fparser  # type: ignore
 import pytest  # type: ignore
 import stylist.fortran
@@ -15,10 +15,9 @@ from stylist.source import FortranSource, SourceStringReader
 
 @pytest.fixture
 def simple_source():
-    '''
+    """
     Parameter fixture giving a simple Fortran source example.
-    '''
-    # pylint: disable=no-self-use
+    """
     source = '''
             program fred
                 use iso_fortran_env, only : output_unit
@@ -76,11 +75,10 @@ def simple_source():
                          ["Subroutine 'baby_puss' is missing an "
                           + "implicit statement"])])
 def empty_program_unit_implicit(request):
-    '''
+    """
     Parameter fixture giving permutations of program unit with and without
     "implicit none".
-    '''
-    # pylint: disable=no-self-use
+    """
     yield request.param[0], request.param[1]
 
 
@@ -110,11 +108,10 @@ def empty_program_unit_implicit(request):
                          ["Module 'pebbles' is missing an "
                           + "implicit statement"])])
 def containing_program_unit(request):
-    '''
+    """
     Parameter fixture giving permutations of a program unit with or without
     an "explicit none".
-    '''
-    # pylint: disable=no-self-use
+    """
     yield request.param[0], request.param[1]
 
 
@@ -141,11 +138,10 @@ def containing_program_unit(request):
                          ["Function 'thong' is missing an "
                           + "implicit statement"])])
 def subprogram_implicit(request):
-    '''
+    """
     Parameter fixture giving permutations of a procedure with or without an
     "implicit none".
-    '''
-    # pylint: disable=no-self-use
+    """
     yield request.param[0], request.param[1]
 
 
@@ -172,23 +168,21 @@ def subprogram_implicit(request):
                          ["Function 'wibble' is missing "
                           + "an implicit statement"])])
 def second_subprogram_implicit(request):
-    '''
+    """
     Parameter fixture giving permutations of a procedure with or without
     an "implicit none".
-    '''
-    # pylint: disable=no-self-use
+    """
     yield request.param[0], request.param[1]
 
 
 class TestMissingImplicit(object):
-    '''
+    """
     Tests the checker of missing implicit statements.
-    '''
+    """
     def test_implicit(self, empty_program_unit_implicit):
-        # pylint: disable=no-self-use
-        '''
+        """
         Checks all permutations of program units.
-        '''
+        """
         reader = SourceStringReader(empty_program_unit_implicit[0])
         source = FortranSource(reader)
 
@@ -204,10 +198,9 @@ class TestMissingImplicit(object):
     def test_implicit_double(self, containing_program_unit,
                              subprogram_implicit,
                              second_subprogram_implicit):
-        '''
+        """
         Checks all the permutations of two contained procedures.
-        '''
-        # pylint: disable=no-self-use
+        """
         procedure = '\n'.join([subprogram_implicit[0],
                                second_subprogram_implicit[0]]).strip()
         text = containing_program_unit[0].format(procedure=procedure)

@@ -4,9 +4,9 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Ensures the 'engine' module functions as expected.
-'''
+"""
 import tempfile
 
 import stylist.engine
@@ -24,9 +24,9 @@ class _StyleHarness(stylist.style.Style):
 
 
 def test_all():
-    '''
+    """
     Checks the rules for each registered style see the checked program.
-    '''
+    """
     with tempfile.NamedTemporaryFile(suffix='.f90', mode='wt') as handle:
         print('module teapot\nend module teapot\n', file=handle)
         handle.seek(0)

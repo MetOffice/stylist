@@ -11,7 +11,6 @@ from typing import Optional
 
 
 class Issue(object):
-    # pylint: disable=too-few-public-methods
     """
     Holds details pertaining to an issue with the source.
     """

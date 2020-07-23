@@ -4,44 +4,42 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Manages source code in various flavours.
-'''
+"""
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
 from typing import Generator, IO, Iterable, List, Type, Union
 
 import fparser.common.readfortran as readfortran  # type: ignore
-import fparser.two.Fortran2003 as fortran2003  # type: ignore
+import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 from fparser.two.parser import ParserFactory  # type:ignore
 from fparser.two.utils import FparserException  # type: ignore
 
 
 class SourceText(object, metaclass=ABCMeta):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Handles source code at the text level. Makes use of the decorator pattern
     to perform text level preprocessing.
-    '''
+    """
     @abstractmethod
     def get_text(self) -> str:
-        '''
+        """
         Gets the source file as a string.
-        '''
+        """
         raise NotImplementedError()
 
 
 class SourceFileReader(SourceText):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Reads source from a file.
-    '''
+    """
     def __init__(self, source_file: Union[IO[str], str]):
-        '''
+        """
         Constructor.
         Accepts either a filename or file-like object.
-        '''
+        """
         if isinstance(source_file, str):
             with open(source_file, 'rt') as handle:
                 self._cache = handle.read()
@@ -53,14 +51,13 @@ class SourceFileReader(SourceText):
 
 
 class SourceStringReader(SourceText):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Reads source from a string.
-    '''
+    """
     def __init__(self, source_string: str):
-        '''
+        """
         Constructor.
-        '''
+        """
         self._source_string = source_string
 
     def get_text(self) -> str:
@@ -68,15 +65,14 @@ class SourceStringReader(SourceText):
 
 
 class TextProcessor(SourceText, metaclass=ABCMeta):
-    # pylint: disable=too-few-public-methods, abstract-method
-    '''
+    """
     Preprocessor decorators inherit from this. This is part of the decorator
     pattern.
-    '''
+    """
     def __init__(self, source: SourceText):
-        '''
+        """
         Constructs a preprocessor object which decorates a source of text.
-        '''
+        """
         self._source = source
 
 
@@ -86,8 +82,7 @@ class MetaCPreProcessor(ABCMeta):
 
 
 class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Strips out preprocessor directives.
 
     It is assumed that you want to syntax check all the Source so all
@@ -95,15 +90,15 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 
     TODO: Currently all other directives are stripped out as well. This means
           that macros used to inject source are not likely to parse.
-    '''
+    """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
 
     def get_text(self) -> str:
-        '''
+        """
         Strips preprocessor directives from the text.
-        '''
+        """
         text = self._source.get_text()
         text = self._CONDITIONAL_DIRECTIVE_PATTERN.sub(r'\1// \2', text)
         text = self._OTHER_DIRECTIVE_PATTERN.sub(r'\1// \2', text)
@@ -116,8 +111,7 @@ class MetaFortranPreProcessor(ABCMeta):
 
 
 class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Strips out preprocessor directives.
 
     It is assumed that you want to syntax check all the Source so all
@@ -125,15 +119,15 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 
     TODO: Currently all other directives are stripped out as well. This means
           that macros used to inject source are not likely to parse.
-    '''
+    """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
 
     def get_text(self) -> str:
-        '''
+        """
         Strips preprocessor directives from the text.
-        '''
+        """
         text = self._source.get_text()
         text = self._CONDITIONAL_DIRECTIVE_PATTERN.sub(r'\1! \2', text)
         text = self._OTHER_DIRECTIVE_PATTERN.sub(r'\1! \2', text)
@@ -146,25 +140,24 @@ class MetaPFUnitProcessor(ABCMeta):
 
 
 class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Strips out pFUnit directives.
-    '''
+    """
     _DIRECTIVE_PATTERN = re.compile(r'^(\s*)(@\w+.*)$', re.MULTILINE)
 
     def get_text(self) -> str:
-        '''
+        """
         Strips processor directives from the text.
-        '''
+        """
         text = self._source.get_text()
         text = self._DIRECTIVE_PATTERN.sub(r'\1! \2', text)
         return text
 
 
 class SourceTree(object, metaclass=ABCMeta):
-    '''
+    """
     Abstract parent of all actual language source files.
-    '''
+    """
     def __init__(self, text: SourceText):
         if not isinstance(text, SourceText):
             raise Exception('text argument must derive from SourceText.')
@@ -175,22 +168,22 @@ class SourceTree(object, metaclass=ABCMeta):
 
     @abstractmethod
     def get_tree(self):
-        '''
+        """
         Gets a parse-tree representation of the source file.
-        '''
+        """
         raise NotImplementedError()
 
     @abstractmethod
     def get_tree_error(self) -> Union[str, None]:
-        '''
+        """
         Gets any errors raised while building the parse tree.
-        '''
+        """
         raise NotImplementedError()
 
     def get_text(self) -> str:
-        '''
+        """
         Gets the original source text.
-        '''
+        """
         return self._text.get_text()
 
 
@@ -200,10 +193,10 @@ class MetaFortranSource(ABCMeta):
 
 
 class FortranSource(SourceTree, metaclass=MetaFortranSource):
-    '''
+    """
     Holds a Fortran source file as both a text block and parse tree.
-    '''
-    def get_tree(self) -> fortran2003.Program_Unit:
+    """
+    def get_tree(self) -> Fortran2003.Program_Unit:
         if not self._tree:
             # We don't use the tree directly. Instead we let all the decorators
             # have a go first.
@@ -211,7 +204,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                                                      ignore_comments=False)
             fortran_parser = ParserFactory().create(std='f2008')
             try:
-                self._tree: fortran2003.Program_Unit = fortran_parser(reader)
+                self._tree: Fortran2003.Program_Unit = fortran_parser(reader)
                 self._tree_error = None
             except FparserException as ex:
                 self._tree = None
@@ -222,13 +215,13 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         return self._tree_error
 
     def get_first_statement(self,
-                            root: fortran2003.Block = None) \
-            -> fortran2003.StmtBase:
-        '''
+                            root: Fortran2003.Block = None) \
+            -> Fortran2003.StmtBase:
+        """
         Gets the first "statement" part of the syntax tree or part thereof.
 
         @param root Optionally specify a subtree to use.
-        '''
+        """
         if not root:
             root = self._tree.content
 
@@ -236,14 +229,14 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 
         while root:
             candidate = root.pop(0)
-            if isinstance(candidate, fortran2003.StmtBase):
+            if isinstance(candidate, Fortran2003.StmtBase):
                 return candidate
 
-            if isinstance(candidate, fortran2003.BlockBase):
+            if isinstance(candidate, Fortran2003.BlockBase):
                 root.extend(candidate.content)
-            elif isinstance(candidate, fortran2003.SequenceBase):
+            elif isinstance(candidate, Fortran2003.SequenceBase):
                 root.extend(candidate.items)
-            elif isinstance(candidate, fortran2003.Comment):
+            elif isinstance(candidate, Fortran2003.Comment):
                 pass
             else:
                 message = 'Unexpected candidate type: {0}'
@@ -252,10 +245,9 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 
     def path(self,
              path: Union[Iterable, str],
-             root: fortran2003.Block = None) \
-            -> List[fortran2003.Base]:
-        # pylint: disable=too-many-branches
-        '''
+             root: Fortran2003.Block = None) \
+            -> List[Fortran2003.Base]:
+        """
         Returns the tree nodes described by the given path.
 
         @todo This functionality might be provided by fparser at some point
@@ -264,13 +256,13 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                     delimited string of node names.
         @param root Optionally specify a subtree to use.
         @return List of tree nodes or empty list.
-        '''
+        """
         if isinstance(path, str):
             path = path.split('/')
         else:
             path = list(path)
 
-        found: List[fortran2003.Base] = []
+        found: List[Fortran2003.Base] = []
         if root:
             next_candidates = root
         else:
@@ -278,8 +270,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 
         while path:
             node_name = path.pop(0)
-            # pylint: disable=eval-used
-            node_class = eval('fortran2003.' + node_name)
+            node_class = eval('Fortran2003.' + node_name)
 
             candidates = next_candidates
             next_candidates = []
@@ -289,7 +280,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                 node_subclasses = node_class.subclass_names
                 # Only allow comments to be considered if we are looking for
                 # a comment.
-                if not isinstance(node_class, fortran2003.Comment):
+                if not isinstance(node_class, Fortran2003.Comment):
                     if 'Comment' in node_subclasses:
                         node_subclasses.remove('Comment')
 
@@ -298,16 +289,16 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                         found.append(candidate)
 
                     if isinstance(candidate,
-                                  fortran2003.BlockBase):
+                                  Fortran2003.BlockBase):
                         next_candidates.extend(candidate.content)
                     elif isinstance(candidate,
-                                    fortran2003.SequenceBase):
+                                    Fortran2003.SequenceBase):
                         next_candidates.extend(candidate.items)
                     elif isinstance(candidate,
-                                    fortran2003.StmtBase):
+                                    Fortran2003.StmtBase):
                         pass
                     elif isinstance(candidate,
-                                    fortran2003.Comment):
+                                    Fortran2003.Comment):
                         pass
                     else:
                         message = 'Unexpected candidate type: {0}'
@@ -315,17 +306,17 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         return found
 
     def find_all(self,
-                 find_node: Type[fortran2003.Base],
-                 root: fortran2003.Base = None) \
-            -> Generator[fortran2003.Base, None, None]:
-        '''
+                 find_node: Type[Fortran2003.Base],
+                 root: Fortran2003.Base = None) \
+            -> Generator[Fortran2003.Base, None, None]:
+        """
         Returns a generator which loops over all instances if the specified
         parse element below the root.
 
         The search descends the tree but that descent is terminated by a match.
 
         @todo This functionality might be provided by fparser at some point
-        '''
+        """
         if root:
             candidates = [root]
         else:
@@ -336,21 +327,21 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
             if self._ast_match(candidate, find_node):
                 yield candidate
             else:  # If we found a thing we don't descend into it
-                if isinstance(candidate, fortran2003.BlockBase):
+                if isinstance(candidate, Fortran2003.BlockBase):
                     candidates.extend(candidate.content)
                 elif isinstance(candidate,
-                                fortran2003.SequenceBase):
+                                Fortran2003.SequenceBase):
                     candidates.extend(candidate.items)
                 else:
                     pass
 
     @staticmethod
-    def _ast_match(candidate: Type[fortran2003.Base],
-                   sought_class: Type[fortran2003.Base]) \
+    def _ast_match(candidate: Type[Fortran2003.Base],
+                   sought_class: Type[Fortran2003.Base]) \
             -> bool:
-        '''
+        """
         Determines whether a node is a given type or a child thereof.
-        '''
+        """
         if candidate.__class__.__name__ == sought_class.__name__:
             return True
 
@@ -358,24 +349,23 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         for consideration in considering:
             if candidate.__class__.__name__ == consideration.__name__:
                 return True
-            # pylint: disable=eval-used
-            considering.extend([eval('fortran2003.' + name)
+            considering.extend([eval('Fortran2003.' + name)
                                 for name in consideration.subclass_names])
 
         return False
 
     @staticmethod
-    def print_tree(children: fortran2003.Base,
+    def print_tree(children: Fortran2003.Base,
                    indent: int = 0) -> None:
-        '''
+        """
         Dumps a textual representation of the tree to standard out.
         Intended for debug use.
-        '''
+        """
         for child in children:
             print(' ' * indent + child.__class__.__name__)
-            if isinstance(child, fortran2003.BlockBase):
+            if isinstance(child, Fortran2003.BlockBase):
                 FortranSource.print_tree(child.content, indent+1)
-            elif isinstance(child, fortran2003.SequenceBase):
+            elif isinstance(child, Fortran2003.SequenceBase):
                 FortranSource.print_tree(child.items, indent+1)
 
 
@@ -385,9 +375,9 @@ class MetaCSource(ABCMeta):
 
 
 class CSource(SourceTree, metaclass=MetaCSource):
-    '''
+    """
     Holds a C/C++ source file as both a text block and parse tree.
-    '''
+    """
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
@@ -413,22 +403,21 @@ class PlainText(SourceTree, metaclass=MetaPlaintText):
 
 
 class _SourceChain(object):
-    # pylint: disable=too-few-public-methods
-    '''
+    """
     Holds the chain of objects needed to understand a particular file
     extension.
-    '''
+    """
     def __init__(self,
                  extension: str,
                  parser: Type[SourceTree],
                  *preprocessors: Type[TextProcessor]):
-        '''
+        """
         Creates a SourceChain object from file extension and source objects.
 
         @param extension File extension which identifies this chain.
         @param parser Underlying language parser.
         @param preprocessors Any preprocessors to apply before parsing.
-        '''
+        """
         if extension[0] == '.':
             extension = extension[1:]
         self.extension = extension
@@ -447,10 +436,10 @@ class _SourceChain(object):
 
 
 class SourceFactory(object):
-    '''
+    """
     Manages the handling of source file. Knows what chains of objects are
     needed to each file extension.
-    '''
+    """
     # It is hard to lay down hard and fast rules about what should go in the
     # _extension_map list. Languages standards do not generally specify an
     # extension since it is an OS level concept.
@@ -493,14 +482,14 @@ class SourceFactory(object):
                       extension: str,
                       source: Type[SourceTree],
                       *preprocessors: Type[TextProcessor]) -> None:
-        '''
+        """
         Adds a mapping between source file extension and source handling
         classes.
 
         @param extension File extension which identifies this chain.
         @param source Underlying language parser.
         @param preprocessors Any preprocessors to apply before parsing.
-        '''
+        """
         if extension in cls._extension_map:
             raise Exception('Extension "{}" already mapped to a handler'
                             .format(extension))
@@ -511,19 +500,19 @@ class SourceFactory(object):
 
     @classmethod
     def get_extensions(cls) -> Iterable[str]:
-        '''
+        """
         Gets the list of file extensions recognised by the read_file() method.
-        '''
+        """
         return cls._extension_map.keys()
 
     @classmethod
     def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
-        '''
+        """
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
         not work on "files" which do not have a filename.
-        '''
+        """
         if isinstance(source_file, str):
             filename = source_file
         else:

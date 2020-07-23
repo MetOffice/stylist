@@ -8,7 +8,7 @@
 Rules relating to Fortran source.
 """
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import List, Optional
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 
@@ -21,16 +21,15 @@ class FortranRule(Rule, metaclass=ABCMeta):
     """
     Parent for style rules pertaining to Fortran source.
     """
-    # pylint: disable=too-few-public-methods, abstract-method
     def examine(self, subject: FortranSource) -> List[Issue]:
         issues = super(FortranRule, self).examine(subject)
 
         if not isinstance(subject, FortranSource):
-            description = 'None Fortran source passed to a Fortran rule'
+            description = "None Fortran source passed to a Fortran rule"
             raise Exception(description)
 
         if not subject.get_tree():
-            description = 'Unable to perform {} as source didn\'t parse: {}'
+            description = "Unable to perform {} as source didn't parse: {}"
             issues.append(Issue(description.format(self.__class__.__name__,
                                                    subject.get_tree_error())))
             return issues
@@ -40,16 +39,15 @@ class FortranRule(Rule, metaclass=ABCMeta):
 
     @abstractmethod
     def examine_fortran(self, subject: FortranSource):
-        '''
+        """
         Examines the provided Fortran source code object for an issue.
 
         Returns a list of stylist.issue.Issue objects.
-        '''
+        """
         raise NotImplementedError()
 
 
 class FortranCharacterset(Rule):
-    # pylint: disable=too-few-public-methods
     """
     Scans the source for characters which are not supported by Fortran.
     """
@@ -65,7 +63,6 @@ class FortranCharacterset(Rule):
     _QUOTE = '"'
 
     def examine(self, subject: FortranSource) -> List[Issue]:
-        # pylint: disable=too-many-branches
         """
         Examines the source code for none Fortran characters.
 
@@ -115,12 +112,10 @@ class FortranCharacterset(Rule):
 
 
 class MissingImplicit(FortranRule):
-    # pylint: disable=too-few-public-methods
     """
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     """
-
     def __init__(self, default='none'):
         """
         Constructor taking a default implication.
@@ -176,14 +171,15 @@ class MissingOnly(FortranRule):
     """
     Catches cases where a "use" statement is present but has no "only" claus.
     """
-
-    def __init__(self, ignore: List[str] = []):
+    def __init__(self, ignore: Optional[List[str]] = None):
         """
         Constructs a "MissingOnly" rule object taking a list of exception
         modules which are not required to have an "only" clause.
         """
-        assert isinstance(ignore, list)
-        self._ignore = ignore
+        if ignore is None:
+            self._ignore = []
+        else:
+            self._ignore = ignore
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
