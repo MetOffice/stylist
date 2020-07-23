@@ -23,7 +23,7 @@ class TestSourceText(object):
     """
     Checks the TextSource heirarchy.
     """
-    def testSourceStringReader(self):
+    def test_source_string_reader(self):
         """
         Checks that the text can be retrieved from a string reader.
         """
@@ -32,7 +32,7 @@ class TestSourceText(object):
         unit_under_test = SourceStringReader(text)
         assert unit_under_test.get_text() == expected
 
-    def testSourceFileReaderFilename(self, tmpdir):
+    def test_source_file_reader_filename(self, tmpdir):
         """
         Checks that the text can be retrieved from a named file.
         """
@@ -43,7 +43,7 @@ class TestSourceText(object):
         unit_under_test = SourceFileReader(filename)
         assert unit_under_test.get_text() == text
 
-    def testSourceFileReaderFile(self, tmpdir):
+    def test_source_file_reader_file(self, tmpdir):
         """
         Checks that the text can be retrieved from a file object.
         """
