@@ -396,12 +396,12 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
-class MetaPlaintText(SourceTree.__class__):
+class MetaPlainText(SourceTree.__class__):
     def __str__(self):
         return "plain text"
 
 
-class PlainText(SourceTree, metaclass=MetaPlaintText):
+class PlainText(SourceTree, metaclass=MetaPlainText):
     """
     Holds a plain text file as though it were source.
     """

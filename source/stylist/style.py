@@ -65,6 +65,8 @@ def _all_subclasses(cls):
 
 
 def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
+    PREFIX = 'style.'
+
     configuration = configparser.ConfigParser()
     try:
         with rule_file.open('rt') as handle:
@@ -72,8 +74,9 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
     except configparser.MissingSectionHeaderError:
         pass  # It is not an error to have an empty configuration file.
 
-    available_styles = [section[6:] for section in configuration.sections()
-                        if section.startswith('style.')]
+    available_styles = [section[len(PREFIX):]
+                        for section in configuration.sections()
+                        if section.startswith(PREFIX)]
 
     if style_name is None:
         if len(available_styles) == 1:

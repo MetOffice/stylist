@@ -26,7 +26,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
         issues = super(FortranRule, self).examine(subject)
 
         if not isinstance(subject, FortranSource):
-            description = 'None Fortran source passed to a Fortran rule'
+            description = 'Non-Fortran source passed to a Fortran rule'
             raise Exception(description)
 
         if not subject.get_tree():

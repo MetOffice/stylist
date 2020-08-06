@@ -56,7 +56,7 @@ IDs used in specifying extension pipelines:
                             type=Path,
                             default=None,
                             metavar='FILENAME',
-                            help="File holding configuration for this run.")
+                            help="File which configures the tool.")
     help = "Style to use for check. May be specified repeatedly."
     cli_parser.add_argument('-style',
                             action='append',
