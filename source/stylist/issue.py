@@ -4,16 +4,16 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Issues found in the source.
-'''
+"""
 
 
 class Issue(object):
     # pylint: disable=too-few-public-methods
-    '''
+    """
     Holds details pertaining to an issue with the source.
-    '''
+    """
     def __init__(self,
                  description: str,
                  line: int = None,
@@ -33,11 +33,20 @@ class Issue(object):
                              line=self._line,
                              description=self._description)
 
-    def __lt__(self, other):
-        return str(self) < str(other)
+    @property
+    def filename(self) -> str:
+        return self._filename
+
+    @property
+    def line(self) -> int:
+        return self._line
+
+    @property
+    def description(self) -> str:
+        return self._description
 
     def set_filename(self, filename: str) -> None:
-        '''
+        """
         Attaches a filename to this issue.
-        '''
+        """
         self._filename = filename

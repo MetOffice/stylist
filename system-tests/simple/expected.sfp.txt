@@ -1,0 +1,4 @@
+stdout
+Found 1 issue
+stderr
+$$/naughty.txt: 2: Found trailing white space

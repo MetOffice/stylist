@@ -2,7 +2,7 @@
 
 from ast import literal_eval
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # type: ignore
 
 # Get the long description from the README file
 HERE = os.path.dirname(__file__)

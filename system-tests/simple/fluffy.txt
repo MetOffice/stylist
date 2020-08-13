@@ -1,0 +1,1 @@
+Like "nice.txt" this file has no trailing space.
