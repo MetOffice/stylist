@@ -25,7 +25,8 @@ class TestFortranRules(object):
         return request.param
 
     @staticmethod
-    def _get_expected(test_dir: Path, name: str) -> Tuple[List[str], List[str]]:
+    def _get_expected(test_dir: Path,
+                      name: str) -> Tuple[List[str], List[str]]:
         expected_output: List[str] = []
         expected_error: List[str] = []
         buffer: List[str] = expected_output

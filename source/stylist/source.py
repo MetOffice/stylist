@@ -402,7 +402,7 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
-class MetaPlainText(SourceTree.__class__):
+class MetaPlainText(ABCMeta):
     def __str__(self):
         return "plain text"
 
