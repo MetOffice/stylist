@@ -8,22 +8,25 @@
 Ensures the 'engine' module functions as expected.
 """
 import tempfile
+from typing import List
 
 import stylist.engine
-import stylist.style
+from stylist.issue import Issue
+from stylist.source import SourceTree
+from stylist.style import Style
 
 
-class _StyleHarness(stylist.style.Style):
-    def __init__(self):
+class _StyleHarness(Style):
+    def __init__(self) -> None:
         super(_StyleHarness, self).__init__([])
-        self.seen = []
+        self.seen: List[SourceTree] = []
 
-    def check(self, program):
+    def check(self, program: SourceTree) -> List[Issue]:
         self.seen.append(program)
         return super(_StyleHarness, self).check(program)
 
 
-def test_all():
+def test_all() -> None:
     """
     Checks the rules for each registered style see the checked program.
     """

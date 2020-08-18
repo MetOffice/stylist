@@ -11,6 +11,10 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist import StylistException
 import stylist.fortran

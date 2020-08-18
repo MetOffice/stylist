@@ -10,7 +10,13 @@ Manages source code in various flavours.
 from abc import ABCMeta, abstractmethod
 import re
 import os.path
-from typing import Generator, IO, Iterable, List, Optional, Type, Union
+from typing import (Generator,
+                    IO,
+                    Iterable,
+                    List,
+                    Optional,
+                    Type,
+                    Union)
 
 import fparser.common.readfortran as readfortran  # type: ignore
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore

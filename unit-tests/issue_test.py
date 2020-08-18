@@ -11,7 +11,7 @@ Ensures the Issue object functions as expected.
 import stylist.issue
 
 
-def test_constructor():
+def test_constructor() -> None:
     """
     Checks the constructor works.
     """

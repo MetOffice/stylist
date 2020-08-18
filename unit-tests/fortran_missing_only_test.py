@@ -7,7 +7,13 @@
 """
 Test of the rule for missing "only" clauses.
 """
+from typing import List, Optional, Tuple
+
 import pytest  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -19,19 +25,19 @@ class TestMissingOnly(object):
     """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
-    def unit_type(self, request):
+    def unit_type(self, request: FixtureRequest) -> str:
         """
         Parameter fixture giving program unit types.
         """
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=[[], ['missing_mod']])
-    def ignorance(self, request):
+    def ignorance(self, request: FixtureRequest) -> List[str]:
         """
         Parameter fixture giving ignore lists.
         """
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=[[(None, [])],
@@ -40,11 +46,12 @@ class TestMissingOnly(object):
                             [('multi_mod', ['one', 'two'])],
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
-    def unit_usage(self, request):
+    def unit_usage(self, request: FixtureRequest) \
+            -> List[Tuple[Optional[str], List[str]]]:
         """
         Parameter fixture giving permutations of "use" statements.
         """
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=[[(None, [])],
@@ -53,19 +60,26 @@ class TestMissingOnly(object):
                             [('multi_mod', ['one', 'two'])],
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
-    def procedure_usage(self, request):
+    def procedure_usage(self, request: FixtureRequest) \
+            -> List[Tuple[Optional[str], List[str]]]:
         """
         Parameter fixture giving permutations of "use" statements.
         """
-        yield request.param
+        return request.param
 
-    def test_use(self, unit_type, unit_usage, procedure_usage, ignorance):
+    def test_use(self,
+                 unit_type: str,
+                 unit_usage: List[Tuple[Optional[str], List[str]]],
+                 procedure_usage: List[Tuple[Optional[str], List[str]]],
+                 ignorance: List[str]) -> None:
         """
         Checks that the rule reports missing "use" clauses correctly.
         """
-        def prepare(line_number: int, params):
-            usage = []
-            expectations = []
+        def prepare(line_number: int,
+                    params: List[Tuple[Optional[str], List[str]]]) \
+                -> Tuple[List[str], List[str], int]:
+            usage: List[str] = []
+            expectations: List[str] = []
             for details in params:
                 line = None
                 if details[0] is not None:
@@ -92,6 +106,7 @@ class TestMissingOnly(object):
                    end subroutine foo
                  end {type} test
                '''
+
         unit_lines, unit_expects, last_line = prepare(2, unit_usage)
         if len(unit_lines) == 0:
             last_line += 1
