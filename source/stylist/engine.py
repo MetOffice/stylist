@@ -19,7 +19,7 @@ class CheckEngine(object):
     """
     Manages the checking of source files against style lists.
     """
-    def __init__(self, styles: Sequence[Style]):
+    def __init__(self, styles: Sequence[Style]) -> None:
         """
         Constructs a CheckEngine object from list of style lists.
         """

@@ -38,7 +38,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
         return issues
 
     @abstractmethod
-    def examine_fortran(self, subject: FortranSource):
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         """
         Examines the provided Fortran source code object for an issue.
 
@@ -116,7 +116,7 @@ class MissingImplicit(FortranRule):
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     """
-    def __init__(self, default='none'):
+    def __init__(self, default='none') -> None:
         """
         Constructor taking a default implication.
 
@@ -173,7 +173,7 @@ class MissingOnly(FortranRule):
     """
     Catches cases where a "use" statement is present but has no "only" claus.
     """
-    def __init__(self, ignore: Optional[List[str]] = None):
+    def __init__(self, ignore: Optional[List[str]] = None) -> None:
         """
         Constructs a "MissingOnly" rule object taking a list of exception
         modules which are not required to have an "only" clause.
@@ -203,7 +203,7 @@ class MissingPointerInit(FortranRule):
     Catches cases where a pointer is declared without being initialised.
     """
 
-    def __init__(self, default='null()'):
+    def __init__(self, default='null()') -> None:
         """
         Constructs a MissingPointerInit rule object taking a default
         assignment.
@@ -215,7 +215,7 @@ class MissingPointerInit(FortranRule):
         """
         self._default = default
 
-    def examine_fortran(self, subject: FortranSource):
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
 
         candidates: List[Fortran2003.Base] = []

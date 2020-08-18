@@ -17,7 +17,7 @@ class Issue(object):
     def __init__(self,
                  description: str,
                  line: Optional[int] = None,
-                 filename: Optional[str] = None):
+                 filename: Optional[str] = None) -> None:
         self._filename = filename
         self._line = line
         self._description = description

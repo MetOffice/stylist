@@ -11,7 +11,7 @@ from abc import ABCMeta
 import configparser
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Set, Type
 
 from stylist import StylistException
 import stylist.fortran
@@ -24,7 +24,7 @@ class Style(object, metaclass=ABCMeta):
     """
     Abstract parent of all style lists.
     """
-    def __init__(self, rules):
+    def __init__(self, rules) -> None:
         if not isinstance(rules, list):
             rules = [rules]
         self._rules = rules
@@ -50,8 +50,11 @@ class Style(object, metaclass=ABCMeta):
         return issues
 
 
-def _all_subclasses(cls):
-    children = set()
+def _all_subclasses(cls: Any) -> Set[Type]:
+    """
+    Obtains the set of recursively all children of a class.
+    """
+    children: Set[Type] = set()
     to_examine = [cls]
     while len(to_examine) > 0:
         this_class = to_examine.pop()

@@ -37,7 +37,7 @@ class SourceFileReader(SourceText):
     """
     Reads source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], str]):
+    def __init__(self, source_file: Union[IO[str], str]) -> None:
         """
         Constructor.
         Accepts either a filename or file-like object.
@@ -56,7 +56,7 @@ class SourceStringReader(SourceText):
     """
     Reads source from a string.
     """
-    def __init__(self, source_string: str):
+    def __init__(self, source_string: str) -> None:
         """
         Constructor.
         """
@@ -71,7 +71,7 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
     Preprocessor decorators inherit from this. This is part of the decorator
     pattern.
     """
-    def __init__(self, source: SourceText):
+    def __init__(self, source: SourceText) -> None:
         """
         Constructs a preprocessor object which decorates a source of text.
         """
@@ -79,7 +79,7 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
 
 
 class MetaCPreProcessor(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return "C preprocessor"
 
 
@@ -108,7 +108,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 
 
 class MetaFortranPreProcessor(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return "Fortran preprocessor"
 
 
@@ -137,7 +137,7 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 
 
 class MetaPFUnitProcessor(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return "pFUnit preprocessor"
 
 
@@ -160,7 +160,7 @@ class SourceTree(object, metaclass=ABCMeta):
     """
     Abstract parent of all actual language source files.
     """
-    def __init__(self, text: SourceText):
+    def __init__(self, text: SourceText) -> None:
         if not isinstance(text, SourceText):
             raise Exception('text argument must derive from SourceText.')
 
@@ -190,7 +190,7 @@ class SourceTree(object, metaclass=ABCMeta):
 
 
 class MetaFortranSource(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Fortran source'
 
 
@@ -387,7 +387,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 
 
 class MetaCSource(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return "C source"
 
 
@@ -403,7 +403,7 @@ class CSource(SourceTree, metaclass=MetaCSource):
 
 
 class MetaPlainText(ABCMeta):
-    def __str__(self):
+    def __str__(self) -> str:
         return "plain text"
 
 
@@ -427,7 +427,7 @@ class _SourceChain(object):
     def __init__(self,
                  extension: str,
                  parser: Type[SourceTree],
-                 *preprocessors: Type[TextProcessor]):
+                 *preprocessors: Type[TextProcessor]) -> None:
         """
         Creates a SourceChain object from file extension and source objects.
 

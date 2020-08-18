@@ -19,6 +19,11 @@ from stylist.source import SourceText
 class Rule(object, metaclass=ABCMeta):
     """
     Abstract parent of all rules.
+
+    TODO: We currently don't specify a type for subject as it could be
+          anything representing a source text or parse tree. We probably
+          need a set of wrapper classes to form these into a useful
+          hierarchy we can then use here.
     """
     @abstractmethod
     def examine(self, subject) -> List[Issue]:
