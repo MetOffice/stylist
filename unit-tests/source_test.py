@@ -311,21 +311,18 @@ class TestSourceChain(object):
         def get_tree_error(self) -> None:
             pass
 
-
     class TextHarness(SourceText):
         pass
-
 
     class ProcessorHarness(TextProcessor):
         pass
 
-
-    @pytest.fixture(scope="module", params=[[],
-                                            [ProcessorHarness],
-                                            [ProcessorHarness,
-                                             ProcessorHarness]])
+    @pytest.fixture(scope="module",
+                    params=[[],
+                            [ProcessorHarness],
+                            [ProcessorHarness, ProcessorHarness]])
     def chain_text(self, request: FixtureRequest) \
-            -> List[Type[ProcessorHarness]]:
+            -> List[Type[TextProcessor]]:
         """
         Generates a tuple of text source classes.
         """
@@ -386,7 +383,7 @@ END MODULE test_mod"""
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected
 
-    def test_read_c_files(self, tmp_path: Path, cxx_extension:str) -> None:
+    def test_read_c_files(self, tmp_path: Path, cxx_extension: str) -> None:
         """
         Checks that read_file() can correctly identify a C source files and
         produce CSource objects from them.

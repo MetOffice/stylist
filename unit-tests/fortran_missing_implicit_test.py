@@ -181,11 +181,11 @@ class TestMissingImplicit(object):
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation
 
-    def test_implicit_double(self,
-                             containing_program_unit: Tuple[str, List[str]],
-                             subprogram_implicit: Tuple[str, List[str]],
-                             second_subprogram_implicit: Tuple[str, List[str]]) \
-            -> None:
+    def test_implicit_double(
+            self,
+            containing_program_unit: Tuple[str, List[str]],
+            subprogram_implicit: Tuple[str, List[str]],
+            second_subprogram_implicit: Tuple[str, List[str]]) -> None:
         """
         Checks all the permutations of two contained procedures.
         """

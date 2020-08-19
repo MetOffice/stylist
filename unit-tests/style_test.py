@@ -67,7 +67,7 @@ class TestStyle(object):
                             ([_RuleHarnessOne()], ['_RuleHarnessOne']),
                             ([_RuleHarnessTwo('blah'), _RuleHarnessOne()],
                              ['_RuleHarnessTwo', '_RuleHarnessOne'])])
-    def initials(self, request):
+    def initials(self, request: FixtureRequest):
         """
         Parameter fixture giving initial lists and expected lists.
         """
