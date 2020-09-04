@@ -9,7 +9,12 @@ Test of the rule for missing pointer initialisation.
 """
 from typing import List
 
-import pytest
+import pytest  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
+
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
@@ -20,39 +25,35 @@ class TestMissingPointerInit(object):
     """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
-    def prog_unit(self, request):
+    def prog_unit(self, request: FixtureRequest) -> str:
         """
         Parameter fixture giving program unit types.
         """
-        # pylint: disable=no-self-use
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def type_pointer(self, request):
+    def type_pointer(self, request: FixtureRequest) -> str:
         """
         Parameter fixture giving pointer type for program unit.
         """
-        # pylint: disable=no-self-use
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def unit_pointer(self, request):
+    def unit_pointer(self, request: FixtureRequest) -> str:
         """
         Parameter fixture giving pointer type for program unit.
         """
-        # pylint: disable=no-self-use
-        yield request.param
+        return request.param
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def proc_pointer(self, request):
+    def proc_pointer(self, request: FixtureRequest) -> str:
         """
         Parameter fixture giving pointer type for procedure.
         """
-        # pylint: disable=no-self-use
-        yield request.param
+        return request.param
 
     _ATTR_MAP = {'': '',
                  'pointer': ', pointer',
@@ -62,10 +63,10 @@ class TestMissingPointerInit(object):
                  'nullpointer': 'null => null()'}
 
     def test_pointer_init(self,
-                          prog_unit,
-                          type_pointer,
-                          unit_pointer,
-                          proc_pointer):
+                          prog_unit: str,
+                          type_pointer: str,
+                          unit_pointer: str,
+                          proc_pointer: str) -> None:
         """
         Checks that the rule reports missing pointer initialisation correctly.
         """

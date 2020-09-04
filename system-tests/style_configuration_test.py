@@ -9,9 +9,13 @@ System tests using a style from configuration.
 """
 from pathlib import Path
 import subprocess
-from typing import List
+from typing import List, Tuple
 
 from pytest import fixture  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
 
 
 class TestSystem(object):
@@ -22,10 +26,11 @@ class TestSystem(object):
                      ('simple', 'Single file, problem', ['naughty.txt'], 1),
                      ('simple', 'Dual file, mixed', ['nice.txt',
                                                      'naughty.txt'], 1)])
-    def case(self, request):
-        yield request.param
+    def case(self, request: FixtureRequest) \
+            -> Tuple[str, str, List[str], int]:
+        return request.param
 
-    def test_case(self, case):
+    def test_case(self, case: Tuple[str, str, List[str], int]):
         test_style: str = case[0]
         test_name: str = case[1]
         test_files: List[str] = case[2]
@@ -34,9 +39,9 @@ class TestSystem(object):
         test_dir = Path(__file__).parent / test_style
 
         expected_tag = ''.join([word[0].lower() for word in test_name.split()])
-        expected_output = []
-        expected_error = []
-        buffer = expected_output
+        expected_output: List[str] = []
+        expected_error: List[str] = []
+        buffer: List[str] = expected_output
         expected_file = test_dir / f'expected.{expected_tag}.txt'
         for line in expected_file.read_text().splitlines(keepends=True):
             if line == 'stdout\n':
@@ -46,10 +51,11 @@ class TestSystem(object):
             else:
                 buffer.append(line.replace('$$', str(test_dir)))
 
-        command = ['python', '-m', 'stylist',
-                   '-configuration', test_dir / 'configuration.ini',
-                   '-style', test_style]
-        command.extend([test_dir / leafname for leafname in test_files])
+        command: List[str] = ['python', '-m', 'stylist',
+                              '-configuration',
+                              str(test_dir / 'configuration.ini'),
+                              '-style', test_style]
+        command.extend([str(test_dir / leafname) for leafname in test_files])
         process = subprocess.run(command,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)

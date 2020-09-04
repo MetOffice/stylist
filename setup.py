@@ -46,7 +46,7 @@ setup(
     python_requires='>=3.6, <4',
     install_requires=['fparser > 0.0.10'],
     extras_require={
-        'dev': ['check-manifest', 'flake8'],
+        'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
     },
     entry_points={

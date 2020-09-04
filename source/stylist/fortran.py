@@ -8,7 +8,7 @@
 Rules relating to Fortran source.
 """
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import Dict, List, Optional, Type
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 
@@ -21,7 +21,6 @@ class FortranRule(Rule, metaclass=ABCMeta):
     """
     Parent for style rules pertaining to Fortran source.
     """
-    # pylint: disable=too-few-public-methods, abstract-method
     def examine(self, subject: FortranSource) -> List[Issue]:
         issues = super(FortranRule, self).examine(subject)
 
@@ -30,7 +29,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
             raise Exception(description)
 
         if not subject.get_tree():
-            description = 'Unable to perform {} as source didn\'t parse: {}'
+            description = "Unable to perform {} as source didn't parse: {}"
             issues.append(Issue(description.format(self.__class__.__name__,
                                                    subject.get_tree_error())))
             return issues
@@ -39,17 +38,16 @@ class FortranRule(Rule, metaclass=ABCMeta):
         return issues
 
     @abstractmethod
-    def examine_fortran(self, subject: FortranSource):
-        '''
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        """
         Examines the provided Fortran source code object for an issue.
 
         Returns a list of stylist.issue.Issue objects.
-        '''
+        """
         raise NotImplementedError()
 
 
 class FortranCharacterset(Rule):
-    # pylint: disable=too-few-public-methods
     """
     Scans the source for characters which are not supported by Fortran.
     """
@@ -65,7 +63,6 @@ class FortranCharacterset(Rule):
     _QUOTE = '"'
 
     def examine(self, subject: FortranSource) -> List[Issue]:
-        # pylint: disable=too-many-branches
         """
         Examines the source code for none Fortran characters.
 
@@ -115,13 +112,11 @@ class FortranCharacterset(Rule):
 
 
 class MissingImplicit(FortranRule):
-    # pylint: disable=too-few-public-methods
     """
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     """
-
-    def __init__(self, default='none'):
+    def __init__(self, default='none') -> None:
         """
         Constructor taking a default implication.
 
@@ -139,10 +134,11 @@ class MissingImplicit(FortranRule):
         assert default.lower() in ('none', 'private', 'public')
         self._default = default.lower()
 
-    _NATURE_MAP = {Fortran2003.Program_Stmt: 'Program',
-                   Fortran2003.Module_Stmt: 'Module',
-                   Fortran2003.Subroutine_Stmt: 'Subroutine',
-                   Fortran2003.Function_Stmt: 'Function'}
+    _NATURE_MAP: Dict[Type[Fortran2003.StmtBase], str] \
+        = {Fortran2003.Program_Stmt: 'Program',
+           Fortran2003.Module_Stmt: 'Module',
+           Fortran2003.Subroutine_Stmt: 'Subroutine',
+           Fortran2003.Function_Stmt: 'Function'}
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -154,6 +150,7 @@ class MissingImplicit(FortranRule):
         scope_units.extend(subject.path(['Module',
                                          'Module_Subprogram_Part',
                                          'Module_Subprogram']))
+        scope: Fortran2003.Block
         for scope in scope_units:
             scope_statement = subject.get_first_statement(root=scope)
 
@@ -176,14 +173,15 @@ class MissingOnly(FortranRule):
     """
     Catches cases where a "use" statement is present but has no "only" claus.
     """
-
-    def __init__(self, ignore: List[str] = []):
+    def __init__(self, ignore: Optional[List[str]] = None) -> None:
         """
         Constructs a "MissingOnly" rule object taking a list of exception
         modules which are not required to have an "only" clause.
         """
-        assert isinstance(ignore, list)
-        self._ignore = ignore
+        if ignore is None:
+            self._ignore = []
+        else:
+            self._ignore = ignore
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -205,7 +203,7 @@ class MissingPointerInit(FortranRule):
     Catches cases where a pointer is declared without being initialised.
     """
 
-    def __init__(self, default='null()'):
+    def __init__(self, default='null()') -> None:
         """
         Constructs a MissingPointerInit rule object taking a default
         assignment.
@@ -217,10 +215,10 @@ class MissingPointerInit(FortranRule):
         """
         self._default = default
 
-    def examine_fortran(self, subject: FortranSource):
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
 
-        candidates: List[Fortran2003.StmtBase] = []
+        candidates: List[Fortran2003.Base] = []
         # Component variables
         candidates.extend(
             subject.find_all(Fortran2003.Data_Component_Def_Stmt))

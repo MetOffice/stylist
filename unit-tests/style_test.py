@@ -10,7 +10,11 @@ Ensures the 'style' module functions as expected.
 from pathlib import Path
 from textwrap import dedent
 
-import pytest
+import pytest  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist import StylistException
 import stylist.fortran
@@ -24,7 +28,6 @@ class _RuleHarnessOne(stylist.rule.Rule):
     Completely empty but concrete implementation of a rule.
     """
 
-    # pylint: disable=too-few-public-methods
     def examine(self, subject):
         pass
 
@@ -34,7 +37,6 @@ class _RuleHarnessTwo(stylist.rule.Rule):
     Completely empty but concrete implementation of a rule. This one has a
     constructor.
     """
-    # pylint: disable=too-few-public-methods
     def __init__(self, thing):
         self.thing = thing
 
@@ -53,7 +55,6 @@ class TestStyle(object):
         pass
 
     def test_constructor_empty(self):
-        # pylint: disable=no-self-use
         """
         Checks that constructing an empty rule set works.
         """
@@ -66,15 +67,13 @@ class TestStyle(object):
                             ([_RuleHarnessOne()], ['_RuleHarnessOne']),
                             ([_RuleHarnessTwo('blah'), _RuleHarnessOne()],
                              ['_RuleHarnessTwo', '_RuleHarnessOne'])])
-    def initials(self, request):
-        # pylint: disable=no-self-use
+    def initials(self, request: FixtureRequest):
         """
         Parameter fixture giving initial lists and expected lists.
         """
         yield request.param
 
     def test_constructor(self, initials):
-        # pylint: disable=no-self-use
         """
         Checks that various permutations of rules are correctly lodged in the
         style.
@@ -83,7 +82,6 @@ class TestStyle(object):
         assert unit_under_test.list_rules() == initials[1]
 
     class _RuleHarness(stylist.rule.Rule):
-        # pylint: disable=too-few-public-methods
         def __init__(self):
             self.examined = []
 
@@ -92,7 +90,6 @@ class TestStyle(object):
             return []
 
     def test_examination(self):
-        # pylint: disable=no-self-use
         """
         Checks that all the rules in a style get a look at the program.
         """

@@ -1,3 +1,3 @@
 The first line of this file is okay.
 But this next line has trailing whitespace. 	 
-The fine line is okay though.
+The final line is okay though.

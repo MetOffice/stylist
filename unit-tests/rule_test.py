@@ -4,13 +4,19 @@
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
-'''
+"""
 Tests of the generic rules.
-'''
+"""
+from typing import List, Tuple
+
+import pytest  # type: ignore
+# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
+#       sorts out its type hinting we are stuck with it.
+#
+from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.rule
-from stylist.source import FortranSource, SourceStringReader
-import pytest
+from stylist.source import SourceStringReader
 
 
 _NO_TWS = '''
@@ -64,29 +70,28 @@ end module trailing_whitespace_in_unit_tests'''  # noqa: W291, W293
 
 
 class TestTrailingWhitespace(object):
-    '''
+    """
     Tests the checker of trailing whitespace.
-    '''
+    """
     @pytest.fixture(scope='class',
                     params=[(_NO_TWS, []),
                             (_SOME_TWS, [6, 9]),
                             (_PF_TWS, [5, 21])])
-    def example_source(self, request):
-        # pylint: disable=no-self-use
-        '''
+    def example_source(self, request: FixtureRequest) \
+            -> Tuple[str, List[int]]:
+        """
         Parameter fixture giving Fortran source with various
         trailing whitespace issues.
-        '''
-        yield request.param
+        """
+        return request.param
 
-    def test_examples(self, example_source):
-        '''
+    def test_examples(self, example_source: Tuple[str, List[int]]) -> None:
+        """
         Ensures trailing whitespace is detected on the correct lines.
-        '''
+        """
         unit_under_test = stylist.rule.TrailingWhitespace()
         reader = SourceStringReader(example_source[0])
-        source = FortranSource(reader)
-        issues = unit_under_test.examine(source)
+        issues = unit_under_test.examine(reader)
         assert (
             [str(issue) for issue in issues]
             == [str(eln) + ': Found trailing white space'
