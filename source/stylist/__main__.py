@@ -49,7 +49,7 @@ IDs used in specifying extension pipelines:
                                          epilog=epilog,
                                          formatter_class=formatter_class)
     cli_parser.add_argument('-help', '-h', '--help', action='help')
-    cli_parser.add_argument('-verbose', '-v', action="store_true",
+    cli_parser.add_argument('-verbose', action="store_true",
                             help="Produce a running commentary on progress.")
     cli_parser.add_argument('-configuration',
                             type=Path,
