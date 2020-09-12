@@ -8,7 +8,6 @@
 Ensures the 'style' module functions as expected.
 """
 from pathlib import Path
-from textwrap import dedent
 
 import pytest  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
@@ -17,6 +16,7 @@ import pytest  # type: ignore
 from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist import StylistException
+from stylist.configuration import Configuration
 import stylist.fortran
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader
@@ -103,76 +103,56 @@ class TestStyle(object):
         assert rule_two.examined == ['module foo\nend module foo\n']
 
 
-class TestReadStyle:
+class TestDetermineStyle:
     """
-    Ensures a style can be read from a configuration file.
+    Ensures a style can be read from a configuration structure.
     """
-    def test_missing_file(self, tmp_path: Path):
+    def test_none(self):
         """
-        Checks that an error is thrown when trying to read a missing file.
-        """
-        with pytest.raises(FileNotFoundError):
-            stylist.style.read_style(tmp_path/'nonsuch')
-
-    def test_none(self, tmp_path: Path):
-        """
-        Checks that an error is thrown if an attempt is made to load a style
+        Checks that an error is thrown if an attempt is made to get a style
         from configuration which contains none.
         """
-        conf_path = tmp_path/'configuration'
-        conf_path.write_text('# File contains no styles\na=42\n')
+        no_style_conf = Configuration({'': {'a': 42}})
         with pytest.raises(StylistException):
-            stylist.style.read_style(conf_path, 'wibble')
+            stylist.style.determine_style(no_style_conf, 'wibble')
 
     def test_one_of_several(self, tmp_path: Path):
         """
-        Checks that a single style can be loaded from several alternatives.
+        Checks that a single style can be extracted from several alternatives.
         """
-        conf_path = tmp_path / 'configuration'
-        conf_path.write_text(dedent("""
-                             [style.the_first]
-                             rules = _RuleHarnessOne
-
-                             [style.the_second]
-                             rules = _RuleHarnessOne, _RuleHarnessTwo(42)
-
-                             [beef]
-                             whatsits = cheesy
-
-                             [style.the_third]
-                             rules = _RuleHarnessTwo('super')
-                             """))
-        new_style = stylist.style.read_style(conf_path, 'the_second')
-        assert new_style.list_rules() == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        several_style_conf = Configuration(
+            {'style.the_first': {'rules': '_RuleHarnessOne'},
+             'style.the_second': {'rules': ['_RuleHarnessOne',
+                                            '_RuleHarnessTwo(42)']},
+             'beef': {'whatsits': 'cheesy'},
+             'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
+        new_style = stylist.style.determine_style(several_style_conf,
+                                                  'the_second')
+        assert new_style.list_rules() == ['_RuleHarnessOne',
+                                          '_RuleHarnessTwo']
 
     def test_single_style(self, tmp_path: Path):
         """
-        Checks that a single style can be loaded from a list of one.
+        Checks that a single style can be extracted from a list of one.
         """
-        conf_path = tmp_path / 'configuration'
-        conf_path.write_text((dedent("""
-                               [cheese]
-                               thingy = thangy
-
-                               [style.singular]
-                               rules = _RuleHarnessOne, _RuleHarnessTwo('blah')
-                               """)))
-        new_style = stylist.style.read_style(conf_path, 'singular')
-        assert new_style.list_rules() == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        single_style_conf = Configuration(
+            {'cheese': {'thingy': 'thangy'},
+             'style.singular': {'rules': ['_RuleHarnessOne',
+                                          "_RuleHarnessTwo('blah')"]}})
+        new_style = stylist.style.determine_style(single_style_conf,
+                                                  'singular')
+        assert new_style.list_rules() == ['_RuleHarnessOne',
+                                          '_RuleHarnessTwo']
 
     def test_default_style(self, tmp_path: Path):
         """
         Checks that the only style is loaded if none is specified.
         """
-        conf_path = tmp_path / 'configuration'
-        conf_path.write_text((dedent("""
-                               [cheese]
-                               thingy = thangy
-
-                               [style.maybe]
-                               rules = _RuleHarnessOne, _RuleHarnessTwo('bloo')
-                               """)))
-        new_style = stylist.style.read_style(conf_path)
+        single_style_conf = Configuration(
+            {'cheese': {'thingy': 'thangy'},
+             'style.maybe': {'rules': ['_RuleHarnessOne',
+                                       "_RuleHarnessTwo('blah')"]}})
+        new_style = stylist.style.determine_style(single_style_conf)
         assert new_style.list_rules() == ['_RuleHarnessOne', '_RuleHarnessTwo']
 
     def test_no_default(self, tmp_path: Path):
@@ -180,33 +160,21 @@ class TestReadStyle:
         Checks that an error is thrown if an attempt is made to load a default
         style from an empty style list.
         """
-        conf_path = tmp_path/'configuration'
-        conf_path.write_text(dedent("""
-                                    # File contains no styles
-                                    [cheese]
-                                    a = 42
-                                    """))
+        empty_conf = Configuration(
+            {'cheese': {'a': 42}})
         with pytest.raises(StylistException):
-            stylist.style.read_style(conf_path)
+            stylist.style.determine_style(empty_conf)
 
     def test_ambiguous_default(self, tmp_path: Path):
         """
         Checks that an error is thrown if no style is specified but several
         are available.
         """
-        conf_path = tmp_path / 'configuration'
-        conf_path.write_text(dedent("""
-                             [style.the_first]
-                             rules = _RuleHarnessOne
-
-                             [style.the_second]
-                             rules = _RuleHarnessOne, _RuleHarnessTwo(42)
-
-                             [beef]
-                             whatsits = cheesy
-
-                             [style.the_third]
-                             rules = _RuleHarnessTwo('super')
-                             """))
+        several_style_conf = Configuration(
+            {'style.the_first': {'rules': '_RuleHarnessOne'},
+             'style.the_second': {'rules': ['_RuleHarnessOne',
+                                            '_RuleHarnessTweo(42)']},
+             'beef': {'whatsits': 'cheesy'},
+             'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         with pytest.raises(StylistException):
-            stylist.style.read_style(conf_path)
+            stylist.style.determine_style(several_style_conf)

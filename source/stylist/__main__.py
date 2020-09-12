@@ -15,15 +15,16 @@ from pathlib import Path
 import sys
 from typing import Iterable, List, Mapping, Sequence, Type
 
+from stylist.configuration import Configuration, ConfigurationFile
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
 from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
                            FortranSource, PFUnitProcessor, PlainText, \
                            SourceFactory, SourceTree, TextProcessor
-from stylist.style import read_style, Style
+from stylist.style import determine_style, Style
 
 
-def parse_cli() -> argparse.Namespace:
+def _parse_cli() -> argparse.Namespace:
     """
     Parse the command line for stylist arguments.
     """
@@ -127,7 +128,7 @@ def _add_extensions(additional_extensions: Iterable[str]) -> None:
                                     *preproc_objects)
 
 
-def process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
+def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     """
     Examines files for style compliance.
 
@@ -153,6 +154,19 @@ def process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
+def _configure(project_file: Path = None) -> Configuration:
+    configuration = Configuration({})
+    # TODO /etc/fab.ini
+    try:
+        configuration = ConfigurationFile(Path.home()/'.fab.ini',
+                                          configuration)
+    except FileNotFoundError:
+        pass  # It's okay for this file to be missing.
+    if project_file is not None:
+        configuration = ConfigurationFile(project_file, configuration)
+    return configuration
+
+
 def main() -> None:
     """
     Command-line tool entry point.
@@ -160,20 +174,22 @@ def main() -> None:
     logger = logging.getLogger('stylist')
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
-    arguments = parse_cli()
+    arguments = _parse_cli()
 
     if arguments.verbose:
         logger.setLevel(logging.INFO)
     else:
         logger.setLevel(logging.WARNING)
 
+    configuration = _configure(arguments.configuration)
+
     styles = []
     for name in arguments.style:
-        styles.append(read_style(arguments.configuration, name))
+        styles.append(determine_style(configuration, name))
 
     _add_extensions(arguments.map_extension)
 
-    issues = process(arguments.source, styles)
+    issues = _process(arguments.source, styles)
 
     for issue in issues:
         print(str(issue), file=sys.stderr)
