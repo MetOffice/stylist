@@ -64,12 +64,9 @@ def _all_subclasses(cls: Any) -> Set[Type]:
     return children
 
 
-_PREFIX = 'style.'
-
-
 def determine_style(configuration: Configuration,
                     style_name: Optional[str] = None) -> Style:
-    available_styles = configuration.section_names(_PREFIX)
+    available_styles = configuration.available_styles()
 
     if style_name is None:
         if len(available_styles) == 1:
@@ -78,8 +75,6 @@ def determine_style(configuration: Configuration,
             message = "Cannot pick a default style from file containing " \
                       "{0} styles"
             raise StylistException(message.format(len(available_styles)))
-    else:
-        style_name = f'style.{style_name}'
 
     if style_name not in available_styles:
         message = f"style '{style_name}' not found in configuration"
@@ -92,7 +87,7 @@ def determine_style(configuration: Configuration,
         = {cls.__name__: cls for cls in _all_subclasses(stylist.rule.Rule)}
 
     rules: List[stylist.rule.Rule] = []
-    rule_list = configuration.section(style_name)['rules']
+    rule_list = configuration.get_style(style_name)
     if not isinstance(rule_list, list):
         raise TypeError('Style rules should be a list of names')
     for rule_description in rule_list:

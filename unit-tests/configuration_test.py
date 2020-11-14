@@ -6,25 +6,21 @@
 ##############################################################################
 """Ensure the configuration module functions as expected."""
 from typing import Mapping
-from pytest import fixture  # type: ignore
+from pytest import fixture, raises  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
 #       sorts out its type hinting we are stuck with it.
 #
 from _pytest.fixtures import FixtureRequest  # type: ignore
 
+from stylist import StylistException
 from stylist.configuration import ConfigurationFile, Configuration
 
 
 @fixture(scope='module',
-         params=({},
-                 {'empty-single': {}},
-                 {'skinny-single': {'only': 'thing'}},
-                 {'fulsome-single': {'first': 'thing',
-                                     'second': 'other thing'}},
-                 {'first-empty': {},
-                  'second-single': {'only': 'one'},
-                  'third-full': {'some': 'stuff',
-                                 'more': 'stuff'}}))
+         params=({'style.only-rules': {'rules': 'foo-rule'}},
+                 {'style.only-multi-rules': {'rules': 'teapot-rule, cheese-rule'}},
+                 {'style.plus-rules': {'rules': 'bar-rule',
+                                       'second': 'other thing'}}))
 def case(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
     return request.param
 
@@ -32,17 +28,37 @@ def case(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
 class TestConfiguration():
     def test_configuration(self, case) -> None:
         test_unit = Configuration(case)
-        assert test_unit.section_names() == list(case.keys())
+        expected = [key[6:] for key in case.keys() if key.startswith('style.')]
+        assert test_unit.available_styles() == expected
         for key in case.keys():
-            assert test_unit.section(key) == case[key]
+            if key.startswith('style.'):
+                assert test_unit.get_style(key[6:]) == case[key]['rules'].split(',')
 
-    def test_sections_with_prefix(self, case) -> None:
-        test_unit = Configuration(case)
-        if 'second-single' in case.keys():
-            expected = ['second-single']
-        else:
-            expected = []
-        assert test_unit.section_names('second-') == expected
+    def test_empty_file(self) -> None:
+        test_unit = Configuration({})
+        assert test_unit.available_styles() == []
+
+    def test_no_styles(self) -> None:
+        test_unit = Configuration({'no-style': {}})
+        assert test_unit.available_styles() == []
+
+    def test_empty_style(self) -> None:
+        test_unit = Configuration({'style.empty': {}})
+        assert test_unit.available_styles() == ['empty']
+        with raises(KeyError):
+            _ = test_unit.get_style('empty')
+
+    def test_style_without_rules(self) -> None:
+        test_unit = Configuration({'style.no-rules': {'only': 'thing'}})
+        assert test_unit.available_styles() == ['no-rules']
+        with raises(KeyError):
+            _ = test_unit.get_style('no-rules')
+
+    def test_style_with_empty_rules(self) -> None:
+        test_unit = Configuration({'style.empty-rules': {'rules': ''}})
+        assert test_unit.available_styles() == ['empty-rules']
+        with raises(StylistException):
+            _ = test_unit.get_style('empty-rules')
 
 
 class TestFileConfiguration():
@@ -52,8 +68,17 @@ class TestFileConfiguration():
             for section in case.keys():
                 print(f'[{section}]', file=fhandle)
                 for key, value in case[section].items():
-                    print(f'  {key} = {value}', file=fhandle)
+                    if isinstance(value, list):
+                        print(f'  {key} = {", ".join(value)}', file=fhandle)
+                    else:
+                        print(f'  {key} = {value}', file=fhandle)
         test_unit = ConfigurationFile(config_file)
-        assert test_unit.section_names() == list(case.keys())
+        assert test_unit.available_styles() \
+               == [key[6:] for key in case.keys()]
         for key in case.keys():
-            assert test_unit.section(key) == case[key]
+            style_name = key[6:]
+            if 'rules' in case[key]:
+                assert test_unit.get_style(style_name) == case[key]['rules'].split(',')
+            else:
+                with raises(KeyError):
+                    _ = test_unit.get_style(style_name)
