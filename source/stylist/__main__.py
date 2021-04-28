@@ -18,9 +18,7 @@ from typing import Iterable, List, Mapping, Sequence, Type
 from stylist.configuration import Configuration, ConfigurationFile
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
-from stylist.source import CPreProcessor, CSource, FortranPreProcessor, \
-                           FortranSource, PFUnitProcessor, PlainText, \
-                           SourceFactory, SourceTree, TextProcessor
+from stylist.source import SourceFactory
 from stylist.style import determine_style, Style
 
 
@@ -30,12 +28,12 @@ def _parse_cli() -> argparse.Namespace:
     """
     description = 'Perform various code style checks on source code.'
 
-    max_key_length: int = max(len(key) for key in _LANGUAGE_MAP.keys())
-    parsers = [key.ljust(max_key_length) + ' - ' + str(parser)
-               for key, parser in _LANGUAGE_MAP.items()]
-    max_key_length = max(len(key) for key in _PREPROCESSOR_MAP.keys())
-    preproc = [key.ljust(max_key_length) + ' - ' + str(proc)
-               for key, proc in _PREPROCESSOR_MAP.items()]
+    max_key_length: int = max(len(key) for key in Configuration.language_tags())
+    parsers = [key.ljust(max_key_length) + ' - ' + str(Configuration.language_lookup(key))
+               for key in Configuration.language_tags()]
+    max_key_length = max(len(key) for key in Configuration.preprocessor_tags())
+    preproc = [key.ljust(max_key_length) + ' - ' + str(Configuration.preprocessor_lookup(key))
+               for key in Configuration.preprocessor_tags()]
     epilog = """"\
 IDs used in specifying extension pipelines:
   Parsers:
@@ -64,7 +62,7 @@ IDs used in specifying extension pipelines:
                             help=help)
     message = 'Add a mapping between file extension and pipeline'
     cli_parser.add_argument('-map-extension',
-                            metavar='EXTENSION:PARSER[:PREPROCESSOR]',
+                            metavar='EXTENSION:PARSER[:PREPROCESSOR]...',
                             dest='map_extension',
                             default=[],
                             action='append',
@@ -78,54 +76,6 @@ IDs used in specifying extension pipelines:
         arguments.configuration = StringIO('')
 
     return arguments
-
-
-_LANGUAGE_MAP: Mapping[str, Type[SourceTree]] \
-    = {'c': CSource,
-       'cxx': CSource,
-       'fortran': FortranSource,
-       'text': PlainText}
-_PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
-    = {'cpp': CPreProcessor,
-       'fpp': FortranPreProcessor,
-       'pfp': PFUnitProcessor}
-
-
-def _add_extensions(additional_extensions: Iterable[str]) -> None:
-    """
-    Makes the package aware of new extensions and how to deal with them.
-
-    This includes a few used by the LFRic project. Obviously these should not
-    be hard coded in here.
-    """
-    # This application always expects pFUnit source to be present so it adds
-    # a rule for that.
-    #
-    SourceFactory.add_extension('pf',
-                                FortranSource,
-                                PFUnitProcessor)
-    SourceFactory.add_extension('PF',
-                                FortranSource,
-                                FortranPreProcessor,
-                                PFUnitProcessor)
-    # PSyclone algorithms are also expected. By design these are actually
-    # syntactically correct Fortran so they are treated exactly as Fortran
-    # files are. In particular, they are treated like .F90 files as
-    # preprocessor directives may appear in them.
-    #
-    SourceFactory.add_extension('x90',
-                                FortranSource,
-                                FortranPreProcessor)
-    # It can be useful to process plain text files for debugging purposes.
-    SourceFactory.add_extension('txt', PlainText)
-
-    for mapping in additional_extensions:
-        extension, language, preprocessors = mapping.split(':', 2)
-        preproc_objects = [_PREPROCESSOR_MAP[ident.lower()]
-                           for ident in preprocessors.split(':')]
-        SourceFactory.add_extension(extension.lower(),
-                                    _LANGUAGE_MAP[language.lower()],
-                                    *preproc_objects)
 
 
 def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
@@ -154,14 +104,16 @@ def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
+_APPLICATION_DEFAULTS = {'file-pipe': {'f90': 'fortran',
+                                       'F90': 'fortran:fpp',
+                                       'c': 'c:cpp',
+                                       'h': 'c:cpp'}}
+
+
 def _configure(project_file: Path = None) -> Configuration:
-    configuration = Configuration({})
+    configuration = Configuration(_APPLICATION_DEFAULTS)
     # TODO /etc/fab.ini
-    try:
-        configuration = ConfigurationFile(Path.home()/'.fab.ini',
-                                          configuration)
-    except FileNotFoundError:
-        pass  # It's okay for this file to be missing.
+    # TODO ~/.fab.ini - Path.home() / '.fab.ini'
     if project_file is not None:
         configuration = ConfigurationFile(project_file, configuration)
     return configuration
@@ -187,7 +139,12 @@ def main() -> None:
     for name in arguments.style:
         styles.append(determine_style(configuration, name))
 
-    _add_extensions(arguments.map_extension)
+    # Some commonly used default pipelines.)
+    for extension, language, preprocessors in configuration.get_file_pipes():
+        SourceFactory.add_extension(extension, language, *preprocessors)
+    for mapping in arguments.map_extension:
+        extension, language, preprocessors = Configuration.parse_pipe_description(mapping)
+        SourceFactory.add_extension(extension, language, *preprocessors)
 
     issues = _process(arguments.source, styles)
 

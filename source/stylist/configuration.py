@@ -12,9 +12,17 @@ Configuration may be defined by software or read from a Windows .ini file.
 from abc import ABC
 from configparser import ConfigParser, MissingSectionHeaderError
 from pathlib import Path
-from typing import Dict, List, Mapping, Sequence, Set, Union
+from typing import Dict, Mapping, Sequence, Set, Tuple, Type
 
 from stylist import StylistException
+from stylist.source import (CPreProcessor,
+                            CSource,
+                            FortranPreProcessor,
+                            FortranSource,
+                            PFUnitProcessor,
+                            PlainText,
+                            SourceTree,
+                            TextProcessor)
 
 
 class Configuration(ABC):
@@ -27,6 +35,60 @@ class Configuration(ABC):
                  defaults: 'Configuration' = None):
         self._defaults = defaults
         self._parameters = parameters
+
+    _LANGUAGE_MAP: Mapping[str, Type[SourceTree]] \
+        = {'c': CSource,
+           'cxx': CSource,
+           'fortran': FortranSource,
+           'text': PlainText}
+
+    @classmethod
+    def language_tags(cls):
+        return cls._LANGUAGE_MAP.keys()
+
+    @classmethod
+    def language_lookup(cls, key: str) -> SourceTree:
+        return cls._LANGUAGE_MAP[key]
+
+    _PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
+        = {'cpp': CPreProcessor,
+           'fpp': FortranPreProcessor,
+           'pfp': PFUnitProcessor}
+
+    @classmethod
+    def preprocessor_tags(cls):
+        return cls._PREPROCESSOR_MAP.keys()
+
+    @classmethod
+    def preprocessor_lookup(cls, key: str) -> TextProcessor:
+        return cls._PREPROCESSOR_MAP[key]
+
+    @classmethod
+    def parse_pipe_description(cls, string: str) -> Tuple[str, Type[SourceTree], Sequence[Type[TextProcessor]]]:
+        if not string:
+            raise StylistException("Empty extension pipe description")
+
+        bits = string.split(':', 2)
+        extension = bits[0]
+        lang_object = cls._LANGUAGE_MAP[bits[1].lower()]
+        if len(bits) > 2:
+            preproc_objects = [cls._PREPROCESSOR_MAP[ident.lower()]
+                               for ident in bits[2].split(':')]
+        else:
+            preproc_objects = []
+        return extension, lang_object, preproc_objects
+
+    def get_file_pipes(self) -> Sequence[Tuple[str, Type[SourceTree], Sequence[Type[TextProcessor]]]]:
+        """
+        Enumerates the extension handling pipelines.
+        """
+        result = []
+        section = self._parameters.get('file-pipe')
+        if section is not None:
+            for extension in section:
+                result.append(self.parse_pipe_description(f'{extension}:{section[extension]}'))
+        return result
+
 
     _STYLE_PREFIX = 'style.'
 
