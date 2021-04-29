@@ -31,7 +31,7 @@ class Configuration(ABC):
     #
     def __init__(self,
                  parameters: Mapping[str,
-                                     Mapping[str, str]],
+                                     Mapping[str, str]] = {},
                  defaults: 'Configuration' = None):
         self._defaults = defaults
         self._parameters = parameters
@@ -47,7 +47,7 @@ class Configuration(ABC):
         return cls._LANGUAGE_MAP.keys()
 
     @classmethod
-    def language_lookup(cls, key: str) -> SourceTree:
+    def language_lookup(cls, key: str) -> Type[SourceTree]:
         return cls._LANGUAGE_MAP[key]
 
     _PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
@@ -60,7 +60,7 @@ class Configuration(ABC):
         return cls._PREPROCESSOR_MAP.keys()
 
     @classmethod
-    def preprocessor_lookup(cls, key: str) -> TextProcessor:
+    def preprocessor_lookup(cls, key: str) -> Type[TextProcessor]:
         return cls._PREPROCESSOR_MAP[key]
 
     @classmethod
@@ -88,7 +88,6 @@ class Configuration(ABC):
             for extension in section:
                 result.append(self.parse_pipe_description(f'{extension}:{section[extension]}'))
         return result
-
 
     _STYLE_PREFIX = 'style.'
 

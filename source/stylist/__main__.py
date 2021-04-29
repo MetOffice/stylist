@@ -8,12 +8,11 @@
 Tool for checking code style.
 """
 import argparse
-from io import StringIO
 import logging
 import os.path
 from pathlib import Path
 import sys
-from typing import Iterable, List, Mapping, Sequence, Type
+from typing import List, Sequence
 
 from stylist.configuration import Configuration, ConfigurationFile
 from stylist.engine import CheckEngine
@@ -52,7 +51,6 @@ IDs used in specifying extension pipelines:
                             help="Produce a running commentary on progress.")
     cli_parser.add_argument('-configuration',
                             type=Path,
-                            default=None,
                             metavar='FILENAME',
                             help="File which configures the tool.")
     help = "Style to use for check. May be specified repeatedly."
@@ -71,9 +69,6 @@ IDs used in specifying extension pipelines:
                             help='Filename of source file or directory')
 
     arguments = cli_parser.parse_args()
-
-    if arguments.configuration is None:
-        arguments.configuration = StringIO('')
 
     return arguments
 
@@ -104,14 +99,8 @@ def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
-_APPLICATION_DEFAULTS = {'file-pipe': {'f90': 'fortran',
-                                       'F90': 'fortran:fpp',
-                                       'c': 'c:cpp',
-                                       'h': 'c:cpp'}}
-
-
 def _configure(project_file: Path = None) -> Configuration:
-    configuration = Configuration(_APPLICATION_DEFAULTS)
+    configuration = Configuration()
     # TODO /etc/fab.ini
     # TODO ~/.fab.ini - Path.home() / '.fab.ini'
     if project_file is not None:
@@ -136,12 +125,19 @@ def main() -> None:
     configuration = _configure(arguments.configuration)
 
     styles = []
-    for name in arguments.style:
-        styles.append(determine_style(configuration, name))
+    if arguments.style is not None:
+        for name in arguments.style:
+            styles.append(determine_style(configuration, name))
+    else:
+        styles.append(determine_style(configuration))
 
-    # Some commonly used default pipelines.)
+    # Pipelines loaded from configuration file
+    #
     for extension, language, preprocessors in configuration.get_file_pipes():
         SourceFactory.add_extension(extension, language, *preprocessors)
+    #
+    # Pipelines from command line.
+    #
     for mapping in arguments.map_extension:
         extension, language, preprocessors = Configuration.parse_pipe_description(mapping)
         SourceFactory.add_extension(extension, language, *preprocessors)
