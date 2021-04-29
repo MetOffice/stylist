@@ -27,11 +27,15 @@ def _parse_cli() -> argparse.Namespace:
     """
     description = 'Perform various code style checks on source code.'
 
-    max_key_length: int = max(len(key) for key in Configuration.language_tags())
-    parsers = [key.ljust(max_key_length) + ' - ' + str(Configuration.language_lookup(key))
+    max_key_len: int = max(len(key) for key in Configuration.language_tags())
+    parsers = [key.ljust(max_key_len)
+               + ' - '
+               + str(Configuration.language_lookup(key))
                for key in Configuration.language_tags()]
-    max_key_length = max(len(key) for key in Configuration.preprocessor_tags())
-    preproc = [key.ljust(max_key_length) + ' - ' + str(Configuration.preprocessor_lookup(key))
+    max_key_len = max(len(key) for key in Configuration.preprocessor_tags())
+    preproc = [key.ljust(max_key_len)
+               + ' - '
+               + str(Configuration.preprocessor_lookup(key))
                for key in Configuration.preprocessor_tags()]
     epilog = """"\
 IDs used in specifying extension pipelines:
@@ -139,7 +143,8 @@ def main() -> None:
     # Pipelines from command line.
     #
     for mapping in arguments.map_extension:
-        extension, language, preprocessors = Configuration.parse_pipe_description(mapping)
+        extension, language, preprocessors \
+            = Configuration.parse_pipe_description(mapping)
         SourceFactory.add_extension(extension, language, *preprocessors)
 
     issues = _process(arguments.source, styles)

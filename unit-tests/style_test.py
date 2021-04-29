@@ -122,7 +122,8 @@ class TestDetermineStyle:
         """
         several_style_conf = Configuration(
             {'style.the_first': {'rules': '_RuleHarnessOne'},
-             'style.the_second': {'rules': '_RuleHarnessOne, _RuleHarnessTwo(42)'},
+             'style.the_second': {'rules':
+                                  '_RuleHarnessOne, _RuleHarnessTwo(42)'},
              'beef': {'whatsits': 'cheesy'},
              'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         new_style = stylist.style.determine_style(several_style_conf,
@@ -136,7 +137,8 @@ class TestDetermineStyle:
         """
         single_style_conf = Configuration(
             {'cheese': {'thingy': 'thangy'},
-             'style.singular': {'rules': "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
+             'style.singular': {'rules':
+                                "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf,
                                                   'singular')
         assert new_style.list_rules() == ['_RuleHarnessOne',
@@ -148,7 +150,8 @@ class TestDetermineStyle:
         """
         single_style_conf = Configuration(
             {'cheese': {'thingy': 'thangy'},
-             'style.maybe': {'rules': "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
+             'style.maybe': {'rules':
+                             "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf)
         assert new_style.list_rules() == ['_RuleHarnessOne', '_RuleHarnessTwo']
 

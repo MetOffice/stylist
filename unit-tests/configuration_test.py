@@ -26,14 +26,22 @@ from stylist.source import (CPreProcessor,
 @fixture(scope='module',
          params=((None, None),
                  ('boo:fortran', ('boo', FortranSource, [])),
-                 ('coo:c:cpp',('coo', CSource, [CPreProcessor])),
-                 ('doo:fortran:pfp:fpp', ('doo', FortranSource, [PFUnitProcessor, FortranPreProcessor]))))
-def pipe_string(request: FixtureRequest) -> Tuple[str, Optional[Tuple[str, Type[SourceTree], Sequence[Type[TextProcessor]]]]]:
+                 ('coo:c:cpp', ('coo', CSource, [CPreProcessor])),
+                 ('doo:fortran:pfp:fpp', ('doo',
+                                          FortranSource,
+                                          [PFUnitProcessor,
+                                           FortranPreProcessor]))))
+def pipe_string(request: FixtureRequest) \
+    -> Tuple[str, Optional[Tuple[str,
+                                 Type[SourceTree],
+                                 Sequence[Type[TextProcessor]]]]]:
     return request.param
+
 
 @fixture(scope='module',
          params=({'style.only-rules': {'rules': 'foo-rule'}},
-                 {'style.only-multi-rules': {'rules': 'teapot-rule, cheese-rule'}},
+                 {'style.only-multi-rules': {'rules':
+                                             'teapot-rule, cheese-rule'}},
                  {'style.plus-rules': {'rules': 'bar-rule',
                                        'second': 'other thing'}}))
 def style_file(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
@@ -43,11 +51,13 @@ def style_file(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
 class TestConfiguration():
     def test_configuration(self, style_file) -> None:
         test_unit = Configuration(style_file)
-        expected = [key[6:] for key in style_file.keys() if key.startswith('style.')]
+        expected = [key[6:] for key in style_file.keys()
+                    if key.startswith('style.')]
         assert test_unit.available_styles() == expected
         for key in style_file.keys():
             if key.startswith('style.'):
-                assert test_unit.get_style(key[6:]) == style_file[key]['rules'].split(',')
+                assert test_unit.get_style(key[6:]) \
+                    == style_file[key]['rules'].split(',')
 
     def test_empty_file(self) -> None:
         test_unit = Configuration({})
@@ -78,7 +88,8 @@ class TestConfiguration():
     def test_parse_pipe(self, pipe_string) -> None:
         stimulus, expected = pipe_string
         if expected is not None:
-            extension, source, preproc = Configuration.parse_pipe_description(stimulus)
+            extension, source, preproc \
+                = Configuration.parse_pipe_description(stimulus)
             assert expected[0] == extension
             assert expected[1] == source
             assert expected[2] == preproc
@@ -96,7 +107,8 @@ class TestConfiguration():
                                'x90': 'fortran:pfp:fpp'}}
         expected = [('f90', FortranSource, []),
                     ('F90', FortranSource, [FortranPreProcessor]),
-                    ('x90', FortranSource, [PFUnitProcessor, FortranPreProcessor])]
+                    ('x90', FortranSource, [PFUnitProcessor,
+                                            FortranPreProcessor])]
         test_unit = Configuration(input)
         assert expected == list(test_unit.get_file_pipes())
 
@@ -114,11 +126,12 @@ class TestFileConfiguration():
                         print(f'  {key} = {value}', file=fhandle)
         test_unit = ConfigurationFile(config_file)
         assert test_unit.available_styles() \
-               == [key[6:] for key in style_file.keys()]
+            == [key[6:] for key in style_file.keys()]
         for key in style_file.keys():
             style_name = key[6:]
             if 'rules' in style_file[key]:
-                assert test_unit.get_style(style_name) == style_file[key]['rules'].split(',')
+                assert test_unit.get_style(style_name) \
+                       == style_file[key]['rules'].split(',')
             else:
                 with raises(KeyError):
                     _ = test_unit.get_style(style_name)

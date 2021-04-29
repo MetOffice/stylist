@@ -64,7 +64,10 @@ class Configuration(ABC):
         return cls._PREPROCESSOR_MAP[key]
 
     @classmethod
-    def parse_pipe_description(cls, string: str) -> Tuple[str, Type[SourceTree], Sequence[Type[TextProcessor]]]:
+    def parse_pipe_description(cls, string: str) \
+        -> Tuple[str,
+                 Type[SourceTree],
+                 Sequence[Type[TextProcessor]]]:
         if not string:
             raise StylistException("Empty extension pipe description")
 
@@ -78,7 +81,9 @@ class Configuration(ABC):
             preproc_objects = []
         return extension, lang_object, preproc_objects
 
-    def get_file_pipes(self) -> Sequence[Tuple[str, Type[SourceTree], Sequence[Type[TextProcessor]]]]:
+    def get_file_pipes(self) -> Sequence[Tuple[str,
+                                               Type[SourceTree],
+                                               Sequence[Type[TextProcessor]]]]:
         """
         Enumerates the extension handling pipelines.
         """
@@ -86,7 +91,8 @@ class Configuration(ABC):
         section = self._parameters.get('file-pipe')
         if section is not None:
             for extension in section:
-                result.append(self.parse_pipe_description(f'{extension}:{section[extension]}'))
+                descr = f'{extension}:{section[extension]}'
+                result.append(self.parse_pipe_description(descr))
         return result
 
     _STYLE_PREFIX = 'style.'
