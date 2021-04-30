@@ -192,7 +192,7 @@ end program test
         expected_string = """! Test program
 PROGRAM test
   IMPLICIT NONE
-  WRITE(6, FMT = '("Hello ", A)') 'world'
+  WRITE(6, '("Hello ", A)') 'world'
 END PROGRAM test"""
         assert str(unit_under_test.get_tree()) == expected_string
 

@@ -8,12 +8,11 @@
 Classes relating to styles made up of rules.
 """
 from abc import ABCMeta
-import configparser
 import logging
-from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Type
 
 from stylist import StylistException
+from stylist.configuration import Configuration
 import stylist.fortran
 import stylist.issue
 import stylist.rule
@@ -65,19 +64,9 @@ def _all_subclasses(cls: Any) -> Set[Type]:
     return children
 
 
-def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
-    PREFIX = 'style.'
-
-    configuration = configparser.ConfigParser()
-    try:
-        with rule_file.open('rt') as handle:
-            configuration.read_file(handle)
-    except configparser.MissingSectionHeaderError:
-        pass  # It is not an error to have an empty configuration file.
-
-    available_styles = [section[len(PREFIX):]
-                        for section in configuration.sections()
-                        if section.startswith(PREFIX)]
+def determine_style(configuration: Configuration,
+                    style_name: Optional[str] = None) -> Style:
+    available_styles = configuration.available_styles()
 
     if style_name is None:
         if len(available_styles) == 1:
@@ -88,7 +77,7 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
             raise StylistException(message.format(len(available_styles)))
 
     if style_name not in available_styles:
-        message = f"style {style_name} not found in configuration"
+        message = f"style '{style_name}' not found in configuration"
         raise StylistException(message)
 
     # Todo: It would be nice to remove abstracts from this list but I haven't
@@ -98,8 +87,10 @@ def read_style(rule_file: Path, style_name: Optional[str] = None) -> Style:
         = {cls.__name__: cls for cls in _all_subclasses(stylist.rule.Rule)}
 
     rules: List[stylist.rule.Rule] = []
-    rule_string = configuration['style.' + style_name]['rules']
-    for rule_description in rule_string.split(','):
+    rule_list = configuration.get_style(style_name)
+    if not isinstance(rule_list, list):
+        raise TypeError('Style rules should be a list of names')
+    for rule_description in rule_list:
         rule_name, _, rule_arguments_string = rule_description.partition('(')
         rule_name = rule_name.strip()
         rule_arguments_string, _, _ = rule_arguments_string.partition(')')
