@@ -160,8 +160,7 @@ class TestDetermineStyle:
         Checks that an error is thrown if an attempt is made to load a default
         style from an empty style list.
         """
-        empty_conf = Configuration(
-            {'cheese': {'a': 42}})
+        empty_conf = Configuration({'cheese': {'a': '42'}})
         with pytest.raises(StylistException):
             stylist.style.determine_style(empty_conf)
 
@@ -172,8 +171,8 @@ class TestDetermineStyle:
         """
         several_style_conf = Configuration(
             {'style.the_first': {'rules': '_RuleHarnessOne'},
-             'style.the_second': {'rules': ['_RuleHarnessOne',
-                                            '_RuleHarnessTweo(42)']},
+             'style.the_second': {'rules':
+                                  '_RuleHarnessOne, _RuleHarnessTweo(42)'},
              'beef': {'whatsits': 'cheesy'},
              'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         with pytest.raises(StylistException):

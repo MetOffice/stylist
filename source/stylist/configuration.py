@@ -31,10 +31,13 @@ class Configuration(ABC):
     #
     def __init__(self,
                  parameters: Mapping[str,
-                                     Mapping[str, str]] = {},
+                                     Mapping[str, str]] = None,
                  defaults: 'Configuration' = None):
         self._defaults = defaults
-        self._parameters = parameters
+        if parameters is not None:
+            self._parameters = parameters
+        else:
+            self._parameters = {}
 
     _LANGUAGE_MAP: Mapping[str, Type[SourceTree]] \
         = {'c': CSource,
