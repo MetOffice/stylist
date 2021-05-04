@@ -8,7 +8,6 @@
 None language specific rules.
 """
 from abc import ABCMeta, abstractmethod
-import logging
 import re
 from typing import List
 
@@ -30,9 +29,7 @@ class Rule(object, metaclass=ABCMeta):
         """
         Examines the provided source code object for an issue.
         """
-        message = 'Rule: {name}'.format(name=str(self.__class__.__name__))
-        logging.getLogger(__name__).info(message)
-        return []
+        raise NotImplementedError()
 
 
 class TrailingWhitespace(Rule):
@@ -46,8 +43,7 @@ class TrailingWhitespace(Rule):
         Examines the text for white space at the end of lines.
         This includes lines which consist entirely of white space.
         """
-        issues = super(TrailingWhitespace, self).examine(subject)
-
+        issues = []
         text = subject.get_text()
         line_tally = 0
         for line in text.splitlines():

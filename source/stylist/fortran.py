@@ -22,8 +22,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
     Parent for style rules pertaining to Fortran source.
     """
     def examine(self, subject: FortranSource) -> List[Issue]:
-        issues = super(FortranRule, self).examine(subject)
-
+        issues = []
         if not isinstance(subject, FortranSource):
             description = 'Non-Fortran source passed to a Fortran rule'
             raise Exception(description)
@@ -70,7 +69,7 @@ class FortranCharacterset(Rule):
         certain characters except comments and strings. These may contain
         anything.
         """
-        issues = super(FortranCharacterset, self).examine(subject)
+        issues = []
 
         text = subject.get_text()
         index = 0

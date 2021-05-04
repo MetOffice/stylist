@@ -45,7 +45,11 @@ class Style(object, metaclass=ABCMeta):
         logging.getLogger(__name__).info('Style: ' + self.__class__.__name__)
         issues: List[stylist.issue.Issue] = []
         for rule in self._rules:
-            issues.extend(rule.examine(source))
+            additions = rule.examine(source)
+            issues.extend(additions)
+            result = "Failed" if len(additions) > 0 else "Passed"
+            message = f"Rule: {rule.__class__.__name__} - {result}"
+            logging.getLogger(__name__).info(message)
         return issues
 
 
