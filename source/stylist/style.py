@@ -47,7 +47,7 @@ class Style(object, metaclass=ABCMeta):
         for rule in self._rules:
             additions = rule.examine(source)
             issues.extend(additions)
-            result = "Failed" if len(additions) > 0 else "Passed"
+            result = "Failed" if additions else "Passed"
             message = f"Rule: {rule.__class__.__name__} - {result}"
             logging.getLogger(__name__).info(message)
         return issues
