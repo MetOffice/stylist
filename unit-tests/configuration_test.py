@@ -5,6 +5,7 @@
 # under which the code may be used.
 ##############################################################################
 """Ensure the configuration module functions as expected."""
+import re
 from typing import Mapping, Optional, Sequence, Tuple, Type
 from pytest import fixture, raises  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
@@ -43,9 +44,15 @@ def pipe_string(request: FixtureRequest) \
                  {'style.only-multi-rules': {'rules':
                                              'teapot-rule, cheese-rule'}},
                  {'style.plus-rules': {'rules': 'bar-rule',
-                                       'second': 'other thing'}}))
+                                       'second': 'other thing'}},
+                 {'style.arg-rule': {'rules': 'arg-rule(this)'}},
+                 {'style.args-rule': {'rules': 'args-rule(this, that)'}},
+                 {'style.args-rules': {'rules': 'beef-rule(dee, dum), fish_rule(sam, del)'}}))
 def style_file(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
     return request.param
+
+
+_RULE_PATTERN = re.compile(r'[^,(]+(?:\(.+?\))?')
 
 
 class TestConfiguration():
@@ -56,8 +63,14 @@ class TestConfiguration():
         assert test_unit.available_styles() == expected
         for key in style_file.keys():
             if key.startswith('style.'):
-                assert test_unit.get_style(key[6:]) \
-                    == style_file[key]['rules'].split(',')
+                expected = _RULE_PATTERN.findall(style_file[key]['rules'])
+                expected = [item.strip() for item in expected]
+                assert test_unit.get_style(key[6:]) == expected
+
+    def test_raw_rule_arguments(self) -> None:
+        test_unit = Configuration({'style.raw-args': {'rules': 'rule(r\'.*\')'}})
+        assert test_unit.available_styles() == ['raw-args']
+        assert test_unit.get_style('raw-args') == ['rule(r\'.*\')']
 
     def test_empty_file(self) -> None:
         test_unit = Configuration({})
@@ -113,7 +126,7 @@ class TestConfiguration():
         assert expected == list(test_unit.get_file_pipes())
 
 
-class TestFileConfiguration():
+class TestFileConfiguration:
     def test_file_configuration(self, tmp_path, style_file) -> None:
         config_file = tmp_path / 'test.ini'
         with config_file.open('w') as fhandle:
@@ -130,8 +143,9 @@ class TestFileConfiguration():
         for key in style_file.keys():
             style_name = key[6:]
             if 'rules' in style_file[key]:
-                assert test_unit.get_style(style_name) \
-                       == style_file[key]['rules'].split(',')
+                expected = _RULE_PATTERN.findall(style_file[key]['rules'])
+                expected = [item.strip() for item in expected]
+                assert test_unit.get_style(style_name) == expected
             else:
                 with raises(KeyError):
                     _ = test_unit.get_style(style_name)
