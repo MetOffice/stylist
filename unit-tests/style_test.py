@@ -8,6 +8,7 @@
 Ensures the 'style' module functions as expected.
 """
 from pathlib import Path
+from typing import List
 
 import pytest  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
@@ -108,6 +109,13 @@ class TestDetermineStyle:
     """
     Ensures a style can be read from a configuration structure.
     """
+    @staticmethod
+    def _name_rules(style: stylist.style.Style) -> List[str]:
+        """
+        Converts a style into a list of rule names.
+        """
+        return [rule.__class__.__name__ for rule in style.list_rules()]
+
     def test_none(self):
         """
         Checks that an error is thrown if an attempt is made to get a style
@@ -129,8 +137,8 @@ class TestDetermineStyle:
              'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         new_style = stylist.style.determine_style(several_style_conf,
                                                   'the_second')
-        assert [rule.__class__.__name__ for rule in new_style.list_rules()] \
-               == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_single_style(self, tmp_path: Path):
         """
@@ -142,8 +150,8 @@ class TestDetermineStyle:
                                 "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf,
                                                   'singular')
-        assert [rule.__class__.__name__ for rule in new_style.list_rules()] \
-               == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_default_style(self, tmp_path: Path):
         """
@@ -154,8 +162,8 @@ class TestDetermineStyle:
              'style.maybe': {'rules':
                              "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf)
-        assert [rule.__class__.__name__ for rule in new_style.list_rules()] \
-               == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_no_default(self, tmp_path: Path):
         """
@@ -180,12 +188,12 @@ class TestDetermineStyle:
         with pytest.raises(StylistException):
             stylist.style.determine_style(several_style_conf)
 
-    def test_raw_argument(selfself, tmp_path: Path):
+    def test_raw_argument(self, tmp_path: Path):
         """
         Checks that raw-string arguments arr handled correctly.
         """
-        conf = Configuration({'style.rawarg': {'rules': "_RuleHarnessTwo(r'.*')"}})
+        initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(r'.*')"}}
+        conf = Configuration(initialiser)
         style = stylist.style.determine_style(conf)
-        assert [rule.__class__.__name__ for rule in style.list_rules()] \
-               == ['_RuleHarnessTwo']
+        assert self._name_rules(style) == ['_RuleHarnessTwo']
         assert style.list_rules()[0].thing == r'.*'

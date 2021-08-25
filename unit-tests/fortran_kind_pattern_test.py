@@ -35,7 +35,11 @@ class TestKindPattern:
             procedure method
           end type some_type
         contains
-          function thing(arg_int, arg_float, arg_float_1, arg_float_2, arg_bool) result(return_int)
+          function thing(arg_int, &
+                         arg_float, &
+                         arg_float_1, &
+                         arg_float_2, &
+                         arg_bool) result(return_int)
             implicit none
             integer(rare_beef), intent(in) :: arg_int
             real(hard_cheese), intent(out) :: arg_float
@@ -43,7 +47,12 @@ class TestKindPattern:
             logical(no_one_cares), intent(inout) :: arg_bool
             integer(well_done_beef) :: return_int
           end function thing
-          function method(this, marg_int, marg_int_1, marg_int_2, marg_float, marg_bool) result(return_float)
+          function method(this, &
+                          marg_int, &
+                          marg_int_1, &
+                          marg_int_2, &
+                          marg_float, &
+                          marg_bool) result(return_float)
             implicit none
             integer(cremated_beef), intent(in) :: marg_int
             integer(shredded_beef), intent(out) :: marg_int_1, marg_int_2
@@ -87,7 +96,10 @@ class TestKindPattern:
             logical(no_one_cares), intent(inout) :: arg_bool
             integer(stinky_cheese) :: return_int
           end function thing
-          function method(this, marg_int, marg_float, marg_bool) result(return_float)
+          function method(this, &
+                          marg_int, &
+                          marg_float, &
+                          marg_bool) result(return_float)
             implicit none
             integer(sheep_cheese), intent(in) :: marg_int
             integer(chewy_cheese), intent(out) :: marg_int_1, marg_int_2
@@ -127,7 +139,10 @@ class TestKindPattern:
             logical, intent(inout) :: arg_bool
             integer :: return_int
           end function thing
-          function method(this, marg_int, marg_float, marg_bool) result(return_float)
+          function method(this, &
+                          marg_int, &
+                          marg_float, &
+                          marg_bool) result(return_float)
             implicit none
             integer, intent(in) :: marg_int
             real, intent(out) :: marg_float
@@ -141,5 +156,4 @@ class TestKindPattern:
         source = FortranSource(reader)
         unit_under_test = KindPattern(r'.+_beef', re.compile(r'.+_cheese'))
         issues = unit_under_test.examine(source)
-
         assert len(issues) == 0
