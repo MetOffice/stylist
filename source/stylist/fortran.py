@@ -303,7 +303,8 @@ class KindPattern(FortranRule):
     def __init__(self,
                  integer_pattern: Union[str, Pattern],
                  real_pattern: Union[str, Pattern]):
-        self._patterns: Dict[str, Pattern] = defaultdict(lambda: re.compile(r'.*'))
+        self._patterns: Dict[str, Pattern] \
+            = defaultdict(lambda: re.compile(r'.*'))
         if isinstance(integer_pattern, str):
             self._patterns['integer'] = re.compile(integer_pattern)
         else:
@@ -336,20 +337,18 @@ class KindPattern(FortranRule):
                            Fortran2003.Type_Declaration_Stmt)):
                 type_spec: Fortran2003.Intrinsic_Type_Spec = candidate.items[0]
                 kind_selector: Fortran2003.Kind_Selector = type_spec.items[1]
-                if isinstance(kind_selector, Fortran2003.Kind_Selector) and kind_selector is not None:
+
+                if isinstance(kind_selector, Fortran2003.Kind_Selector):
                     data_type: str = type_spec.items[0].lower()
                     kind: str = kind_selector.string[1:-1]
                     match = self._patterns[data_type].match(kind)
-                    with open('debug.out', 'a') as handle:
-                        print(data_type, file=handle)
-                        print(kind, file=handle)
-                        print(self._patterns[data_type], file=handle)
-                        print(match, file=handle)
                     if match is None:
                         entity_declaration = candidate.items[2]
                         message = f"Kind of variable '{entity_declaration}'" \
-                                  f" does not match pattern for {data_type.lower()} type."
-                        issues.append(Issue(message, line=candidate.item.span[0]))
+                                  " does not match the pattern for" \
+                                  f" {data_type.lower()} type."
+                        issues.append(Issue(message,
+                                            line=candidate.item.span[0]))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues

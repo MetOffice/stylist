@@ -141,7 +141,8 @@ class Configuration(ABC):
                         if character == ')':
                             state = 'rule'
                     else:
-                        raise StylistException(f"Unrecognised state '{state}' when parsing rules")
+                        raise StylistException(f"Unrecognised state '{state}'"
+                                               "when parsing rules")
                 if buffer:
                     rule_list.append(buffer.strip())
                 return rule_list

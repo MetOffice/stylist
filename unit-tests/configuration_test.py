@@ -47,7 +47,8 @@ def pipe_string(request: FixtureRequest) \
                                        'second': 'other thing'}},
                  {'style.arg-rule': {'rules': 'arg-rule(this)'}},
                  {'style.args-rule': {'rules': 'args-rule(this, that)'}},
-                 {'style.args-rules': {'rules': 'beef-rule(dee, dum), fish_rule(sam, del)'}}))
+                 {'style.args-rules': {
+                     'rules': 'beef-rule(dee, dum), fish_rule(sam, del)'}}))
 def style_file(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
     return request.param
 
@@ -68,7 +69,8 @@ class TestConfiguration():
                 assert test_unit.get_style(key[6:]) == expected
 
     def test_raw_rule_arguments(self) -> None:
-        test_unit = Configuration({'style.raw-args': {'rules': 'rule(r\'.*\')'}})
+        initialiser = {'style.raw-args': {'rules': 'rule(r\'.*\')'}}
+        test_unit = Configuration(initialiser)
         assert test_unit.available_styles() == ['raw-args']
         assert test_unit.get_style('raw-args') == ['rule(r\'.*\')']
 
