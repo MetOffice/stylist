@@ -205,7 +205,8 @@ class TestDetermineStyle:
         """
         Checks that keyword arguments are handled correctly.
         """
-        initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(thing='bing')"}}
+        initialiser = {'style.rawarg':
+                       {'rules': "_RuleHarnessTwo(thing='bing')"}}
         conf = Configuration(initialiser)
         style = stylist.style.determine_style(conf)
 
