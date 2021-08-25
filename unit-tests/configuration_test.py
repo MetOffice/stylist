@@ -56,7 +56,7 @@ def style_file(request: FixtureRequest) -> Mapping[str, Mapping[str, str]]:
 _RULE_PATTERN = re.compile(r'[^,(]+(?:\(.+?\))?')
 
 
-class TestConfiguration():
+class TestConfiguration:
     def test_configuration(self, style_file) -> None:
         test_unit = Configuration(style_file)
         expected = [key[6:] for key in style_file.keys()
