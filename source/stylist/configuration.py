@@ -12,7 +12,8 @@ Configuration may be defined by software or read from a Windows .ini file.
 from abc import ABC
 from configparser import ConfigParser, MissingSectionHeaderError
 from pathlib import Path
-from typing import Dict, List, Mapping, Sequence, Set, Tuple, Type
+import re
+from typing import Dict, List, Mapping, Sequence, Set, Tuple, Type, Pattern
 
 from stylist import StylistException
 from stylist.source import (CPreProcessor,
@@ -114,8 +115,9 @@ class Configuration(ABC):
 
         return sorted(styles)
 
-    _RULE_STATE = 'rule'
-    _ARGS_STATE = 'args'
+    # This rule will not handle brackets appearing within the argument list.
+    #
+    _RULE_PATTERN: Pattern[str] = re.compile(r'(?:^|,)\s*(.+?(?:\(.*?\))?(?=,|$))')
 
     def get_style(self, name: str) -> Sequence[str]:
         """
@@ -127,28 +129,7 @@ class Configuration(ABC):
             if len(rules.strip()) == 0:
                 raise StylistException(f"Style {key} contains no rules")
             else:
-                rule_list: List[str] = []
-                state = self._RULE_STATE
-                buffer = ''
-                for character in rules:
-                    if state == self._RULE_STATE:
-                        if character == ',':
-                            rule_list.append(buffer.strip())
-                            buffer = ''
-                        else:
-                            buffer += character
-                            if character == '(':
-                                state = self._ARGS_STATE
-                    elif state == self._ARGS_STATE:
-                        buffer += character
-                        if character == ')':
-                            state = self._RULE_STATE
-                    else:
-                        raise StylistException(f"Unrecognised state '{state}'"
-                                               "when parsing rules")
-                if buffer:
-                    rule_list.append(buffer.strip())
-                return rule_list
+                return self._RULE_PATTERN.findall(rules)
         else:  # key not in self._parameters
             if self._defaults is not None:
                 return self._defaults.get_style(name)
