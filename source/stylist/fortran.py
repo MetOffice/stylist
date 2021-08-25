@@ -298,6 +298,9 @@ class MissingPointerInit(FortranRule):
 
 
 class KindPattern(FortranRule):
+    _ISSUE_TEMPLATE = "Kind '{kind}' found for {type} variable '{name}' does" \
+            " not fit the pattern /{pattern}/."
+
     def __init__(self, *,  # There are no positional arguments.
                  integer: Union[str, Pattern],
                  real: Union[str, Pattern]):
@@ -346,9 +349,10 @@ class KindPattern(FortranRule):
                     match = self._patterns[data_type].match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
-                        message = f"Kind of variable '{entity_declaration}'" \
-                                  " does not match the pattern for" \
-                                  f" {data_type} type."
+                        message = self._ISSUE_TEMPLATE.format(type=data_type,
+                                                              kind=kind,
+                                                              name=entity_declaration,
+                                                              pattern=self._patterns[data_type].pattern)
                         issues.append(Issue(message,
                                             line=candidate.item.span[0]))
 
