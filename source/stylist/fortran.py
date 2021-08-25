@@ -303,6 +303,10 @@ class KindPattern(FortranRule):
     def __init__(self,
                  integer_pattern: Union[str, Pattern],
                  real_pattern: Union[str, Pattern]):
+        # We only set patterns for integer and real data types however Fortran
+        # supports many more. e.g. Logical and Complex. In those cases we
+        # accept anything by having a default pattern of ".*"
+        #
         self._patterns: Dict[str, Pattern] \
             = defaultdict(lambda: re.compile(r'.*'))
         if isinstance(integer_pattern, str):
