@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ##############################################################################
 # (c) Crown copyright 2019 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
@@ -106,18 +105,21 @@ def determine_style(configuration: Configuration,
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:
             processed_args: List[str] = []
-            processed_kargs: Dict[str, str] = {}
+            processed_kwargs: Dict[str, str] = {}
             for arg in rule_arguments:
                 match = _ARGUMENT_PATTERN.match(arg)
                 if match is None:
                     message = "Failed to comprehend rule argument list"
                     raise StylistException(message)
                 if match.group(1) is not None:
-                    processed_kargs[match.group(1)] = eval(match.group(2))
+                    processed_kwargs[match.group(1)] = eval(match.group(2))
                 else:
                     processed_args.append(eval(match.group(2)))
-            rules.append(potential_rules[rule_name](*processed_args,
-                                                    **processed_kargs))
+            # TODO: Currently the use of *args and **kwargs here confuses mypy.
+            #
+            new_rule = potential_rules[rule_name](  # type: ignore
+                *processed_args, **processed_kwargs)
+            rules.append(new_rule)
         else:
             rules.append(potential_rules[rule_name]())
     return Style(rules)
