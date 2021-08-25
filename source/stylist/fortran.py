@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ##############################################################################
 # (c) Crown copyright 2019 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
@@ -350,7 +349,7 @@ class KindPattern(FortranRule):
                         entity_declaration = candidate.items[2]
                         message = f"Kind of variable '{entity_declaration}'" \
                                   " does not match the pattern for" \
-                                  f" {data_type.lower()} type."
+                                  f" {data_type} type."
                         issues.append(Issue(message,
                                             line=candidate.item.span[0]))
 
