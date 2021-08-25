@@ -1,7 +1,7 @@
 stdout
 Found 4 issues
 stderr
-$$/wrong_kind.f90: 6: Kind of variable 'global_float' does not match the pattern for real type.
-$$/wrong_kind.f90: 9: Kind of variable 'member_int' does not match the pattern for integer type.
-$$/wrong_kind.f90: 19: Kind of variable 'arg_int' does not match the pattern for integer type.
-$$/wrong_kind.f90: 26: Kind of variable 'marg_float' does not match the pattern for real type.
+$$/wrong_kind.f90: 6: Kind 'smooth_jazz' found for real variable 'global_float' does not fit the pattern /.*_metal/.
+$$/wrong_kind.f90: 9: Kind 'heavy_metal' found for integer variable 'member_int' does not fit the pattern /.*_jazz/.
+$$/wrong_kind.f90: 19: Kind 'death_metal' found for integer variable 'arg_int' does not fit the pattern /.*_jazz/.
+$$/wrong_kind.f90: 26: Kind 'modern_jazz' found for real variable 'marg_float' does not fit the pattern /.*_metal/.
