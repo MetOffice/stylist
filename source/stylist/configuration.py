@@ -13,7 +13,7 @@ from abc import ABC
 from configparser import ConfigParser, MissingSectionHeaderError
 from pathlib import Path
 import re
-from typing import Dict, List, Mapping, Sequence, Set, Tuple, Type, Pattern
+from typing import Dict, Mapping, Sequence, Set, Tuple, Type, Pattern
 
 from stylist import StylistException
 from stylist.source import (CPreProcessor,
@@ -117,7 +117,8 @@ class Configuration(ABC):
 
     # This rule will not handle brackets appearing within the argument list.
     #
-    _RULE_PATTERN: Pattern[str] = re.compile(r'(?:^|,)\s*(.+?(?:\(.*?\))?(?=,|$))')
+    _RULE_PATTERN: Pattern[str] \
+        = re.compile(r'(?:^|,)\s*(.+?(?:\(.*?\))?(?=,|$))')
 
     def get_style(self, name: str) -> Sequence[str]:
         """

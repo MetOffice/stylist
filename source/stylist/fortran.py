@@ -349,10 +349,11 @@ class KindPattern(FortranRule):
                     match = self._patterns[data_type].match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
-                        message = self._ISSUE_TEMPLATE.format(type=data_type,
-                                                              kind=kind,
-                                                              name=entity_declaration,
-                                                              pattern=self._patterns[data_type].pattern)
+                        message = self._ISSUE_TEMPLATE.format(
+                            type=data_type,
+                            kind=kind,
+                            name=entity_declaration,
+                            pattern=self._patterns[data_type].pattern)
                         issues.append(Issue(message,
                                             line=candidate.item.span[0]))
 

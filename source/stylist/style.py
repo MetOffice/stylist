@@ -71,6 +71,7 @@ def _all_subclasses(cls: Any) -> Set[Type]:
 
 _ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
 
+
 def determine_style(configuration: Configuration,
                     style_name: Optional[str] = None) -> Style:
     available_styles = configuration.available_styles()
@@ -113,12 +114,14 @@ def determine_style(configuration: Configuration,
             for arg in rule_arguments:
                 match = _ARGUMENT_PATTERN.match(arg)
                 if match is None:
-                    raise StylistException("Failed to comprehend rule argument list")
+                    message = "Failed to comprehend rule argument list"
+                    raise StylistException(message)
                 if match.group(1) is not None:
                     processed_kargs[match.group(1)] = eval(match.group(2))
                 else:
                     processed_args.append(eval(match.group(2)))
-            rules.append(potential_rules[rule_name](*processed_args, **processed_kargs))
+            rules.append(potential_rules[rule_name](*processed_args,
+                                                    **processed_kargs))
         else:
             rules.append(potential_rules[rule_name]())
     return Style(rules)
