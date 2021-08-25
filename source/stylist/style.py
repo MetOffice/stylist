@@ -28,11 +28,11 @@ class Style(object, metaclass=ABCMeta):
             rules = [rules]
         self._rules = rules
 
-    def list_rules(self) -> List[str]:
+    def list_rules(self) -> List[stylist.rule.Rule]:
         """
         Gets a list of the rules which make up this style.
         """
-        return [rule.__class__.__name__ for rule in self._rules]
+        return self._rules
 
     def check(self,
               source: stylist.source.SourceTree) -> List[stylist.issue.Issue]:
@@ -101,7 +101,8 @@ def determine_style(configuration: Configuration,
         if rule_name not in potential_rules:
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:
-            rules.append(potential_rules[rule_name](*rule_arguments))
+            processed_args = [eval(arg) for arg in rule_arguments]
+            rules.append(potential_rules[rule_name](*processed_args))
         else:
             rules.append(potential_rules[rule_name]())
     return Style(rules)
