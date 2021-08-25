@@ -8,7 +8,7 @@
 Ensures the 'style' module functions as expected.
 """
 from pathlib import Path
-from typing import List
+from typing import cast, List
 
 import pytest  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
@@ -195,5 +195,8 @@ class TestDetermineStyle:
         initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(r'.*')"}}
         conf = Configuration(initialiser)
         style = stylist.style.determine_style(conf)
-        assert self._name_rules(style) == ['_RuleHarnessTwo']
-        assert style.list_rules()[0].thing == r'.*'
+
+        rules = style.list_rules()
+        assert len(rules) == 1
+        assert isinstance(rules[0], _RuleHarnessTwo)
+        assert cast(_RuleHarnessTwo, rules[0]).thing == r'.*'
