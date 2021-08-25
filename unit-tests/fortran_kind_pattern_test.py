@@ -65,7 +65,8 @@ class TestKindPattern:
 
         reader = SourceStringReader(case)
         source = FortranSource(reader)
-        unit_under_test = KindPattern(r'.+_beef', re.compile(r'.+_cheese'))
+        unit_under_test = KindPattern(integer=r'.+_beef',
+                                      real=re.compile(r'.+_cheese'))
         issues = unit_under_test.examine(source)
 
         assert len(issues) == 0
@@ -112,7 +113,8 @@ class TestKindPattern:
 
         reader = SourceStringReader(case)
         source = FortranSource(reader)
-        unit_under_test = KindPattern(r'.+_beef', re.compile(r'.+_cheese'))
+        unit_under_test = KindPattern(integer=re.compile(r'.+_beef'),
+                                      real=r'.+_cheese')
         issues = unit_under_test.examine(source)
 
         assert len(issues) == 15
@@ -154,6 +156,7 @@ class TestKindPattern:
 
         reader = SourceStringReader(case)
         source = FortranSource(reader)
-        unit_under_test = KindPattern(r'.+_beef', re.compile(r'.+_cheese'))
+        unit_under_test = KindPattern(integer=r'.+_beef',
+                                      real=re.compile(r'.+_cheese'))
         issues = unit_under_test.examine(source)
         assert len(issues) == 0

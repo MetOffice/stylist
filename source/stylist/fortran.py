@@ -298,23 +298,23 @@ class MissingPointerInit(FortranRule):
 
 
 class KindPattern(FortranRule):
-    def __init__(self,
-                 integer_pattern: Union[str, Pattern],
-                 real_pattern: Union[str, Pattern]):
+    def __init__(self, *,  # There are no positional arguments.
+                 integer: Union[str, Pattern],
+                 real: Union[str, Pattern]):
         # We only set patterns for integer and real data types however Fortran
         # supports many more. e.g. Logical and Complex. In those cases we
         # accept anything by having a default pattern of ".*"
         #
         self._patterns: Dict[str, Pattern] \
             = defaultdict(lambda: re.compile(r'.*'))
-        if isinstance(integer_pattern, str):
-            self._patterns['integer'] = re.compile(integer_pattern)
+        if isinstance(integer, str):
+            self._patterns['integer'] = re.compile(integer)
         else:
-            self._patterns['integer'] = integer_pattern
-        if isinstance(real_pattern, str):
-            self._patterns['real'] = re.compile(real_pattern)
+            self._patterns['integer'] = integer
+        if isinstance(real, str):
+            self._patterns['real'] = re.compile(real)
         else:
-            self._patterns['real'] = real_pattern
+            self._patterns['real'] = real
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []

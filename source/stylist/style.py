@@ -9,6 +9,7 @@ Classes relating to styles made up of rules.
 """
 from abc import ABCMeta
 import logging
+import re
 from typing import Any, Dict, List, Optional, Set, Type
 
 from stylist import StylistException
@@ -68,6 +69,8 @@ def _all_subclasses(cls: Any) -> Set[Type]:
     return children
 
 
+_ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
+
 def determine_style(configuration: Configuration,
                     style_name: Optional[str] = None) -> Style:
     available_styles = configuration.available_styles()
@@ -105,8 +108,17 @@ def determine_style(configuration: Configuration,
         if rule_name not in potential_rules:
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:
-            processed_args = [eval(arg) for arg in rule_arguments]
-            rules.append(potential_rules[rule_name](*processed_args))
+            processed_args: List[str] = []
+            processed_kargs: Dict[str, str] = {}
+            for arg in rule_arguments:
+                match = _ARGUMENT_PATTERN.match(arg)
+                if match is None:
+                    raise StylistException("Failed to comprehend rule argument list")
+                if match.group(1) is not None:
+                    processed_kargs[match.group(1)] = eval(match.group(2))
+                else:
+                    processed_args.append(eval(match.group(2)))
+            rules.append(potential_rules[rule_name](*processed_args, **processed_kargs))
         else:
             rules.append(potential_rules[rule_name]())
     return Style(rules)

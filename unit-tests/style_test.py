@@ -190,7 +190,7 @@ class TestDetermineStyle:
 
     def test_raw_argument(self, tmp_path: Path):
         """
-        Checks that raw-string arguments arr handled correctly.
+        Checks that raw-string arguments are handled correctly.
         """
         initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(r'.*')"}}
         conf = Configuration(initialiser)
@@ -200,3 +200,16 @@ class TestDetermineStyle:
         assert len(rules) == 1
         assert isinstance(rules[0], _RuleHarnessTwo)
         assert cast(_RuleHarnessTwo, rules[0]).thing == r'.*'
+
+    def test_keyword_argument(self, tmp_path: Path):
+        """
+        Checks that keyword arguments are handled correctly.
+        """
+        initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(thing='bing')"}}
+        conf = Configuration(initialiser)
+        style = stylist.style.determine_style(conf)
+
+        rules = style.list_rules()
+        assert len(rules) == 1
+        assert isinstance(rules[0], _RuleHarnessTwo)
+        assert cast(_RuleHarnessTwo, rules[0]).thing == 'bing'
