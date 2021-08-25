@@ -114,6 +114,9 @@ class Configuration(ABC):
 
         return sorted(styles)
 
+    _RULE_STATE = 'rule'
+    _ARGS_STATE = 'args'
+
     def get_style(self, name: str) -> Sequence[str]:
         """
         Gets the rules associated with the provided style name.
@@ -125,21 +128,21 @@ class Configuration(ABC):
                 raise StylistException(f"Style {key} contains no rules")
             else:
                 rule_list: List[str] = []
-                state = 'rule'
+                state = self._RULE_STATE
                 buffer = ''
                 for character in rules:
-                    if state == 'rule':
+                    if state == self._RULE_STATE:
                         if character == ',':
                             rule_list.append(buffer.strip())
                             buffer = ''
                         else:
                             buffer += character
                             if character == '(':
-                                state = 'args'
-                    elif state == 'args':
+                                state = self._ARGS_STATE
+                    elif state == self._ARGS_STATE:
                         buffer += character
                         if character == ')':
-                            state = 'rule'
+                            state = self._RULE_STATE
                     else:
                         raise StylistException(f"Unrecognised state '{state}'"
                                                "when parsing rules")
