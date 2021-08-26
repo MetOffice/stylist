@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ##############################################################################
 # (c) Crown copyright 2019 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
@@ -9,6 +8,7 @@ Classes relating to styles made up of rules.
 """
 from abc import ABCMeta
 import logging
+import re
 from typing import Any, Dict, List, Optional, Set, Type
 
 from stylist import StylistException
@@ -28,11 +28,11 @@ class Style(object, metaclass=ABCMeta):
             rules = [rules]
         self._rules = rules
 
-    def list_rules(self) -> List[str]:
+    def list_rules(self) -> List[stylist.rule.Rule]:
         """
         Gets a list of the rules which make up this style.
         """
-        return [rule.__class__.__name__ for rule in self._rules]
+        return self._rules
 
     def check(self,
               source: stylist.source.SourceTree) -> List[stylist.issue.Issue]:
@@ -66,6 +66,9 @@ def _all_subclasses(cls: Any) -> Set[Type]:
                 to_examine.append(child)
                 children.add(child)
     return children
+
+
+_ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
 
 
 def determine_style(configuration: Configuration,
@@ -105,7 +108,22 @@ def determine_style(configuration: Configuration,
         if rule_name not in potential_rules:
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:
-            rules.append(potential_rules[rule_name](*rule_arguments))
+            processed_args: List[str] = []
+            processed_kwargs: Dict[str, str] = {}
+            for arg in rule_arguments:
+                match = _ARGUMENT_PATTERN.match(arg)
+                if match is None:
+                    message = "Failed to comprehend rule argument list"
+                    raise StylistException(message)
+                if match.group(1) is not None:
+                    processed_kwargs[match.group(1)] = eval(match.group(2))
+                else:
+                    processed_args.append(eval(match.group(2)))
+            # TODO: Currently the use of *args and **kwargs here confuses mypy.
+            #
+            new_rule = potential_rules[rule_name](  # type: ignore
+                *processed_args, **processed_kwargs)
+            rules.append(new_rule)
         else:
             rules.append(potential_rules[rule_name]())
     return Style(rules)

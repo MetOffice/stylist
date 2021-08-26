@@ -12,7 +12,8 @@ Configuration may be defined by software or read from a Windows .ini file.
 from abc import ABC
 from configparser import ConfigParser, MissingSectionHeaderError
 from pathlib import Path
-from typing import Dict, Mapping, Sequence, Set, Tuple, Type
+import re
+from typing import Dict, Mapping, Sequence, Set, Tuple, Type, Pattern
 
 from stylist import StylistException
 from stylist.source import (CPreProcessor,
@@ -114,6 +115,11 @@ class Configuration(ABC):
 
         return sorted(styles)
 
+    # This rule will not handle brackets appearing within the argument list.
+    #
+    _RULE_PATTERN: Pattern[str] \
+        = re.compile(r'(?:^|,)\s*(.+?(?:\(.*?\))?(?=,|$))')
+
     def get_style(self, name: str) -> Sequence[str]:
         """
         Gets the rules associated with the provided style name.
@@ -124,7 +130,7 @@ class Configuration(ABC):
             if len(rules.strip()) == 0:
                 raise StylistException(f"Style {key} contains no rules")
             else:
-                return rules.split(',')
+                return self._RULE_PATTERN.findall(rules)
         else:  # key not in self._parameters
             if self._defaults is not None:
                 return self._defaults.get_style(name)

@@ -8,6 +8,7 @@
 Ensures the 'style' module functions as expected.
 """
 from pathlib import Path
+from typing import cast, List
 
 import pytest  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
@@ -79,7 +80,8 @@ class TestStyle(object):
         style.
         """
         unit_under_test = TestStyle._StyleHarness(initials[0])
-        assert unit_under_test.list_rules() == initials[1]
+        assert [rule.__class__.__name__
+                for rule in unit_under_test.list_rules()] == initials[1]
 
     class _RuleHarness(stylist.rule.Rule):
         def __init__(self):
@@ -107,6 +109,13 @@ class TestDetermineStyle:
     """
     Ensures a style can be read from a configuration structure.
     """
+    @staticmethod
+    def _name_rules(style: stylist.style.Style) -> List[str]:
+        """
+        Converts a style into a list of rule names.
+        """
+        return [rule.__class__.__name__ for rule in style.list_rules()]
+
     def test_none(self):
         """
         Checks that an error is thrown if an attempt is made to get a style
@@ -128,8 +137,8 @@ class TestDetermineStyle:
              'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         new_style = stylist.style.determine_style(several_style_conf,
                                                   'the_second')
-        assert new_style.list_rules() == ['_RuleHarnessOne',
-                                          '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_single_style(self, tmp_path: Path):
         """
@@ -141,8 +150,8 @@ class TestDetermineStyle:
                                 "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf,
                                                   'singular')
-        assert new_style.list_rules() == ['_RuleHarnessOne',
-                                          '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_default_style(self, tmp_path: Path):
         """
@@ -153,7 +162,8 @@ class TestDetermineStyle:
              'style.maybe': {'rules':
                              "_RuleHarnessOne, _RuleHarnessTwo('blah')"}})
         new_style = stylist.style.determine_style(single_style_conf)
-        assert new_style.list_rules() == ['_RuleHarnessOne', '_RuleHarnessTwo']
+        assert self._name_rules(new_style) == ['_RuleHarnessOne',
+                                               '_RuleHarnessTwo']
 
     def test_no_default(self, tmp_path: Path):
         """
@@ -172,8 +182,35 @@ class TestDetermineStyle:
         several_style_conf = Configuration(
             {'style.the_first': {'rules': '_RuleHarnessOne'},
              'style.the_second': {'rules':
-                                  '_RuleHarnessOne, _RuleHarnessTweo(42)'},
+                                  '_RuleHarnessOne, _RuleHarnessTwo(42)'},
              'beef': {'whatsits': 'cheesy'},
              'style.the_third': {'rules': "_RuleHarnessTwo('super')"}})
         with pytest.raises(StylistException):
             stylist.style.determine_style(several_style_conf)
+
+    def test_raw_argument(self, tmp_path: Path):
+        """
+        Checks that raw-string arguments are handled correctly.
+        """
+        initialiser = {'style.rawarg': {'rules': "_RuleHarnessTwo(r'.*')"}}
+        conf = Configuration(initialiser)
+        style = stylist.style.determine_style(conf)
+
+        rules = style.list_rules()
+        assert len(rules) == 1
+        assert isinstance(rules[0], _RuleHarnessTwo)
+        assert cast(_RuleHarnessTwo, rules[0]).thing == r'.*'
+
+    def test_keyword_argument(self, tmp_path: Path):
+        """
+        Checks that keyword arguments are handled correctly.
+        """
+        initialiser = {'style.rawarg':
+                       {'rules': "_RuleHarnessTwo(thing='bing')"}}
+        conf = Configuration(initialiser)
+        style = stylist.style.determine_style(conf)
+
+        rules = style.list_rules()
+        assert len(rules) == 1
+        assert isinstance(rules[0], _RuleHarnessTwo)
+        assert cast(_RuleHarnessTwo, rules[0]).thing == 'bing'

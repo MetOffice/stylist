@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ##############################################################################
 # (c) Crown copyright 2019 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
@@ -8,7 +7,9 @@
 Rules relating to Fortran source.
 """
 from abc import ABCMeta, abstractmethod
-from typing import Dict, List, Optional, Type
+from collections import defaultdict
+import re
+from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 
@@ -291,6 +292,70 @@ class MissingPointerInit(FortranRule):
                         message \
                             = f"Unexpected source element: {repr(candidate)}"
                         raise Exception(message)
+
+        issues.sort(key=lambda x: (x.filename, x.line, x.description))
+        return issues
+
+
+class KindPattern(FortranRule):
+    _ISSUE_TEMPLATE = "Kind '{kind}' found for {type} variable '{name}' does" \
+            " not fit the pattern /{pattern}/."
+
+    def __init__(self, *,  # There are no positional arguments.
+                 integer: Union[str, Pattern],
+                 real: Union[str, Pattern]):
+        # We only set patterns for integer and real data types however Fortran
+        # supports many more. e.g. Logical and Complex. In those cases we
+        # accept anything by having a default pattern of ".*"
+        #
+        self._patterns: Dict[str, Pattern] \
+            = defaultdict(lambda: re.compile(r'.*'))
+        if isinstance(integer, str):
+            self._patterns['integer'] = re.compile(integer)
+        else:
+            self._patterns['integer'] = integer
+        if isinstance(real, str):
+            self._patterns['real'] = re.compile(real)
+        else:
+            self._patterns['real'] = real
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+
+        candidates: List[Fortran2003.Base] = []
+        # Component variables
+        candidates.extend(
+            subject.find_all(Fortran2003.Data_Component_Def_Stmt))
+        # Component Procedure
+        candidates.extend(
+            subject.find_all(Fortran2003.Proc_Component_Def_Stmt))
+        # Procedure declaration
+        candidates.extend(
+            subject.find_all(Fortran2003.Procedure_Declaration_Stmt))
+        # Variable declaration
+        candidates.extend(
+            subject.find_all(Fortran2003.Type_Declaration_Stmt))
+
+        for candidate in candidates:
+            if isinstance(candidate,  # Is variable
+                          (Fortran2003.Data_Component_Def_Stmt,
+                           Fortran2003.Type_Declaration_Stmt)):
+                type_spec: Fortran2003.Intrinsic_Type_Spec = candidate.items[0]
+                kind_selector: Fortran2003.Kind_Selector = type_spec.items[1]
+
+                if isinstance(kind_selector, Fortran2003.Kind_Selector):
+                    data_type: str = type_spec.items[0].lower()
+                    kind: str = kind_selector.string.strip('()')
+                    match = self._patterns[data_type].match(kind)
+                    if match is None:
+                        entity_declaration = candidate.items[2]
+                        message = self._ISSUE_TEMPLATE.format(
+                            type=data_type,
+                            kind=kind,
+                            name=entity_declaration,
+                            pattern=self._patterns[data_type].pattern)
+                        issues.append(Issue(message,
+                                            line=candidate.item.span[0]))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues

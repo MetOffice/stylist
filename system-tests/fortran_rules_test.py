@@ -22,7 +22,8 @@ class TestFortranRules(object):
     _RULES = ['bad_character',
               'missing_implicit',
               'missing_only',
-              'missing_pointer_init']
+              'missing_pointer_init',
+              'wrong_kind']
 
     @fixture(scope='class', params=_RULES)
     def rule(self, request: FixtureRequest) -> str:
