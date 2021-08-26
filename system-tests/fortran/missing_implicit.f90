@@ -4,6 +4,12 @@ module stuff_mod
 
     end type typy_type
 
+contains
+
+    subroutine procy_proc
+
+    end subroutine procy_proc
+
 end module stuff_mod
 
 

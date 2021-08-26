@@ -66,6 +66,15 @@ def empty_program_unit_implicit(request: FixtureRequest) \
 
 
 @pytest.fixture(scope='module',
+                params=[True, False])
+def require_always(request: FixtureRequest) -> bool:
+    """
+    Whether to enable "always require implicit" or not.
+    """
+    return request.param
+
+
+@pytest.fixture(scope='module',
                 params=[('''program barney
                             implicit none
                             write(6, '("boo")')
@@ -185,7 +194,8 @@ class TestMissingImplicit(object):
             self,
             containing_program_unit: Tuple[str, List[str]],
             subprogram_implicit: Tuple[str, List[str]],
-            second_subprogram_implicit: Tuple[str, List[str]]) -> None:
+            second_subprogram_implicit: Tuple[str, List[str]],
+            require_always: bool) -> None:
         """
         Checks all the permutations of two contained procedures.
         """
@@ -206,12 +216,14 @@ class TestMissingImplicit(object):
         expectation = []
         for thing in containing_program_unit[1]:
             expectation.append(f"1: {thing}")
-        for thing in subprogram_implicit[1]:
-            expectation.append(f"{insert_line}: {thing}")
-        for thing in second_subprogram_implicit[1]:
-            expectation.append(f"{insert_line + first_len}: {thing}")
+        if require_always:
+            for thing in subprogram_implicit[1]:
+                expectation.append(f"{insert_line}: {thing}")
+            for thing in second_subprogram_implicit[1]:
+                expectation.append(f"{insert_line + first_len}: {thing}")
 
-        unit_under_test = stylist.fortran.MissingImplicit('none')
+        unit_under_test = stylist.fortran.MissingImplicit(
+            'none', require_everywhere=require_always)
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ##############################################################################
 # (c) Crown copyright 2020 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
@@ -7,27 +6,46 @@
 """
 System test of Fortran rules.
 """
+from collections import namedtuple
+import re
 from pathlib import Path
 import subprocess
-from typing import List, Tuple
+from typing import Generator, List, Optional, Tuple
 
 from pytest import fixture  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
+
+_CASE_TUPLE = namedtuple('_CASE_TUPLE', ['test', 'variant', 'rules'])
+_STYLE_PATTERN = re.compile(r'\[style\.(.+)\]')
+_RULES_PATTERN = re.compile(r'rules\s*=\s*(.+)')
+
+
+def _list_cases() -> List[_CASE_TUPLE]:
+    test_dir = Path(__file__).parent / 'fortran'
+    config_file = test_dir / 'configuration.ini'
+    tests: List[_CASE_TUPLE] = list()
+    style = ''
+    for line in config_file.read_text().splitlines():
+        match = _STYLE_PATTERN.match(line)
+        if match:
+            style = match.group(1)
+        else:
+            match = _RULES_PATTERN.match(line)
+            if match:
+                variant: Optional[str]
+                test, _, variant = style.partition('#')
+                if not variant:
+                    variant = None
+                tests.append(_CASE_TUPLE(test,
+                                         variant,
+                                         match.group(1)))
+    tests.sort(key=lambda x: f"{x.test}{x.variant}")
+    return tests
 
 
 class TestFortranRules(object):
-    _RULES = ['bad_character',
-              'missing_implicit',
-              'missing_only',
-              'missing_pointer_init',
-              'wrong_kind']
-
-    @fixture(scope='class', params=_RULES)
-    def rule(self, request: FixtureRequest) -> str:
-        return request.param
+    @fixture(scope='class', params=_list_cases())
+    def case(self, request) -> Generator[_CASE_TUPLE, None, None]:
+        yield request.param
 
     @staticmethod
     def _get_expected(test_dir: Path,
@@ -45,44 +63,32 @@ class TestFortranRules(object):
                 buffer.append(line.replace('$$', str(test_dir)))
         return expected_output, expected_error
 
-    def test_rule(self, rule: str) -> None:
+    def test_rule(self, case: Tuple[str, Optional[str], str]) -> None:
+        with open('debug.log', 'a') as handle:
+            print(case, file=handle)
+        test = case[0]
+        variant = case[1]
+
+        if variant is None:
+            case_name = test
+        else:
+            case_name = f"{test}#{variant}"
+
         test_dir = Path(__file__).parent / 'fortran'
 
         expected_output, expected_error \
-            = TestFortranRules._get_expected(test_dir, rule)
+            = TestFortranRules._get_expected(test_dir, case_name)
 
         command: List[str] = ['python', '-m', 'stylist',
                               '-configuration',
                               str(test_dir / 'configuration.ini'),
-                              '-style', rule,
-                              str(test_dir / f'{rule}.f90')]
+                              '-style', case_name,
+                              str(test_dir / f'{test}.f90')]
         process = subprocess.run(command,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
 
-        assert process.returncode == 1
-        assert process.stderr.decode('utf-8').strip() \
-            == ''.join(expected_error).strip()
-        assert process.stdout.decode('utf-8').strip() \
-            == ''.join(expected_output).strip()
-
-    def test_all(self) -> None:
-        test_dir = Path(__file__).parent / 'fortran'
-
-        expected_output, expected_error \
-            = TestFortranRules._get_expected(test_dir, 'all')
-
-        command: List[str] = ['python', '-m', 'stylist',
-                              '-configuration',
-                              str(test_dir / 'configuration.ini'),
-                              '-style', 'all']
-        for rule in TestFortranRules._RULES:
-            command.append(str(test_dir / f'{rule}.f90'))
-        process = subprocess.run(command,
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
-
-        assert process.returncode == 1
+        assert process.returncode != 0
         assert process.stderr.decode('utf-8').strip() \
             == ''.join(expected_error).strip()
         assert process.stdout.decode('utf-8').strip() \

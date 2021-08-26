@@ -116,7 +116,7 @@ class MissingImplicit(FortranRule):
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     """
-    def __init__(self, default='none') -> None:
+    def __init__(self, default='none', require_everywhere=False) -> None:
         """
         Constructor taking a default implication.
 
@@ -133,6 +133,7 @@ class MissingImplicit(FortranRule):
         """
         assert default.lower() in ('none', 'private', 'public')
         self._default = default.lower()
+        self._require_everywhere = require_everywhere
 
     _NATURE_MAP: Dict[Type[Fortran2003.StmtBase], str] \
         = {Fortran2003.Program_Stmt: 'Program',
@@ -144,12 +145,13 @@ class MissingImplicit(FortranRule):
         issues = []
 
         scope_units = subject.path('Program_Unit')
-        scope_units.extend(subject.path(['Main_Program',
-                                         'Internal_Subprogram_Part',
-                                         'Internal_Subprogram']))
-        scope_units.extend(subject.path(['Module',
-                                         'Module_Subprogram_Part',
-                                         'Module_Subprogram']))
+        if self._require_everywhere:
+            scope_units.extend(subject.path(['Main_Program',
+                                             'Internal_Subprogram_Part',
+                                             'Internal_Subprogram']))
+            scope_units.extend(subject.path(['Module',
+                                             'Module_Subprogram_Part',
+                                             'Module_Subprogram']))
         scope: Fortran2003.Block
         for scope in scope_units:
             scope_statement = subject.get_first_statement(root=scope)
