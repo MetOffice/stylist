@@ -46,7 +46,8 @@ regarding this second option is maintained in the project wiki.
 The command-line tool is not complicated to use:
 
  `stylist [-help] [-verbose]
-          [-map-extension EXTENSION:LANGUAGE[:PREPROCESSOR:...]]
+          [-configuration FILENAME]
+          [-style NAME]
           FILE ...`
 
 The only required arguments are one or more filenames. These are the files
@@ -54,15 +55,36 @@ which will be checked. If a directory is specified then the tool will
 automatically descend into it checking all files which it recognises by
 extension.
 
-If you wish to make the tool aware of new extensions then use the
-`-map-extension` argument. It takes a colon separated list. The first item
-is the plain extension (no preceding full-stop). After that comes the
-language to understand the file as. Finally a list of zero or more
-preprocessors to apply to the file before parsing.
-
-For example: `stylist -map-extension spesh:fortran:fpp:pfp`
-
-The keys for selecting language and preprocessor are found in `__main__.py`.
-
 If you want a running commentary of what the tool is doing then use the
 `-verbose` argument.
+
+A configuration file may specified with `-configuration` . This file should be
+formatted as documented below.
+
+The configuration may define several styles, in which case one can be chosen
+using the `-style` argument. If it is not then the first in the configuration
+file will be used.
+
+### Configuration File
+
+The configuration file is in Windows `.ini` format.
+
+The processing pipelines for different file types are specified in the
+`file-pipe` section. Each key is the file extension and the value a colon
+separated list of processors starting with the language. See `stylist -help`
+for a list of processors.
+
+```
+[file-pipe]
+x90=fortran:pfp:fpp
+```
+
+Styles are defined in sections called `style.<name>`. In this section is
+expected a key `rules` with a comma separated list of rules as the value. These
+rules may take parameters which are presented in parenthesis.
+
+```
+[style.<name>]
+rules = FortranCharacterset, KindPattern(integer='i_.*', real='r_.*')
+
+```
