@@ -1,5 +1,6 @@
 stdout
-Found 2 issues
+Found 3 issues
 stderr
 $$/missing_implicit.f90: 1: Module 'stuff_mod' is missing an implicit statement
+$$/missing_implicit.f90: 9: Subroutine 'procy_proc' is missing an implicit statement
 $$/missing_implicit.f90: 16: Program 'missing_implicit' is missing an implicit statement

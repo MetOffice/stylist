@@ -3,7 +3,7 @@ Found 13 issues
 stderr
 $$/bad_character.f90: 5: Found character '\t' not in Fortran character set
 $$/missing_implicit.f90: 1: Module 'stuff_mod' is missing an implicit statement
-$$/missing_implicit.f90: 10: Program 'missing_implicit' is missing an implicit statement
+$$/missing_implicit.f90: 16: Program 'missing_implicit' is missing an implicit statement
 $$/missing_only.f90: 3: Usage of "iso_fortran_env" without "only" clause.
 $$/missing_only.f90: 11: Usage of "test_mod" without "only" clause.
 $$/missing_pointer_init.f90: 5: Declaration of pointer "common_bar" without initialisation.
@@ -14,3 +14,7 @@ $$/missing_pointer_init.f90: 56: Declaration of pointer "common_bar" without ini
 $$/missing_pointer_init.f90: 57: Declaration of pointer "common_proc" without initialisation.
 $$/missing_pointer_init.f90: 60: Declaration of pointer "foo" without initialisation.
 $$/missing_pointer_init.f90: 68: Declaration of pointer "what_is_foo" without initialisation.
+$$/wrong_kind.f90: 6: Kind 'smooth_jazz' found for real variable 'global_float' does not fit the pattern /.*_metal/.
+$$/wrong_kind.f90: 9: Kind 'heavy_metal' found for integer variable 'member_int' does not fit the pattern /.*_jazz/.
+$$/wrong_kind.f90: 19: Kind 'death_metal' found for integer variable 'arg_int' does not fit the pattern /.*_jazz/.
+$$/wrong_kind.f90: 26: Kind 'modern_jazz' found for real variable 'marg_float' does not fit the pattern /.*_metal/.

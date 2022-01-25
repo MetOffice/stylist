@@ -1,0 +1,15 @@
+stdout
+Found 12 issues
+stderr
+$$/multiple.f90: 5: Declaration of pointer "common_bar" without initialisation.
+$$/multiple.f90: 6: Declaration of pointer "common_proc" without initialisation.
+$$/multiple.f90: 9: Declaration of pointer "foo" without initialisation.
+$$/multiple.f90: 12: Found character '\t' not in Fortran character set
+$$/multiple.f90: 19: Module 'stuff_mod' is missing an implicit statement
+$$/multiple.f90: 25: Declaration of pointer "common_bar" without initialisation.
+$$/multiple.f90: 26: Declaration of pointer "common_proc" without initialisation.
+$$/multiple.f90: 29: Declaration of pointer "foo" without initialisation.
+$$/multiple.f90: 34: Subroutine 'procy_proc' is missing an implicit statement
+$$/multiple.f90: 41: Declaration of pointer "what_is_foo" without initialisation.
+$$/multiple.f90: 66: Subroutine 'finally_foo' is missing an implicit statement
+$$/multiple.f90: 77: Declaration of pointer "what_is_foo" without initialisation.
