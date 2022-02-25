@@ -214,7 +214,7 @@ class LabelledExit(FortranRule):
         for exit in subject.find_all(Fortran2003.Exit_Stmt):
             if exit.items[1] is None:
                 issues.append(Issue('Usage of "exit" without label '
-                                    'indicating ' \
+                                    'indicating '
                                     'which do construct is being exited from.',
                                     line=exit.item.span[0]))
 
@@ -222,9 +222,9 @@ class LabelledExit(FortranRule):
         for statement in subject.find_all(Fortran2003.If_Stmt):
             action = statement.items[1]
             if type(action) == Fortran2003.Exit_Stmt and action.items[
-                1] is None:
+                 1] is None:
                 issues.append(Issue('Usage of "exit" without label '
-                                    'indicating ' \
+                                    'indicating '
                                     'which do construct is being exited from.',
                                     line=statement.item.span[0]))
 

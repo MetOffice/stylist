@@ -23,6 +23,7 @@ class TestLabelledExit(object):
     """
     Tests the checker of missing exit labels.
     """
+
     @pytest.fixture(scope='class',
                     params=['', 'foo'])
     def do_construct_name(self, request: FixtureRequest) -> str:
@@ -32,7 +33,7 @@ class TestLabelledExit(object):
         return request.param
 
     def test_exit_labels(self,
-                          do_construct_name: str) -> None:
+                         do_construct_name: str) -> None:
         """
         Checks that the rule reports missing exit labels correctly.
         """
@@ -54,7 +55,8 @@ end program test
 '''
 
         expectation: List[str] = []
-        message = '{line}: Usage of "exit" without label indicating which do construct is being exited from.'
+        message = '{line}: Usage of "exit" without label indicating which ' \
+                  'do construct is being exited from.'
         if do_construct_name == '':
             expectation.extend([
                 message.format(line=6),
