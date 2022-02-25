@@ -203,7 +203,7 @@ class MissingOnly(FortranRule):
         return issues
 
 
-class LabelledExits(FortranRule):
+class LabelledExit(FortranRule):
     """
     Catches cases where a construct is exited but not explicitly named.
     """
