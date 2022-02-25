@@ -45,7 +45,7 @@ contains
             exit {do_construct_name}
         end do foo
     end function function1
-    
+
     function function2()
         foo : do
             if (.true.) exit {do_construct_name}
