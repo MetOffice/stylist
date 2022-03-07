@@ -59,7 +59,9 @@ If you want a running commentary of what the tool is doing then use the
 `-verbose` argument.
 
 A configuration file may specified with `-configuration` . This file should be
-formatted as documented below.
+formatted as documented below. There must be a configuration file which defines
+at least one style. While the fallback mechanism which allows for user and site
+configurations has not been implemented it must be specified with this argument.
 
 The configuration may define several styles, in which case one can be chosen
 using the `-style` argument. If it is not then the first in the configuration
