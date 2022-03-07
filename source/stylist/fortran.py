@@ -6,9 +6,9 @@
 """
 Rules relating to Fortran source.
 """
+import re
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
-import re
 from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003
@@ -23,6 +23,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
     """
     Parent for style rules pertaining to Fortran source.
     """
+
     def examine(self, subject: FortranSource) -> List[Issue]:
         issues = []
         if not isinstance(subject, FortranSource):
@@ -117,6 +118,7 @@ class MissingImplicit(FortranRule):
     Catches cases where code blocks which could have an "implicit" statement
     don't.
     """
+
     def __init__(self, default='none', require_everywhere=False) -> None:
         """
         Constructor taking a default implication.
@@ -174,8 +176,9 @@ class MissingImplicit(FortranRule):
 
 class MissingOnly(FortranRule):
     """
-    Catches cases where a "use" statement is present but has no "only" claus.
+    Catches cases where a "use" statement is present but has no "only" clause.
     """
+
     def __init__(self, ignore: Optional[List[str]] = None) -> None:
         """
         Constructs a "MissingOnly" rule object taking a list of exception
@@ -197,6 +200,34 @@ class MissingOnly(FortranRule):
                     description = 'Usage of "{module}" without "only" clause.'
                     issues.append(Issue(description.format(module=module),
                                         line=statement.item.span[0]))
+
+        return issues
+
+
+class LabelledExit(FortranRule):
+    """
+    Catches cases where a "do" construct is exited but not explicitly named.
+    """
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues = []
+
+        for exit in subject.find_all(Fortran2003.Exit_Stmt):
+            if exit.items[1] is None:
+                issues.append(Issue('Usage of "exit" without label indicating '
+                                    'which "do" construct is being exited '
+                                    'from.',
+                                    line=exit.item.span[0]))
+
+        # Above doesn't catch exits in inline if statements
+        for statement in subject.find_all(Fortran2003.If_Stmt):
+            action = statement.items[1]
+            if type(action) == Fortran2003.Exit_Stmt and action.items[
+                    1] is None:
+                issues.append(Issue('Usage of "exit" without label indicating '
+                                    'which "do" construct is being exited '
+                                    'from.',
+                                    line=statement.item.span[0]))
 
         return issues
 
@@ -302,7 +333,7 @@ class MissingPointerInit(FortranRule):
 
 class KindPattern(FortranRule):
     _ISSUE_TEMPLATE = "Kind '{kind}' found for {type} variable '{name}' does" \
-            " not fit the pattern /{pattern}/."
+                      " not fit the pattern /{pattern}/."
 
     def __init__(self, *,  # There are no positional arguments.
                  integer: Union[str, Pattern],
