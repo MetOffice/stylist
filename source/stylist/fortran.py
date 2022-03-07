@@ -11,7 +11,8 @@ from collections import defaultdict
 import re
 from typing import Dict, List, Optional, Pattern, Type, Union
 
-import fparser.two.Fortran2003 as Fortran2003  # type: ignore
+import fparser.two.Fortran2003 as Fortran2003
+from pytest import param  # type: ignore
 
 from stylist.issue import Issue
 from stylist.rule import Rule
@@ -360,4 +361,63 @@ class KindPattern(FortranRule):
                                             line=candidate.item.span[0]))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
+        return issues
+
+class AutoCharArrayIntent(FortranRule):
+    """
+    Checks that all automatically assigned character arrays used as
+    subroutine or function arguments have intent(in) to avoid writing
+    outside the given array.
+    """
+    def __init__(self):
+        pass
+
+    def message(self, name, intent):
+        return f"Arguments of type character(*) must have intent IN, but {name} has intent {intent}."
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues = []
+
+        # Collect all variable declarations
+        declarations: List[Fortran2003.Base] = list(
+            subject.find_all(Fortran2003.Type_Declaration_Stmt)
+        )
+
+        # keep only the ones in subroutines
+        declarations = [
+            declaration
+            for declaration
+            in declarations
+            if isinstance(
+                declaration.parent.parent,
+                Fortran2003.Subroutine_Subprogram
+            )
+        ]
+
+        for declaration in declarations:
+            type_spec = declaration.items[0]
+            # If not a character, no concern
+            if not type_spec.items[0] == "CHARACTER":
+                continue
+            param_value = type_spec.items[1]
+            # This might be a length selector, if so get the param value
+            if isinstance(param_value, Fortran2003.Length_Selector):
+                param_value = param_value.items[1]
+            # If not an auto length, no concern
+            if not param_value.string == "*":
+                continue
+            attr_spec_list = declaration.items[1]
+            # If no intent specified, no concern
+            # Ensuring all arguments specify intent should be enforced elsewhere
+            if attr_spec_list is None:
+                continue
+            intent_attr = attr_spec_list.items[0]
+            # Intent in, no conern
+            if intent_attr.items[1].string == "IN":
+                continue
+            issues.append(Issue(
+                self.message(declaration.items[2].string, intent_attr.items[1]),
+                line=declaration.item.span[0]
+            ))
+
         return issues
