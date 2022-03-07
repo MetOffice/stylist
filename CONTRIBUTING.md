@@ -26,6 +26,7 @@ below:
 
 * Matthew Hambley (Met Office, UK)
 * Matt Shin (Met Office, UK)
+* Bilal Chughtai (Met Office, UK)
 
 (All contributors are identifiable with email addresses in the version control
 logs or otherwise.)
