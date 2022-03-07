@@ -1,5 +1,5 @@
 stdout
 Found 2 issues
 stderr
-$$/labelled_exit.f90: 4: Usage of "exit" without label indicating which do construct is being exited from.
-$$/labelled_exit.f90: 10: Usage of "exit" without label indicating which do construct is being exited from.
+$$/labelled_exit.f90: 4: Usage of "exit" without label indicating which "do" construct is being exited from.
+$$/labelled_exit.f90: 10: Usage of "exit" without label indicating which "do" construct is being exited from.

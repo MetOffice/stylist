@@ -12,10 +12,10 @@ from typing import List
 import pytest  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
 #       sorts out its type hinting we are stuck with it.
-#
+
 from _pytest.fixtures import FixtureRequest  # type: ignore
 
-import stylist.fortran
+from stylist.fortran import LabelledExit
 from stylist.source import FortranSource, SourceStringReader
 
 
@@ -56,25 +56,18 @@ end program test
 
         expectation: List[str] = []
         message = '{line}: Usage of "exit" without label indicating which ' \
-                  'do construct is being exited from.'
+                  '"do" construct is being exited from.'
         if do_construct_name == '':
             expectation.extend([
                 message.format(line=6),
                 message.format(line=12)
             ])
-        expectation.sort(key=lambda x: (int(x.split(':', 1)[0]),
-                                        x.split(':', 1)))
-
         text = template.format(
             do_construct_name=do_construct_name)
         print(text)  # Shows up in failure reports, for debugging
         reader = SourceStringReader(text)
         source = FortranSource(reader)
-        unit_under_test = stylist.fortran.LabelledExit()
+        unit_under_test = LabelledExit()
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
-        issue_descriptions.sort(key=lambda x: (int(x.split(':', 1)[0]),
-                                               x.split(':', 1)))
-        print(issue_descriptions)
-        print(expectation)
         assert issue_descriptions == expectation
