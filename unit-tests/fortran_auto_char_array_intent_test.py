@@ -2,17 +2,10 @@
 Tests for the auto char array intent rule
 """
 
-from unittest import expectedFailure
-import pytest
-from _pytest.fixtures import FixtureRequest
-from typing import List, Tuple
-
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
-#TODO More complex variable declarations
-
-test_case = \
+TEST_CASE = \
 """
 program cases
     ! A char array outside a function or subroutine, no exception
@@ -36,17 +29,24 @@ program cases
 end program cases
 """
 
-class TestAutoCharArrayIntent:
+TEST_EXPECTATION = [
+    '12: Arguments of type character(*) must have intent IN, but autochar_inout has intent INOUT.',
+    '14: Arguments of type character(*) must have intent IN, but autochar_out has intent OUT.'
+]
+
+class TestAutoCharArrayIntent(object):
+    """
+    Tests the rule that variable length character arguments should have intent(in)
+    """
+
     def test(self):
-        reader = SourceStringReader(test_case)
+        """
+        Ensures the test case produces exactly the issues in expectation
+        """
+        reader = SourceStringReader(TEST_CASE)
         source = FortranSource(reader)
         unit_under_test = stylist.fortran.AutoCharArrayIntent()
         issues = unit_under_test.examine(source)
         strings = [str(issue) for issue in issues]
 
-        expectation = [
-            '12: Arguments of type character(*) must have intent IN, but autochar_inout has intent INOUT.',
-            '14: Arguments of type character(*) must have intent IN, but autochar_out has intent OUT.'
-        ]
-
-        assert strings == expectation
+        assert strings == TEST_EXPECTATION
