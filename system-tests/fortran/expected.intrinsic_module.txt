@@ -1,0 +1,8 @@
+stdout
+Found 5 issues
+stderr
+$$/intrinsic_module.f90: 2: Usage of intrinsic module "iso_c_binding" without "intrinsic" clause.
+$$/intrinsic_module.f90: 3: Usage of intrinsic module "iso_fortran_env" without "intrinsic" clause.
+$$/intrinsic_module.f90: 4: Usage of intrinsic module "ieee_exceptions" without "intrinsic" clause.
+$$/intrinsic_module.f90: 5: Usage of intrinsic module "ieee_arithmetic" without "intrinsic" clause.
+$$/intrinsic_module.f90: 6: Usage of intrinsic module "ieee_features" without "intrinsic" clause.
