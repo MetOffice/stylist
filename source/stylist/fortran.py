@@ -11,7 +11,7 @@ from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Type, Union
 
-import fparser.two.Fortran2003 as Fortran2003
+import fparser.two.Fortran2003 as Fortran2003 # type: ignore
 from pytest import param  # type: ignore # noqa: F401
 
 from stylist.issue import Issue
@@ -412,7 +412,7 @@ class AutoCharArrayIntent(FortranRule):
         issues = []
 
         # Collect all variable declarations
-        declarations: List[Fortran2003.Base] = list(
+        declarations: List[Fortran2003.Type_Declaration_Stmt] = list(
             subject.find_all(Fortran2003.Type_Declaration_Stmt)
         )
 
