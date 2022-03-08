@@ -1,0 +1,5 @@
+stdout
+Found 2 issues
+stderr
+$$/auto_char_array_intent.f90: 12: Arguments of type character(*) must have intent IN, but autochar_inout has intent INOUT.
+$$/auto_char_array_intent.f90: 14: Arguments of type character(*) must have intent IN, but autochar_out has intent OUT.
