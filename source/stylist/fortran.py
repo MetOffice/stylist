@@ -12,7 +12,7 @@ from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003
-from pytest import param  # type: ignore
+from pytest import param  # type: ignore # noqa: F401
 
 from stylist.issue import Issue
 from stylist.rule import Rule
@@ -394,6 +394,7 @@ class KindPattern(FortranRule):
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues
 
+
 class AutoCharArrayIntent(FortranRule):
     """
     Checks that all automatically assigned character arrays used as
@@ -404,7 +405,8 @@ class AutoCharArrayIntent(FortranRule):
         pass
 
     def message(self, name, intent):
-        return f"Arguments of type character(*) must have intent IN, but {name} has intent {intent}."
+        return (f"Arguments of type character(*) must have intent IN, but "
+                f"{name} has intent {intent}.")
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -439,7 +441,7 @@ class AutoCharArrayIntent(FortranRule):
                 continue
             attr_spec_list = declaration.items[1]
             # If no intent specified, no concern
-            # Ensuring all arguments specify intent should be enforced elsewhere
+            # Ensuring arguments specify intent should be enforced elsewhere
             if attr_spec_list is None:
                 continue
             intent_attr = attr_spec_list.items[0]
@@ -447,7 +449,10 @@ class AutoCharArrayIntent(FortranRule):
             if intent_attr.items[1].string == "IN":
                 continue
             issues.append(Issue(
-                self.message(declaration.items[2].string, intent_attr.items[1]),
+                self.message(
+                    declaration.items[2].string,
+                    intent_attr.items[1]
+                ),
                 line=declaration.item.span[0]
             ))
 

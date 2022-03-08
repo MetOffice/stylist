@@ -5,8 +5,7 @@ Tests for the auto char array intent rule
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
-TEST_CASE = \
-"""
+TEST_CASE = """
 program cases
     ! A char array outside a function or subroutine, no exception
     character (*) :: autochar_glob
@@ -30,13 +29,17 @@ end program cases
 """
 
 TEST_EXPECTATION = [
-    '12: Arguments of type character(*) must have intent IN, but autochar_inout has intent INOUT.',
-    '14: Arguments of type character(*) must have intent IN, but autochar_out has intent OUT.'
+    ('12: Arguments of type character(*) must have intent IN, '
+        'but autochar_inout has intent INOUT.'),
+    ('14: Arguments of type character(*) must have intent IN, '
+        'but autochar_out has intent OUT.')
 ]
+
 
 class TestAutoCharArrayIntent(object):
     """
-    Tests the rule that variable length character arguments should have intent(in)
+    Tests the rule that variable length character arguments should
+    have intent(in)
     """
 
     def test(self):
