@@ -440,11 +440,19 @@ class AutoCharArrayIntent(FortranRule):
             if not param_value.string == "*":
                 continue
             attr_spec_list = declaration.items[1]
-            # If no intent specified, no concern
-            # Ensuring arguments specify intent should be enforced elsewhere
+            # If no attributes specified, no concern
             if attr_spec_list is None:
                 continue
-            intent_attr = attr_spec_list.items[0]
+            # Get intent attr and not other attributes
+            intent_attr = None
+            for item in attr_spec_list.items:
+                if isinstance(item, Fortran2003.Intent_Attr_Spec):
+                    intent_attr = item
+                    break
+            # If no intent, no conecern
+            # Ensuring arguments specify intent should be enforced elsewhere
+            if intent_attr is None:
+                continue
             # Intent in, no conern
             if intent_attr.items[1].string == "IN":
                 continue

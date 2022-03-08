@@ -23,6 +23,8 @@ program cases
         character(*)                   :: autochar_var
         ! A char array with fixed length, no exception
         character(len=10), intent(out) :: fixedchar
+        ! A declaration with non-intent attribute, no exception
+        character(len=*), parameter :: alt_attr = "sample"
     end subroutine char_input
 
 end program cases
