@@ -11,7 +11,7 @@ from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Type, Union
 
-import fparser.two.Fortran2003 as Fortran2003 # type: ignore
+import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 from pytest import param  # type: ignore # noqa: F401
 
 from stylist.issue import Issue
