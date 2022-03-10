@@ -12,6 +12,7 @@ from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
+import fparser.two.Fortran2008 as Fortran2008
 
 from stylist.issue import Issue
 from stylist.rule import Rule
@@ -170,6 +171,65 @@ class MissingImplicit(FortranRule):
                 description = description.format(thing=nature, name=name)
                 issues.append(Issue(description,
                                     line=scope_statement.item.span[0]))
+        return issues
+
+class MissingIntent(FortranRule):
+    """
+    Catches cases a function or subroutine's dummy arguments don't have specified intent
+    """
+
+    def __init__(self) -> None:
+        """
+        Constructor taking a default implication.
+        """
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues = []
+        scope_units = []
+
+        #get all subprograms (functions and subroutines) with parent program
+        scope_units.extend(subject.path(['Main_Program',
+                                         'Internal_Subprogram_Part',
+                                         'Internal_Subprogram']))
+
+        #get all subprograms (functions and subroutines) with parent module
+        scope_units.extend(subject.path(['Module',
+                                         'Module_Subprogram_Part',
+                                         'Module_Subprogram']))
+        scope: Fortran2003.Block
+        for scope in scope_units:
+
+            # get the important information
+
+            for part in scope.children:
+                if part.__class__ == Fortran2003.Function_Stmt or part.__class__ == Fortran2003.Subroutine_Stmt:
+                    stmt = part
+                if part.__class__ == Fortran2003.Specification_Part:
+                    specs = part
+                    # that's all we need
+                    break
+
+            dummy_arg_list = stmt.children[2]
+            dummy_args=[]
+            if dummy_arg_list is not None:
+                dummy_args = [arg.string for arg in dummy_arg_list.children]
+
+            # specs is the specfication part, holding intents, intrinsic none
+            for spec in specs.children:
+                if spec.__class__ == Fortran2008.Type_Declaration_Stmt:
+                    argument = spec.children[2].string
+                    if spec.children[1] is not None:
+                        for attribute in spec.children[1].children:
+                            if attribute.__class__ == Fortran2003.Intent_Attr_Spec:
+                                if argument in dummy_args:
+                                    dummy_args.remove(argument)
+
+            for arg in dummy_args:
+                description = 'Dummy argument "{arg}" of function/subroutine "{unit}" is missing an "intent" statement'
+                description = description.format(arg=arg, unit=stmt.children[1].string)
+                issues.append(Issue(description,
+                                    line=stmt.item.span[0]))
+
         return issues
 
 
