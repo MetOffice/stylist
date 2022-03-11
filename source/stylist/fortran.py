@@ -12,7 +12,7 @@ from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
-import fparser.two.Fortran2008 as Fortran2008
+import fparser.two.Fortran2008 as Fortran2008  # type: ignore
 
 from pytest import param  # type: ignore # noqa: F401
 
