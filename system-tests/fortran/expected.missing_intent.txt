@@ -1,0 +1,9 @@
+stdout
+Found 5 issues
+stderr
+$$/missing_intent.f90: 4: Dummy argument "bar" of function "test_function" is missing an "intent" statement
+$$/missing_intent.f90: 4: Dummy argument "bazz" of function "test_function" is missing an "intent" statement
+$$/missing_intent.f90: 4: Dummy argument "foo" of function "test_function" is missing an "intent" statement
+$$/missing_intent.f90: 4: Dummy argument "foobar" of function "test_function" is missing an "intent" statement
+$$/missing_intent.f90: 22: Dummy argument "baz" of subroutine "test_subroutine" is missing an "intent" statement
+

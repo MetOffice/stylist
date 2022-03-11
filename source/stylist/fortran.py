@@ -173,15 +173,12 @@ class MissingImplicit(FortranRule):
                                     line=scope_statement.item.span[0]))
         return issues
 
+
 class MissingIntent(FortranRule):
     """
-    Catches cases a function or subroutine's dummy arguments don't have specified intent
+    Catches cases a function or subroutine's dummy arguments don't have
+    specified intent
     """
-
-    def __init__(self) -> None:
-        """
-        Constructor taking a default implication.
-        """
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
@@ -192,7 +189,7 @@ class MissingIntent(FortranRule):
                                          'Internal_Subprogram_Part',
                                          'Internal_Subprogram']))
 
-        # get all subprograms (functions and subroutines) within modules
+        # get all subprograms within modules
         scope_units.extend(subject.path(['Module',
                                          'Module_Subprogram_Part',
                                          'Module_Subprogram']))
@@ -200,27 +197,28 @@ class MissingIntent(FortranRule):
         for scope in scope_units:
 
             # get the type of block
-            if type(scope)==Fortran2003.Subroutine_Subprogram:
+            if type(scope) == Fortran2003.Subroutine_Subprogram:
                 unit_type = 'subroutine'
-            elif type(scope)==Fortran2003.Function_Subprogram:
+            elif type(scope) == Fortran2003.Function_Subprogram:
                 unit_type = 'function'
 
-            # get initialisation statement and piece containing type declarations
+            # get initialisation statement and piece containing type
+            # declarations
             for part in scope.children:
-                if type(part) == Fortran2003.Function_Stmt or type(part) == Fortran2003.Subroutine_Stmt:
+                if type(part) == Fortran2003.Function_Stmt or type(
+                        part) == Fortran2003.Subroutine_Stmt:
                     stmt = part
                 if type(part) == Fortran2003.Specification_Part:
                     specs = part
                     # that's all we need
                     break
 
-            # covert the fparser node into a python list
+            # covert the node into a python list
             dummy_arg_list = stmt.children[2]
-            dummy_args=[]
+            dummy_args = []
             if dummy_arg_list is not None:
-                dummy_args = [arg.string.lower() for arg in dummy_arg_list.children]
-
-            # specs holds type declarations (and intents), as well as the intrinsic none statement
+                dummy_args = [arg.string.lower() for arg in
+                              dummy_arg_list.children]
 
             for spec in specs.children:
                 if spec.__class__ == Fortran2008.Type_Declaration_Stmt:
@@ -229,7 +227,8 @@ class MissingIntent(FortranRule):
                     attributes = spec.children[1]
                     if attributes is not None:
                         for attribute in spec.children[1].children:
-                            if attribute.__class__ == Fortran2003.Intent_Attr_Spec:
+                            if attribute.__class__ == \
+                                    Fortran2003.Intent_Attr_Spec:
 
                                 # if so, remove argument names from dummy_args
                                 for arg in spec.children[2].children:
@@ -239,8 +238,10 @@ class MissingIntent(FortranRule):
 
             # any remaining dummy arguments lack intent
             for arg in dummy_args:
-                description = 'Dummy argument "{arg}" of {unit_type} "{unit}" is missing an "intent" statement'
-                description = description.format(arg=arg, unit_type=unit_type, unit=stmt.children[1].string)
+                description = 'Dummy argument "{arg}" of {unit_type} "{' \
+                              'unit}" is missing an "intent" statement'
+                description = description.format(arg=arg, unit_type=unit_type,
+                                                 unit=stmt.children[1].string)
                 issues.append(Issue(description,
                                     line=stmt.item.span[0]))
 
