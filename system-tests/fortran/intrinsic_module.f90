@@ -1,17 +1,36 @@
-program bad_program
+program a_program
     use iso_c_binding
-    use iso_fortran_env
+    use, intrinsic :: iso_fortran_env
     use ieee_exceptions
     use ieee_arithmetic
+    use, intrinsic :: ieee_features
+    use some_module
+end program a_program
+
+module a_module
+    use, intrinsic :: iso_c_binding
+    use ISO_Fortran_env
+    use, intrinsic :: ieee_exceptions
+    use, intrinsic :: ieee_arithmetic
     use ieee_features
     use some_module
-end program bad_program
+end module a_module
 
-module good_module
+function a_function(x)
+    use iso_c_binding
+    use, intrinsic :: iso_fortran_env
+    use ieee_exceptions
+    use ieee_arithmetic
+    use, intrinsic :: ieee_features
+    use some_module
+    integer, intent(inout) :: x = 2
+end function
+
+subroutine a_subroutine
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_c_binding
-    use, intrinsic :: ISO_Fortran_env
+    use ISO_Fortran_env
     use, intrinsic :: ieee_exceptions
-    use, intrinsic ::  ieee_arithmetic
-    use, intrinsic ::  ieee_features
-end module good_module
+    use, intrinsic :: ieee_arithmetic
+    use ieee_features
+    use some_module
+end subroutine

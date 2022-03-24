@@ -209,20 +209,15 @@ class IntrinsicModule(FortranRule):
     Catches cases where an intrinsic module is used with the "intrinsic"
     keyword ommitted.
     """
-
-    def __init__(self):
-        """
-        Constructs an "IntrinsicModule" rule object.
-        """
-        self.intrinsics = ["iso_c_binding", "iso_fortran_env",
-                           "ieee_exceptions", "ieee_arithmetic",
-                           "ieee_features"]
+    _INTRINSICS = ["iso_c_binding", "iso_fortran_env",
+                   "ieee_exceptions", "ieee_arithmetic",
+                   "ieee_features"]
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues = []
         for statement in subject.find_all(Fortran2003.Use_Stmt):
             module = statement.items[2]
-            if str(module).lower() in self.intrinsics:
+            if str(module).lower() in self._INTRINSICS:
                 nature = statement.items[0]
                 if nature is None or nature.string.lower() != 'intrinsic':
                     description = 'Usage of intrinsic module "{module}" ' \
