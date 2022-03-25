@@ -26,7 +26,7 @@ contains
       integer, intent(in), pointer :: foo
       character, intent(inout):: bar, foobar
       real :: BAZ(5)
-      logical, intent(inout):: qux
+      logical, intent(out):: qux
       logical, pointer :: quux => null()
 
   end subroutine test_subroutine

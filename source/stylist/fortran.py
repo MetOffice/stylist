@@ -14,8 +14,6 @@ from typing import Dict, List, Optional, Pattern, Type, Union
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
 
-from pytest import param  # type: ignore # noqa: F401
-
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
@@ -178,13 +176,13 @@ class MissingImplicit(FortranRule):
 
 class MissingIntent(FortranRule):
     """
-    Catches cases a function or subroutine's dummy arguments don't have
-    specified intent
+    Catches cases where a function or subroutine's dummy arguments don't
+    have specified intent.
     """
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
-        issues = []
-        scope_units = []
+        issues: List[Issue] = []
+        scope_units: List[Fortran2003.Block] = []
 
         # get all subprograms (functions and subroutines) within programs
         scope_units.extend(subject.path(['Main_Program',
@@ -195,8 +193,53 @@ class MissingIntent(FortranRule):
         scope_units.extend(subject.path(['Module',
                                          'Module_Subprogram_Part',
                                          'Module_Subprogram']))
-        scope: Fortran2003.Block
+
+        # get all naked subprograms
+        scope_units.extend(subject.path(['Function_Subprogram']))
+        scope_units.extend(subject.path(['Subroutine_Subprogram']))
+
         for scope in scope_units:
+            # get initialisation statement and piece containing all type
+            # declarations
+
+            stmt = None
+            specs = None
+            for part in scope.children:
+                if type(part) in (Fortran2003.Function_Stmt,
+                                  Fortran2003.Subroutine_Stmt):
+                    stmt = part
+                if type(part) == Fortran2003.Specification_Part:
+                    specs = part
+                    # we don't need to check the rest of the children
+                    break
+
+            # covert tree node into a python list
+            dummy_arg_list = stmt.children[2]
+
+            # initialise set in case empty
+            dummy_args: List[str] = []
+            if dummy_arg_list is not None:
+                dummy_args = [arg.string.lower() for arg in
+                              dummy_arg_list.children]
+
+            if specs is not None:
+                for spec in specs.children:
+                    if spec.__class__ == Fortran2008.Type_Declaration_Stmt:
+
+                        # check if type declaration has an intent
+                        attributes = spec.children[1]
+                        if attributes is not None:
+                            for attribute in spec.children[1].children:
+                                if attribute.__class__ == \
+                                        Fortran2003.Intent_Attr_Spec:
+
+                                    # if so, remove argument names from
+                                    # dummy_args
+                                    for arg in spec.children[2].children:
+                                        arg_name = arg.children[
+                                            0].string.lower()
+                                        if arg_name in dummy_args:
+                                            dummy_args.remove(arg_name)
 
             # get the type of block
             if type(scope) == Fortran2003.Subroutine_Subprogram:
@@ -204,46 +247,11 @@ class MissingIntent(FortranRule):
             elif type(scope) == Fortran2003.Function_Subprogram:
                 unit_type = 'function'
 
-            # get initialisation statement and piece containing type
-            # declarations
-            for part in scope.children:
-                if type(part) == Fortran2003.Function_Stmt or type(
-                        part) == Fortran2003.Subroutine_Stmt:
-                    stmt = part
-                if type(part) == Fortran2003.Specification_Part:
-                    specs = part
-                    # that's all we need
-                    break
-
-            # covert the node into a python list
-            dummy_arg_list = stmt.children[2]
-            dummy_args = []
-            if dummy_arg_list is not None:
-                dummy_args = [arg.string.lower() for arg in
-                              dummy_arg_list.children]
-
-            for spec in specs.children:
-                if spec.__class__ == Fortran2008.Type_Declaration_Stmt:
-
-                    # check if type declaration has an intent
-                    attributes = spec.children[1]
-                    if attributes is not None:
-                        for attribute in spec.children[1].children:
-                            if attribute.__class__ == \
-                                    Fortran2003.Intent_Attr_Spec:
-
-                                # if so, remove argument names from dummy_args
-                                for arg in spec.children[2].children:
-                                    arg_name = arg.children[0].string
-                                    if arg_name.lower() in dummy_args:
-                                        dummy_args.remove(arg_name.lower())
-
             # any remaining dummy arguments lack intent
             for arg in dummy_args:
-                description = 'Dummy argument "{arg}" of {unit_type} "{' \
-                              'unit}" is missing an "intent" statement'
-                description = description.format(arg=arg, unit_type=unit_type,
-                                                 unit=stmt.children[1].string)
+                description = f'Dummy argument "{arg}" of {unit_type} "' \
+                              f'{stmt.children[1].string}" is missing an ' \
+                              f'"intent" statement'
                 issues.append(Issue(description,
                                     line=stmt.item.span[0]))
 
@@ -477,6 +485,7 @@ class AutoCharArrayIntent(FortranRule):
     subroutine or function arguments have intent(in) to avoid writing
     outside the given array.
     """
+
     def __init__(self):
         pass
 

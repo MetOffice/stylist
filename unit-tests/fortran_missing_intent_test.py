@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ##############################################################################
-# (c) Crown copyright 2018 Met Office. All rights reserved.
+# (c) Crown copyright 2022 Met Office. All rights reserved.
 # The file LICENCE, distributed with this code, contains details of the terms
 # under which the code may be used.
 ##############################################################################
@@ -28,7 +28,10 @@ from stylist.source import FortranSource, SourceStringReader
                         '''module test_module
                             contains
                             {procedure}
-                            end module test_module'''])
+                            end module test_module''',
+                        '''! move to third line to save calculating line numbers
+                           !
+                           {procedure}'''])
 def parent_container(request: FixtureRequest) -> str:
     """
     Parameter fixture giving possible parent containers of functions ond
@@ -41,9 +44,14 @@ def parent_container(request: FixtureRequest) -> str:
                 params=[('''subroutine test_subroutine({dummy_args})
                             {type_declaration}
                             end subroutine test_subroutine''', 'subroutine'),
+                        ('''subroutine test_subroutine({dummy_args})
+                            end subroutine test_subroutine''', 'subroutine'),
                         ('''function test_function({dummy_args})
                             {type_declaration}
-                            end function test_function''', 'function')])
+                            end function test_function''', 'function'),
+                        ('''function test_function({dummy_args})
+                            end function test_function''', 'function'),
+                        ])
 def procedure(request: FixtureRequest) -> Tuple[str, str]:
     """
     Parameter fixture giving subprograms and their type
@@ -69,7 +77,10 @@ def arguments(request: FixtureRequest) -> Tuple[List[str], str]:
                 params=['intent(in)', 'intent(out)', 'intent(inout)', ''])
 def intent(request: FixtureRequest):
     """
-    Parameter fixture giving possible intents
+    Parameter fixture giving possible intents. Some permutations produce
+    invalid fortran, e.g. two or no intent out arguments on a function.
+    This simplifies the test's logic, and is not a problem as the compiler
+    will pick up any such issues.
     """
     return request.param
 
@@ -97,11 +108,13 @@ class TestMissingIntent(object):
 
         text = text.format(intent=intent_str)
 
+        print(text)
+
         expectation = []
         issue_base = '{line}: Dummy argument "{arg}" of {unit_type} "{unit}" '\
                      'is missing an "intent" statement'
         for arg in arguments[0]:
-            if intent == '':
+            if intent == '' or 'type_declaration' not in procedure[0]:
                 expectation.append(issue_base.format(line=3, arg=arg.lower(),
                                                      unit_type=procedure[1],
                                                      unit='test_' + procedure[
