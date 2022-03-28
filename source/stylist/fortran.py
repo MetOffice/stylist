@@ -202,7 +202,6 @@ class MissingIntent(FortranRule):
             # get initialisation statement and piece containing all type
             # declarations
 
-            stmt = None
             specs = None
             for part in scope.children:
                 if type(part) in (Fortran2003.Function_Stmt,
