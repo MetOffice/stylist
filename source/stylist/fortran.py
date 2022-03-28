@@ -287,6 +287,30 @@ class MissingOnly(FortranRule):
         return issues
 
 
+class IntrinsicModule(FortranRule):
+    """
+    Catches cases where an intrinsic module is used with the "intrinsic"
+    keyword ommitted.
+    """
+    _INTRINSICS = ["iso_c_binding", "iso_fortran_env",
+                   "ieee_exceptions", "ieee_arithmetic",
+                   "ieee_features"]
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues = []
+        for statement in subject.find_all(Fortran2003.Use_Stmt):
+            module = statement.items[2]
+            if str(module).lower() in self._INTRINSICS:
+                nature = statement.items[0]
+                if nature is None or nature.string.lower() != 'intrinsic':
+                    description = 'Usage of intrinsic module "{module}" ' \
+                                  'without "intrinsic" clause.'
+                    issues.append(Issue(description.format(module=module),
+                                        line=statement.item.span[0]))
+
+        return issues
+
+
 class LabelledExit(FortranRule):
     """
     Catches cases where a "do" construct is exited but not explicitly named.
