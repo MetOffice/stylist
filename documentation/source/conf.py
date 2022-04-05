@@ -9,9 +9,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../source'))
 
 
 # -- Project information -----------------------------------------------------
@@ -20,10 +20,10 @@ project = 'Stylist'
 copyright = '2022, Crown Copyright'
 author = 'Crown Copyright'
 
-version = '0.0.3'
+version = '0.3'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.3-SNAPSHOT'
+release = '0.3-SNAPSHOT'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,6 +32,13 @@ release = '0.0.3-SNAPSHOT'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx_autodoc_typehints',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -43,12 +50,26 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 
+# -- Autodoc configuration ---------------------------------------------------
+
+autodoc_default_options = {
+    'members' : True,
+    'show-inheritance': True
+}
+autoclass_content = 'both'
+
+
+# -- Todo configuration ------------------------------------------------------
+
+todo_include_todos = True
+
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

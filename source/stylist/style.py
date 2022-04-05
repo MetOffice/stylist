@@ -9,13 +9,13 @@ Classes relating to styles made up of rules.
 from abc import ABCMeta
 import logging
 import re
-from typing import Any, Dict, List, Optional, Set, Type
+from typing import Any, Dict, List, Optional, Set, Type, Union
 
 from stylist import StylistException
 from stylist.configuration import Configuration
 import stylist.fortran
 import stylist.issue
-import stylist.rule
+from stylist.rule import Rule
 import stylist.source
 
 
@@ -23,12 +23,15 @@ class Style(object, metaclass=ABCMeta):
     """
     Abstract parent of all style lists.
     """
-    def __init__(self, rules) -> None:
+    def __init__(self, rules: Union[List[Rule], Rule]) -> None:
+        """
+        :param rules: Rules which make up this style.
+        """
         if not isinstance(rules, list):
             rules = [rules]
         self._rules = rules
 
-    def list_rules(self) -> List[stylist.rule.Rule]:
+    def list_rules(self) -> List[Rule]:
         """
         Gets a list of the rules which make up this style.
         """
@@ -37,10 +40,10 @@ class Style(object, metaclass=ABCMeta):
     def check(self,
               source: stylist.source.SourceTree) -> List[stylist.issue.Issue]:
         """
-        Applies every rule in this style to the parse tree.
+        Applies every rule in this style to a source code.
 
-        source Program source code as an stylist.source.Source derived
-               object.
+        :param source: Source code to inspect.
+        :return: All issues found in the source.
         """
         logging.getLogger(__name__).info('Style: ' + self.__class__.__name__)
         issues: List[stylist.issue.Issue] = []
@@ -73,6 +76,14 @@ _ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
 
 def determine_style(configuration: Configuration,
                     style_name: Optional[str] = None) -> Style:
+    """
+    Builds a style from those defined in the configuration.
+
+    :param configuration: Tool configuration.
+    :param style_name: If not specified the first style defined in the
+                       configuration is used.
+    :return: Selected style.
+    """
     available_styles = configuration.available_styles()
 
     if style_name is None:
@@ -90,10 +101,10 @@ def determine_style(configuration: Configuration,
     # Todo: It would be nice to remove abstracts from this list but I haven't
     #       worked out how yet.
     #
-    potential_rules: Dict[str, Type[stylist.rule.Rule]] \
-        = {cls.__name__: cls for cls in _all_subclasses(stylist.rule.Rule)}
+    potential_rules: Dict[str, Type[Rule]] \
+        = {cls.__name__: cls for cls in _all_subclasses(Rule)}
 
-    rules: List[stylist.rule.Rule] = []
+    rules: List[Rule] = []
     rule_list = configuration.get_style(style_name)
     if not isinstance(rule_list, list):
         raise TypeError('Style rules should be a list of names')

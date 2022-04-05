@@ -21,27 +21,28 @@ class Rule(object, metaclass=ABCMeta):
     @abstractmethod
     def examine(self, subject) -> List[Issue]:
         """
-        Examines the provided source code object for an issue.
+        Examines the provided source code object for issues.
+
+        :param subject: The source file to be examined.
+        :returns: All issues found with the source.
+
+        .. todo::
+           We currently don't specify a type for subject as it could be
+           anything representing a source text or parse tree. We
+           probably need a set of wrapper classes to form these into a
+           useful hierarchy we can then use here.
         """
-        #  TODO: We currently don't specify a type for subject as it could be
-        #        anything representing a source text or parse tree. We
-        #        probably need a set of wrapper classes to form these into a
-        #        useful hierarchy we can then use here.
-        #
         raise NotImplementedError()
 
 
 class TrailingWhitespace(Rule):
     """
-    Scans the source for tailing whitespace.
+    Examines the text for white space at the end of lines.
+    This includes lines which consist entirely of white space.
     """
     _TRAILING_SPACE_PATTERN = re.compile(r'\s+$')
 
     def examine(self, subject: SourceText) -> List[Issue]:
-        """
-        Examines the text for white space at the end of lines.
-        This includes lines which consist entirely of white space.
-        """
         issues = []
         text = subject.get_text()
         line_tally = 0

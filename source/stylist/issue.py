@@ -18,6 +18,11 @@ class Issue(object):
                  description: str,
                  line: Optional[int] = None,
                  filename: Optional[str] = None) -> None:
+        """
+        :param description: Free-format string describing the issue.
+        :param line: Line number where issue found.
+        :param filename: File in which issue found.
+        """
         self._filename = filename
         self._line = line
         self._description = description
@@ -35,18 +40,27 @@ class Issue(object):
 
     @property
     def filename(self) -> Optional[str]:
+        """
+        Filename associated with this issue.
+        """
         return self._filename
 
     @property
     def line(self) -> Optional[int]:
+        """
+        Line number associated with this issue.
+        """
         return self._line
 
     @property
     def description(self) -> str:
+        """
+        Description of this issue.
+        """
         return self._description
 
     def set_filename(self, filename: str) -> None:
         """
-        Attaches a filename to this issue.
+        Associates a filename to this issue.
         """
         self._filename = filename

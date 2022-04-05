@@ -49,6 +49,7 @@ setup(
     extras_require={
         'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
+        'docs': ['sphinx', 'sphinx-autodoc-typehint', 'sphinx-rtd-theme']
     },
     entry_points={
         'console_scripts': ['stylist=stylist.__main__:main'],

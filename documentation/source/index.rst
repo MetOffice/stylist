@@ -1,8 +1,3 @@
-.. Stylist documentation master file, created by
-   sphinx-quickstart on Mon Apr  4 14:23:04 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to Stylist's documentation!
 ===================================
 
@@ -10,6 +5,8 @@ Welcome to Stylist's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   user-manual/index
+   developer-information
 
 
 Indices and tables

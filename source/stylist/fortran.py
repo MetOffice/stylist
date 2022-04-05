@@ -25,6 +25,12 @@ class FortranRule(Rule, metaclass=ABCMeta):
     """
 
     def examine(self, subject: FortranSource) -> List[Issue]:
+        """
+        Base for rules which scruitinise the parse tree of Fortran source.
+        
+        :param subject: Source file to examine.
+        :return: Issues found with the source.
+        """
         issues = []
         if not isinstance(subject, FortranSource):
             description = 'Non-Fortran source passed to a Fortran rule'
@@ -44,7 +50,8 @@ class FortranRule(Rule, metaclass=ABCMeta):
         """
         Examines the provided Fortran source code object for an issue.
 
-        Returns a list of stylist.issue.Issue objects.
+        :param subject: Source file to examine.
+        :return: Issues found with the source.
         """
         raise NotImplementedError()
 
@@ -71,6 +78,9 @@ class FortranCharacterset(Rule):
         This is complicated by the fact that the source must consist of only
         certain characters except comments and strings. These may contain
         anything.
+        
+        :param subject: Source file to examine.
+        :return: Any bad characters found in source.
         """
         issues = []
 
@@ -119,20 +129,29 @@ class MissingImplicit(FortranRule):
     don't.
     """
 
-    def __init__(self, default='none', require_everywhere=False) -> None:
+    def __init__(self,
+                 default: str='none',
+                 require_everywhere: Optional[bool]=False) -> None:
         """
-        Constructor taking a default implication.
+        :param default: Impose this "implicit" where none is found.
+            Not implemented.
+        :param require_everywhere: By default the rule checks only in places
+            which require an "implicit" statement. Set this argument to check
+            everywhere an "implicit" could exist.
+        :return: Any places where an "implicit" was found missing.
 
-        Todo: This rule was designed to check merely for the presence of an
-        "implicit" statement but to leave the choice of implication to the
-        user. It might also be desirable to allow this rule to enforce a
-        specific implication. In which case the "default" argument may need a
-        different name. A switch would be necessary to flip between "any" and
-        "specific" modes.
+        .. todo::
+           This rule was designed to check merely for the presence of an
+           "implicit" statement but to leave the choice of implication to the
+           user. It might also be desirable to allow this rule to enforce a
+           specific implication. In which case the "default" argument may need a
+           different name. A switch would be necessary to flip between "any" and
+           "specific" modes.
 
-        Todo: At the moment the default is not used. In the future we may want
-        to allow rules to enforce style rather than simply reporting it. In
-        this case the default would be used where none is present.
+        .. todo::
+           At the moment the default is not used. In the future we may want
+           to allow rules to enforce style rather than simply reporting it. In
+           this case the default would be used where none is present.
         """
         assert default.lower() in ('none', 'private', 'public')
         self._default = default.lower()
@@ -264,8 +283,8 @@ class MissingOnly(FortranRule):
 
     def __init__(self, ignore: Optional[List[str]] = None) -> None:
         """
-        Constructs a "MissingOnly" rule object taking a list of exception
-        modules which are not required to have an "only" clause.
+        :param ignore: List of module names which are not required to have an
+                       "only" clause.
         """
         if ignore is None:
             self._ignore = []
@@ -344,15 +363,13 @@ class MissingPointerInit(FortranRule):
     Catches cases where a pointer is declared without being initialised.
     """
 
-    def __init__(self, default='null()') -> None:
+    def __init__(self, default: str='null()') -> None:
         """
-        Constructs a MissingPointerInit rule object taking a default
-        assignment.
+        :param default: Target to be used if missing assignment found.
 
-        Todo: Obviously the default is not used as we don't support coercing
-              source at the moment.
-
-        @param default: Target to be used if missing assignment found.
+        .. todo::
+           Obviously the default is not used as we don't support coercing
+           source at the moment.
         """
         self._default = default
 
@@ -439,16 +456,23 @@ class MissingPointerInit(FortranRule):
 
 
 class KindPattern(FortranRule):
+    """
+    Ensures kind names match a specified pattern.
+    """
     _ISSUE_TEMPLATE = "Kind '{kind}' found for {type} variable '{name}' does" \
                       " not fit the pattern /{pattern}/."
 
     def __init__(self, *,  # There are no positional arguments.
                  integer: Union[str, Pattern],
                  real: Union[str, Pattern]):
-        # We only set patterns for integer and real data types however Fortran
-        # supports many more. e.g. Logical and Complex. In those cases we
-        # accept anything by having a default pattern of ".*"
-        #
+        """
+        We only set patterns for integer and real data types however Fortran
+        supports many more. e.g. Logical and Complex. In those cases we
+        accept anything by having a default pattern of ".*"
+
+        :param integer: Regular expression which integer kinds must match.
+        :param real: Regular expression which real kinds must match.
+        """
         self._patterns: Dict[str, Pattern] \
             = defaultdict(lambda: re.compile(r'.*'))
         if isinstance(integer, str):
@@ -508,11 +532,7 @@ class AutoCharArrayIntent(FortranRule):
     subroutine or function arguments have intent(in) to avoid writing
     outside the given array.
     """
-
-    def __init__(self):
-        pass
-
-    def message(self, name, intent):
+    def _message(self, name, intent):
         return (f"Arguments of type character(*) must have intent IN, but "
                 f"{name} has intent {intent}.")
 
@@ -565,7 +585,7 @@ class AutoCharArrayIntent(FortranRule):
             if intent_attr.items[1].string == "IN":
                 continue
             issues.append(Issue(
-                self.message(
+                self._message(
                     declaration.items[2].string,
                     intent_attr.items[1]
                 ),

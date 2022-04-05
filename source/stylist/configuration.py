@@ -13,7 +13,7 @@ from abc import ABC
 from configparser import ConfigParser, MissingSectionHeaderError
 from pathlib import Path
 import re
-from typing import Dict, Mapping, Sequence, Set, Tuple, Type, Pattern
+from typing import Dict, Mapping, Optional, Sequence, Set, Tuple, Type, Pattern
 
 from stylist import StylistException
 from stylist.source import (CPreProcessor,
@@ -27,13 +27,20 @@ from stylist.source import (CPreProcessor,
 
 
 class Configuration(ABC):
+    """
+    Core configuration functionality.
+    """
     # Pycharm is confused by referring to the class you are defining. mypy is
     # fine with it.
     #
     def __init__(self,
-                 parameters: Mapping[str,
-                                     Mapping[str, str]] = None,
-                 defaults: 'Configuration' = None):
+                 parameters: Optional[Mapping[str,
+                                              Mapping[str, str]]]=None,
+                 defaults: Optional['Configuration']=None):
+        """
+        :param parameters: Maps section to key/value pairs.
+        :param defaults: Configuration to fall back to.
+        """
         self._defaults = defaults
         if parameters is not None:
             self._parameters = parameters
@@ -47,11 +54,19 @@ class Configuration(ABC):
            'text': PlainText}
 
     @classmethod
-    def language_tags(cls):
+    def language_tags(cls) -> Sequence[str]:
+        """
+        Gets the languages understood by this configuration.
+        """
         return cls._LANGUAGE_MAP.keys()
 
     @classmethod
     def language_lookup(cls, key: str) -> Type[SourceTree]:
+        """
+        Gets the source class associated with a particular language.
+        
+        :param key: Language identifier as returned by `language_tags`.
+        """
         return cls._LANGUAGE_MAP[key]
 
     _PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
@@ -61,10 +76,18 @@ class Configuration(ABC):
 
     @classmethod
     def preprocessor_tags(cls):
+        """
+        Gets the preprocessors understood by this configuration.
+        """
         return cls._PREPROCESSOR_MAP.keys()
 
     @classmethod
     def preprocessor_lookup(cls, key: str) -> Type[TextProcessor]:
+        """
+        Gets the class associated with a particular preprocessor.
+        
+        :param key: Preprocessor identifier as returned by `preprocessor_tags`.
+        """
         return cls._PREPROCESSOR_MAP[key]
 
     @classmethod
@@ -72,6 +95,11 @@ class Configuration(ABC):
         -> Tuple[str,
                  Type[SourceTree],
                  Sequence[Type[TextProcessor]]]:
+        """
+        Converts a pipline description into classes.
+        
+        :param string: Pipeline description, colon separated.
+        """
         if not string:
             raise StylistException("Empty extension pipe description")
 
@@ -123,6 +151,8 @@ class Configuration(ABC):
     def get_style(self, name: str) -> Sequence[str]:
         """
         Gets the rules associated with the provided style name.
+        
+        :param name: Style name.
         """
         key = self._STYLE_PREFIX + name
         if key in self._parameters:
@@ -144,9 +174,10 @@ class ConfigurationFile(Configuration):
     """
     def __init__(self,
                  filename: Path,
-                 defaults: Configuration = None) -> None:
+                 defaults: Optional[Configuration]=None) -> None:
         """
-        Builds a configuration object from a filename.
+        :param filename: Path to .ini file.
+        :param defaults: Configuration to fall back to.
         """
         parser = ConfigParser()
         try:

@@ -41,12 +41,11 @@ class SourceText(object, metaclass=ABCMeta):
 
 class SourceFileReader(SourceText):
     """
-    Reads source from a file.
+    Reads text source from a file.
     """
     def __init__(self, source_file: Union[IO[str], str]) -> None:
         """
-        Constructor.
-        Accepts either a filename or file-like object.
+        :param source_file: The file to examine.
         """
         if isinstance(source_file, str):
             with open(source_file, 'rt') as handle:
@@ -60,11 +59,11 @@ class SourceFileReader(SourceText):
 
 class SourceStringReader(SourceText):
     """
-    Reads source from a string.
+    Reads text source from a string.
     """
     def __init__(self, source_string: str) -> None:
         """
-        Constructor.
+        :param source_string: The source.
         """
         self._source_string = source_string
 
@@ -79,12 +78,19 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
     """
     def __init__(self, source: SourceText) -> None:
         """
-        Constructs a preprocessor object which decorates a source of text.
+        :param source: The source to be preprocessed.
         """
         self._source = source
 
 
 class MetaCPreProcessor(ABCMeta):
+    """
+    Identifies the C preprocessor.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return "C preprocessor"
 
@@ -94,10 +100,11 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
     Strips out preprocessor directives.
 
     It is assumed that you want to syntax check all the Source so all
-    conditional directives such as '#ifdef' are stripped out.
+    conditional directives such as ``#ifdef`` are stripped out.
 
-    TODO: Currently all other directives are stripped out as well. This means
-          that macros used to inject source are not likely to parse.
+    .. todo::
+       Currently all other directives are stripped out as well. This means
+       that macros used to inject source are not likely to parse.
     """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
@@ -105,7 +112,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 
     def get_text(self) -> str:
         """
-        Strips preprocessor directives from the text.
+        :return: Source as text with preprocessor directives removed.
         """
         text = self._source.get_text()
         text = self._CONDITIONAL_DIRECTIVE_PATTERN.sub(r'\1// \2', text)
@@ -114,6 +121,13 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 
 
 class MetaFortranPreProcessor(ABCMeta):
+    """
+    Identifies the Fortran preprocessor.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return "Fortran preprocessor"
 
@@ -125,8 +139,9 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
     It is assumed that you want to syntax check all the Source so all
     conditional directives such as '#ifdef' are stripped out.
 
-    TODO: Currently all other directives are stripped out as well. This means
-          that macros used to inject source are not likely to parse.
+    .. todo::
+       Currently all other directives are stripped out as well. This means
+       that macros used to inject source are not likely to parse.
     """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
@@ -134,7 +149,7 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 
     def get_text(self) -> str:
         """
-        Strips preprocessor directives from the text.
+        :return: Source as text with preprocessor directives removed.
         """
         text = self._source.get_text()
         text = self._CONDITIONAL_DIRECTIVE_PATTERN.sub(r'\1! \2', text)
@@ -143,6 +158,13 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 
 
 class MetaPFUnitProcessor(ABCMeta):
+    """
+    Identifies the pFUnit preprocessor.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return "pFUnit preprocessor"
 
@@ -155,7 +177,7 @@ class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
 
     def get_text(self) -> str:
         """
-        Strips processor directives from the text.
+        :return: Source as text with preprocessor directives removed.
         """
         text = self._source.get_text()
         text = self._DIRECTIVE_PATTERN.sub(r'\1! \2', text)
@@ -167,6 +189,9 @@ class SourceTree(object, metaclass=ABCMeta):
     Abstract parent of all actual language source files.
     """
     def __init__(self, text: SourceText) -> None:
+        """
+        :param text: Source as text.
+        """
         if not isinstance(text, SourceText):
             raise Exception('text argument must derive from SourceText.')
 
@@ -178,6 +203,9 @@ class SourceTree(object, metaclass=ABCMeta):
     def get_tree(self):
         """
         Gets a parse-tree representation of the source file.
+        
+        .. todo::
+           A solution to hinting the return type is needed.
         """
         raise NotImplementedError()
 
@@ -190,12 +218,19 @@ class SourceTree(object, metaclass=ABCMeta):
 
     def get_text(self) -> str:
         """
-        Gets the original source text.
+        :return: Original source text.
         """
         return self._text.get_text()
 
 
 class MetaFortranSource(ABCMeta):
+    """
+    Identifies Fortran source.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return 'Fortran source'
 
@@ -205,6 +240,9 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
     Holds a Fortran source file as both a text block and parse tree.
     """
     def get_tree(self) -> Optional[Fortran2003.Program]:
+        """
+        :return: Program unit object.
+        """
         if not self._tree:
             # We don't use the tree directly. Instead we let all the decorators
             # have a go first.
@@ -232,7 +270,8 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         """
         Gets the first "statement" part of the syntax tree or part thereof.
 
-        @param root Optionally specify a subtree to use.
+        :param root: Point in parse tree to start. If unspecified implies the
+                     whole tree.
         """
         if not root:
             root = self._tree.content
@@ -260,14 +299,18 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
              root: Optional[Fortran2003.Block] = None) \
             -> List[Fortran2003.Base]:
         """
-        Returns the tree nodes described by the given path.
+        Gets the tree nodes at the given path.
 
-        @todo This functionality might be provided by fparser at some point
+        The path describes a route through the parse tree.
 
-        @param path The path may be either a list of node name strings or a '/'
-                    delimited string of node names.
-        @param root Optionally specify a subtree to use.
-        @return List of tree nodes or empty list.
+        :param path: a series of a node names either as a Python list object or
+                     a '/' separated string.
+        :param root: Starting point in the parse tree. If unspecified implies
+                     the whole tree.
+        :return: Tree nodes found.
+
+        .. todo::
+           This functionality might be provided by fparser at some point.
         """
         if isinstance(path, str):
             path = path.split('/')
@@ -326,12 +369,17 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                  root: Fortran2003.Base = None) \
             -> Generator[Fortran2003.Base, None, None]:
         """
-        Returns a generator which loops over all instances if the specified
-        parse element below the root.
+        Gets all instances of the specified parse element below the root.
 
         The search descends the tree but that descent is terminated by a match.
 
-        @todo This functionality might be provided by fparser at some point
+        :param find_node: Parse tree node class to seek.
+        :param root: Point in parse tree to start. If unspecified implies the
+                     whole tree.
+        :return: Matching nodes.
+
+        .. todo::
+           This functionality might be provided by fparser at some point.
         """
         if root:
             candidates = [root]
@@ -375,16 +423,19 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         return False
 
     @staticmethod
-    def print_tree(children: Fortran2003.Base,
+    def print_tree(root: Fortran2003.Base,
                    indent: int = 0) -> None:
         """
         Dumps a textual representation of the tree to standard out.
         Intended for debug use.
+        
+        :param root: Point in parse tree to dump.
+        :param indent: Spaces to wang in the front.
         """
         # Argument "children" confuses Pycharm as it does not appear as
         # iterable even though it is. MyPy is not bothered.
         #
-        for child in children:
+        for child in root:
             print(' ' * indent + child.__class__.__name__)
             if isinstance(child, Fortran2003.BlockBase):
                 FortranSource.print_tree(child.content, indent+1)
@@ -393,6 +444,13 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 
 
 class MetaCSource(ABCMeta):
+    """
+    Identifies C source.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return "C source"
 
@@ -400,6 +458,10 @@ class MetaCSource(ABCMeta):
 class CSource(SourceTree, metaclass=MetaCSource):
     """
     Holds a C/C++ source file as both a text block and parse tree.
+    
+    .. todo::
+       This is just a stub to illustrate how it would be done. It is not
+       useable.
     """
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
@@ -409,6 +471,13 @@ class CSource(SourceTree, metaclass=MetaCSource):
 
 
 class MetaPlainText(ABCMeta):
+    """
+    Identifies plain text.
+    
+    .. todo::
+       This is a very complicated way of achieving something quite simple.
+       Presumably there is a better way.
+    """
     def __str__(self) -> str:
         return "plain text"
 
@@ -418,6 +487,9 @@ class PlainText(SourceTree, metaclass=MetaPlainText):
     Holds a plain text file as though it were source.
     """
     def get_tree(self) -> Generator[str, None, None]:
+        """
+        :return: File content line by line.
+        """
         for line in self.get_text().splitlines():
             yield line
 
@@ -435,11 +507,9 @@ class _SourceChain(object):
                  parser: Type[SourceTree],
                  *preprocessors: Type[TextProcessor]) -> None:
         """
-        Creates a SourceChain object from file extension and source objects.
-
-        @param extension File extension which identifies this chain.
-        @param parser Underlying language parser.
-        @param preprocessors Any preprocessors to apply before parsing.
+        :param extension: File extension which identifies this chain.
+        :param parser: Underlying language parser.
+        :param preprocessors: Any preprocessors to apply before parsing.
         """
         if extension[0] == '.':
             extension = extension[1:]
@@ -461,34 +531,37 @@ class _SourceChain(object):
 class SourceFactory(object):
     """
     Manages the handling of source file. Knows what chains of objects are
-    needed to each file extension.
+    needed to handle each file extension.
+
+    It is hard to lay down hard and fast rules about what should go in the
+    default list of extensions. Language standards do not generally specify an
+    extension since that is an OS level concept. Some filesystems do not use
+    extensions at all.
+
+    The default list is kept short and the two goals are "correctness" and
+    "typicallity".
+
+    Correctness means not including a slew of extensions just because they
+    happen to be used. Stick to ones which are "correct" in that they are
+    well thought out.
+
+    For instance it is not uncommon for people to use all sorts of extensions
+    for Fortran which encodes the version of the language they are using.
+    This is a poor idea as it leads to a proliferation of extension for no
+    obvious gain. What's more a file with a ``.f03`` extension may be coded
+    using only Fortran 95 features.
+
+    Instead we follow the convention that ``.f90`` means "free format" source
+    while ``.f`` continues to mean "fixed format".
+
+    On the other hand typicallity means including the most commonly used
+    extensions. That is why both ``.cc`` and ``.cpp`` are listed for C++
+    source. Although ``.cc`` is the closest there is to an "official" extension
+    ``.cpp`` is much more common.
+
+    If your particular application needs to support some odd-ball extensions
+    then it can use the add_extension() call.
     """
-    # It is hard to lay down hard and fast rules about what should go in the
-    # _extension_map list. Languages standards do not generally specify an
-    # extension since it is an OS level concept.
-    #
-    # The default list should be kept short and the two goals should be
-    # "correctness" and "commodity".
-    #
-    # Correctness means not including a slew of extensions just because they
-    # happen to be used. Stick to ones which are "correct" in that they are
-    # well thought out.
-    #
-    # For instance it is not uncommon for people to use all sorts of extensions
-    # for Fortran which encodes the version of the language they are using.
-    # This is a poor idea as it leads to a proliferation of extension for no
-    # obvious gain. What's more a file with a ".f03" extension may be coded
-    # using only Fortran 95 features.
-    #
-    # Instead we follow the convention that ".f90" means "free format" source
-    # while ".f" continues to mean "fixed format".
-    #
-    # On the other hand commodity means including the most commonly used
-    # extensions. That is why both ".cc" and ".cpp" are listed for C++ source.
-    #
-    # If your particular application needs to support some odd-ball extensions
-    # then it can use the add_extension() call.
-    #
     _extension_map = {'f90': _SourceChain('f90', FortranSource),
                       'F90': _SourceChain('F90',
                                           FortranSource, FortranPreProcessor),
@@ -509,9 +582,9 @@ class SourceFactory(object):
         Adds a mapping between source file extension and source handling
         classes.
 
-        @param extension File extension which identifies this chain.
-        @param source Underlying language parser.
-        @param preprocessors Any preprocessors to apply before parsing.
+        :param extension: File extension which identifies this chain.
+        :param source: Underlying language parser.
+        :param preprocessors: All preprocessors to apply before parsing.
         """
         if extension in cls._extension_map:
             raise Exception('Extension "{}" already mapped to a handler'
@@ -524,7 +597,7 @@ class SourceFactory(object):
     @classmethod
     def get_extensions(cls) -> Iterable[str]:
         """
-        Gets the list of file extensions recognised by the read_file() method.
+        Gets the file extensions recognised by the ``read_file()`` method.
         """
         return cls._extension_map.keys()
 
@@ -534,7 +607,7 @@ class SourceFactory(object):
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
-        not work on "files" which do not have a filename.
+        not work on file-like objects which do not have a filename.
         """
         if isinstance(source_file, str):
             filename = source_file
