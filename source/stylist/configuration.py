@@ -58,7 +58,7 @@ class Configuration(ABC):
         """
         Gets the languages understood by this configuration.
         """
-        return cls._LANGUAGE_MAP.keys()
+        return tuple(cls._LANGUAGE_MAP.keys())
 
     @classmethod
     def language_lookup(cls, key: str) -> Type[SourceTree]:
