@@ -58,7 +58,9 @@ class FortranRule(Rule, metaclass=ABCMeta):
 
 class FortranCharacterset(Rule):
     """
-    Scans the source for characters which are not supported by Fortran.
+    Traps any characters which do not fall in the list of those allowed in
+    Fortran source. This takes into account the fact that there is no
+    restriction on what may appear in comments or strings.
     """
     _FORTRAN_LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     _FORTRAN_DIGIT = '0123456789'
@@ -72,16 +74,6 @@ class FortranCharacterset(Rule):
     _QUOTE = '"'
 
     def examine(self, subject: FortranSource) -> List[Issue]:
-        """
-        Examines the source code for none Fortran characters.
-
-        This is complicated by the fact that the source must consist of only
-        certain characters except comments and strings. These may contain
-        anything.
-        
-        :param subject: Source file to examine.
-        :return: Any bad characters found in source.
-        """
         issues = []
 
         text = subject.get_text()
@@ -138,7 +130,6 @@ class MissingImplicit(FortranRule):
         :param require_everywhere: By default the rule checks only in places
             which require an "implicit" statement. Set this argument to check
             everywhere an "implicit" could exist.
-        :return: Any places where an "implicit" was found missing.
 
         .. todo::
            This rule was designed to check merely for the presence of an
@@ -330,7 +321,7 @@ class IntrinsicModule(FortranRule):
         return issues
 
 
-class LabelledExit(FortranRule):
+class LabelledDoExit(FortranRule):
     """
     Catches cases where a "do" construct is exited but not explicitly named.
     """
@@ -466,9 +457,9 @@ class KindPattern(FortranRule):
                  integer: Union[str, Pattern],
                  real: Union[str, Pattern]):
         """
-        We only set patterns for integer and real data types however Fortran
-        supports many more. e.g. Logical and Complex. In those cases we
-        accept anything by having a default pattern of ".*"
+        Patterns are set only for integer and real data types however Fortran
+        supports many more. e.g. Logical and Complex. For those cases a default
+        pattern of ".*" is used to accept anything.
 
         :param integer: Regular expression which integer kinds must match.
         :param real: Regular expression which real kinds must match.
