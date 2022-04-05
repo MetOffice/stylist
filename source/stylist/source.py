@@ -86,7 +86,7 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
 class MetaCPreProcessor(ABCMeta):
     """
     Identifies the C preprocessor.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.
@@ -123,7 +123,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 class MetaFortranPreProcessor(ABCMeta):
     """
     Identifies the Fortran preprocessor.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.
@@ -160,7 +160,7 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 class MetaPFUnitProcessor(ABCMeta):
     """
     Identifies the pFUnit preprocessor.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.
@@ -203,7 +203,7 @@ class SourceTree(object, metaclass=ABCMeta):
     def get_tree(self):
         """
         Gets a parse-tree representation of the source file.
-        
+
         .. todo::
            A solution to hinting the return type is needed.
         """
@@ -226,7 +226,7 @@ class SourceTree(object, metaclass=ABCMeta):
 class MetaFortranSource(ABCMeta):
     """
     Identifies Fortran source.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.
@@ -428,7 +428,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         """
         Dumps a textual representation of the tree to standard out.
         Intended for debug use.
-        
+
         :param root: Point in parse tree to dump.
         :param indent: Spaces to wang in the front.
         """
@@ -446,7 +446,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 class MetaCSource(ABCMeta):
     """
     Identifies C source.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.
@@ -458,7 +458,7 @@ class MetaCSource(ABCMeta):
 class CSource(SourceTree, metaclass=MetaCSource):
     """
     Holds a C/C++ source file as both a text block and parse tree.
-    
+
     .. todo::
        This is just a stub to illustrate how it would be done. It is not
        useable.
@@ -473,7 +473,7 @@ class CSource(SourceTree, metaclass=MetaCSource):
 class MetaPlainText(ABCMeta):
     """
     Identifies plain text.
-    
+
     .. todo::
        This is a very complicated way of achieving something quite simple.
        Presumably there is a better way.

@@ -27,7 +27,7 @@ class FortranRule(Rule, metaclass=ABCMeta):
     def examine(self, subject: FortranSource) -> List[Issue]:
         """
         Base for rules which scruitinise the parse tree of Fortran source.
-        
+
         :param subject: Source file to examine.
         :return: Issues found with the source.
         """
@@ -122,8 +122,8 @@ class MissingImplicit(FortranRule):
     """
 
     def __init__(self,
-                 default: str='none',
-                 require_everywhere: Optional[bool]=False) -> None:
+                 default: str = 'none',
+                 require_everywhere: Optional[bool] = False) -> None:
         """
         :param default: Impose this "implicit" where none is found.
             Not implemented.
@@ -135,9 +135,9 @@ class MissingImplicit(FortranRule):
            This rule was designed to check merely for the presence of an
            "implicit" statement but to leave the choice of implication to the
            user. It might also be desirable to allow this rule to enforce a
-           specific implication. In which case the "default" argument may need a
-           different name. A switch would be necessary to flip between "any" and
-           "specific" modes.
+           specific implication. In which case the "default" argument may need
+           a different name. A switch would be necessary to flip between "any"
+           and "specific" modes.
 
         .. todo::
            At the moment the default is not used. In the future we may want
@@ -354,7 +354,7 @@ class MissingPointerInit(FortranRule):
     Catches cases where a pointer is declared without being initialised.
     """
 
-    def __init__(self, default: str='null()') -> None:
+    def __init__(self, default: str = 'null()') -> None:
         """
         :param default: Target to be used if missing assignment found.
 

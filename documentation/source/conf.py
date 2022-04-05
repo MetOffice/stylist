@@ -53,7 +53,7 @@ exclude_patterns = []
 # -- Autodoc configuration ---------------------------------------------------
 
 autodoc_default_options = {
-    'members' : True,
+    'members': True,
     'show-inheritance': True
 }
 autoclass_content = 'both'

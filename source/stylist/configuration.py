@@ -35,8 +35,8 @@ class Configuration(ABC):
     #
     def __init__(self,
                  parameters: Optional[Mapping[str,
-                                              Mapping[str, str]]]=None,
-                 defaults: Optional['Configuration']=None):
+                                              Mapping[str, str]]] = None,
+                 defaults: Optional['Configuration'] = None):
         """
         :param parameters: Maps section to key/value pairs.
         :param defaults: Configuration to fall back to.
@@ -64,7 +64,7 @@ class Configuration(ABC):
     def language_lookup(cls, key: str) -> Type[SourceTree]:
         """
         Gets the source class associated with a particular language.
-        
+
         :param key: Language identifier as returned by `language_tags`.
         """
         return cls._LANGUAGE_MAP[key]
@@ -85,7 +85,7 @@ class Configuration(ABC):
     def preprocessor_lookup(cls, key: str) -> Type[TextProcessor]:
         """
         Gets the class associated with a particular preprocessor.
-        
+
         :param key: Preprocessor identifier as returned by `preprocessor_tags`.
         """
         return cls._PREPROCESSOR_MAP[key]
@@ -97,7 +97,7 @@ class Configuration(ABC):
                  Sequence[Type[TextProcessor]]]:
         """
         Converts a pipline description into classes.
-        
+
         :param string: Pipeline description, colon separated.
         """
         if not string:
@@ -151,7 +151,7 @@ class Configuration(ABC):
     def get_style(self, name: str) -> Sequence[str]:
         """
         Gets the rules associated with the provided style name.
-        
+
         :param name: Style name.
         """
         key = self._STYLE_PREFIX + name
@@ -174,7 +174,7 @@ class ConfigurationFile(Configuration):
     """
     def __init__(self,
                  filename: Path,
-                 defaults: Optional[Configuration]=None) -> None:
+                 defaults: Optional[Configuration] = None) -> None:
         """
         :param filename: Path to .ini file.
         :param defaults: Configuration to fall back to.

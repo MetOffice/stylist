@@ -28,7 +28,7 @@ class CheckEngine(object):
     def check(self, source_filename: str) -> Sequence[Issue]:
         """
         Passes the eyes of all registered style lists over the source file.
-        
+
         :param source_filename: Path to source file.
         """
         issues = []
