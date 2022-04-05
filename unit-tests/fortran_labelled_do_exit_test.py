@@ -15,7 +15,7 @@ import pytest  # type: ignore
 
 from _pytest.fixtures import FixtureRequest  # type: ignore
 
-from stylist.fortran import LabelledExit
+from stylist.fortran import LabelledDoExit
 from stylist.source import FortranSource, SourceStringReader
 
 
@@ -67,7 +67,7 @@ end program test
         print(text)  # Shows up in failure reports, for debugging
         reader = SourceStringReader(text)
         source = FortranSource(reader)
-        unit_under_test = LabelledExit()
+        unit_under_test = LabelledDoExit()
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation
