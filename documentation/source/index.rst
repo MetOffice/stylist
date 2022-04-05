@@ -1,5 +1,5 @@
-Welcome to Stylist's documentation!
-===================================
+Stylist Documentation
+=====================
 
 This documentation is split into two broad categories.
 
