@@ -58,3 +58,38 @@ To build the documentation change into the ``documentation`` directory and use
 ``make html``. The resulting documents will be appear in ``build/html``.
 
 .. _sphinx: https://www.sphinx-doc.org/en/master/
+
+Doc-strings
+...........
+
+Following PEP8 guidance Doc-strings are expected for every scoping unit.
+
+Try to avoid unecessary verbiage. If you are documenting a class there is no
+need to mention that the thing being documented is a class. For example,
+rather than "class representing a thing" it is sufficient to say "A thing."
+
+Also try to avoid repeating what is already in the source. If a function is
+called "multiply" and takes two arguments don't document it with "Multiplies
+two numbers."
+
+Remember that type hinting is used in synthesising the API documentation so
+there is no need to repeat that. When documenting arguments do say "Temperature in Kelvin." Don't say "Floating point Kelvin."
+
+Doc-strings should be used for information not expressed in the code. This can
+be challanging as well chosen names remove the need for much additional
+documentation.
+
+You may also assume the reader understands the basics of the language. For
+example there's little value to documenting a class constructor with
+"Constructor to create an object." We all know it's a constructor and that's
+what they do. Instead try to say something about the arguments passed.
+
+Todo items
+..........
+
+Generally future work should be raised as issues in the project database.
+
+There will be situations where a piece of future work (or potential future
+work) needs to be recorded but doesn't form a coherent issue. In these cases
+a "todo" block in the doc-string may be appropriate
+
