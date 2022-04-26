@@ -1,4 +1,4 @@
-# Minimal makefile for Sphinx documentation
+# Build documentation using Sphinx.
 #
 
 # You can set these variables from the command line, and also
