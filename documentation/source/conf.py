@@ -13,18 +13,19 @@ import os
 import sys
 from typing import List
 sys.path.insert(0, os.path.abspath('../../source'))
+from stylist import __version__ as STYLIST_VERSION
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'Stylist'
 copyright = '2022, Crown Copyright'
-author = 'Crown Copyright'
+author = 'Stylist Developers'
 
-version = '0.3'
+version = STYLIST_VERSION.split('-', 1)[0]
 
 # The full version, including alpha/beta/rc tags
-release = '0.3-SNAPSHOT'
+release = STYLIST_VERSION
 
 
 # -- General configuration ---------------------------------------------------
