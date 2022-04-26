@@ -86,10 +86,6 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
 class MetaCPreProcessor(ABCMeta):
     """
     Identifies the C preprocessor.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return "C preprocessor"
@@ -101,10 +97,6 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 
     It is assumed that you want to syntax check all the Source so all
     conditional directives such as ``#ifdef`` are stripped out.
-
-    .. todo::
-       Currently all other directives are stripped out as well. This means
-       that macros used to inject source are not likely to parse.
     """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
@@ -123,10 +115,6 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
 class MetaFortranPreProcessor(ABCMeta):
     """
     Identifies the Fortran preprocessor.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return "Fortran preprocessor"
@@ -138,10 +126,6 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 
     It is assumed that you want to syntax check all the Source so all
     conditional directives such as '#ifdef' are stripped out.
-
-    .. todo::
-       Currently all other directives are stripped out as well. This means
-       that macros used to inject source are not likely to parse.
     """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
@@ -160,10 +144,6 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
 class MetaPFUnitProcessor(ABCMeta):
     """
     Identifies the pFUnit preprocessor.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return "pFUnit preprocessor"
@@ -203,9 +183,6 @@ class SourceTree(object, metaclass=ABCMeta):
     def get_tree(self):
         """
         Gets a parse-tree representation of the source file.
-
-        .. todo::
-           A solution to hinting the return type is needed.
         """
         raise NotImplementedError()
 
@@ -226,10 +203,6 @@ class SourceTree(object, metaclass=ABCMeta):
 class MetaFortranSource(ABCMeta):
     """
     Identifies Fortran source.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return 'Fortran source'
@@ -446,10 +419,6 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
 class MetaCSource(ABCMeta):
     """
     Identifies C source.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return "C source"
@@ -473,10 +442,6 @@ class CSource(SourceTree, metaclass=MetaCSource):
 class MetaPlainText(ABCMeta):
     """
     Identifies plain text.
-
-    .. todo::
-       This is a very complicated way of achieving something quite simple.
-       Presumably there is a better way.
     """
     def __str__(self) -> str:
         return "plain text"

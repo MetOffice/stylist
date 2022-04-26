@@ -25,12 +25,6 @@ class Rule(object, metaclass=ABCMeta):
 
         :param subject: The source file to be examined.
         :returns: All issues found with the source.
-
-        .. todo::
-           We currently don't specify a type for subject as it could be
-           anything representing a source text or parse tree. We
-           probably need a set of wrapper classes to form these into a
-           useful hierarchy we can then use here.
         """
         raise NotImplementedError()
 

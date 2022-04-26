@@ -122,30 +122,13 @@ class MissingImplicit(FortranRule):
     """
 
     def __init__(self,
-                 default: str = 'none',
                  require_everywhere: Optional[bool] = False) -> None:
         """
-        :param default: Impose this "implicit" where none is found.
-            Not implemented.
         :param require_everywhere: By default the rule checks only in places
             which require an "implicit" statement. Set this argument to check
             everywhere an "implicit" could exist.
-
-        .. todo::
-           This rule was designed to check merely for the presence of an
-           "implicit" statement but to leave the choice of implication to the
-           user. It might also be desirable to allow this rule to enforce a
-           specific implication. In which case the "default" argument may need
-           a different name. A switch would be necessary to flip between "any"
-           and "specific" modes.
-
-        .. todo::
-           At the moment the default is not used. In the future we may want
-           to allow rules to enforce style rather than simply reporting it. In
-           this case the default would be used where none is present.
         """
         assert default.lower() in ('none', 'private', 'public')
-        self._default = default.lower()
         self._require_everywhere = require_everywhere
 
     _NATURE_MAP: Dict[Type[Fortran2003.StmtBase], str] \
@@ -353,17 +336,6 @@ class MissingPointerInit(FortranRule):
     """
     Catches cases where a pointer is declared without being initialised.
     """
-
-    def __init__(self, default: str = 'null()') -> None:
-        """
-        :param default: Target to be used if missing assignment found.
-
-        .. todo::
-           Obviously the default is not used as we don't support coercing
-           source at the moment.
-        """
-        self._default = default
-
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
 
