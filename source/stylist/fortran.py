@@ -125,8 +125,8 @@ class MissingImplicit(FortranRule):
                  require_everywhere: Optional[bool] = False) -> None:
         """
         :param require_everywhere: By default the rule checks only in places
-            which require an "implicit" statement. Set this argument to check
-            everywhere an "implicit" could exist.
+            which require an ``implicit`` statement. Set this argument to check
+            everywhere an ``implicit`` could exist.
         """
         assert default.lower() in ('none', 'private', 'public')
         self._require_everywhere = require_everywhere
@@ -430,8 +430,8 @@ class KindPattern(FortranRule):
                  real: Union[str, Pattern]):
         """
         Patterns are set only for integer and real data types however Fortran
-        supports many more. e.g. Logical and Complex. For those cases a default
-        pattern of ".*" is used to accept anything.
+        supports many more. Logical and Complex for example. For those cases a
+        default pattern of ".*" is used to accept anything.
 
         :param integer: Regular expression which integer kinds must match.
         :param real: Regular expression which real kinds must match.

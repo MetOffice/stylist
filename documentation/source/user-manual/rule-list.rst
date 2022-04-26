@@ -6,8 +6,8 @@ are a list of the available rules.
 
 .. Comment: it would be nice to auto generate these lists.
 
-Laguage Agnostic Rules
-----------------------
+Language-agnostic Rules
+-----------------------
 
 Some rules are widely applicable regardless of source language.
 

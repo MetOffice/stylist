@@ -24,7 +24,7 @@ class Rule(object, metaclass=ABCMeta):
         Examines the provided source code object for issues.
 
         :param subject: The source file to be examined.
-        :returns: All issues found with the source.
+        :return: All issues found with the source.
         """
         raise NotImplementedError()
 

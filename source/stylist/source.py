@@ -403,7 +403,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
         Intended for debug use.
 
         :param root: Point in parse tree to dump.
-        :param indent: Spaces to wang in the front.
+        :param indent: Spaces to prefix each line with.
         """
         # Argument "children" confuses Pycharm as it does not appear as
         # iterable even though it is. MyPy is not bothered.
@@ -504,7 +504,7 @@ class SourceFactory(object):
     extensions at all.
 
     The default list is kept short and the two goals are "correctness" and
-    "typicallity".
+    "typicality".
 
     Correctness means not including a slew of extensions just because they
     happen to be used. Stick to ones which are "correct" in that they are
@@ -513,19 +513,19 @@ class SourceFactory(object):
     For instance it is not uncommon for people to use all sorts of extensions
     for Fortran which encodes the version of the language they are using.
     This is a poor idea as it leads to a proliferation of extension for no
-    obvious gain. What's more a file with a ``.f03`` extension may be coded
-    using only Fortran 95 features.
+    obvious gain. A file with an ``.f03`` extension may be coded using only
+    Fortran 95 features.
 
     Instead we follow the convention that ``.f90`` means "free format" source
     while ``.f`` continues to mean "fixed format".
 
-    On the other hand typicallity means including the most commonly used
+    On the other hand typicality means including the most commonly used
     extensions. That is why both ``.cc`` and ``.cpp`` are listed for C++
     source. Although ``.cc`` is the closest there is to an "official" extension
     ``.cpp`` is much more common.
 
     If your particular application needs to support some odd-ball extensions
-    then it can use the add_extension() call.
+    then it can use the ``add_extension(...)`` call.
     """
     _extension_map = {'f90': _SourceChain('f90', FortranSource),
                       'F90': _SourceChain('F90',

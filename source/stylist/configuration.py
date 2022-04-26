@@ -96,9 +96,9 @@ class Configuration(ABC):
                  Type[SourceTree],
                  Sequence[Type[TextProcessor]]]:
         """
-        Converts a pipline description into classes.
+        Converts a pipeline description into classes.
 
-        :param string: Pipeline description, colon separated.
+        :param string: Colon-separated list of pipeline stages.
         """
         if not string:
             raise StylistException("Empty extension pipe description")
@@ -170,13 +170,13 @@ class Configuration(ABC):
 
 class ConfigurationFile(Configuration):
     """
-    Configuration parameters read from a Windows .ini format file.
+    Configuration parameters read from a Windows '.ini' format file.
     """
     def __init__(self,
                  filename: Path,
                  defaults: Optional[Configuration] = None) -> None:
         """
-        :param filename: Path to .ini file.
+        :param filename: Path to '.ini' file.
         :param defaults: Configuration to fall back to.
         """
         parser = ConfigParser()

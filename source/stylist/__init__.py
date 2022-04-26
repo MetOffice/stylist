@@ -13,7 +13,6 @@ __version__ = '0.3-SNAPSHOT'
 
 class StylistException(Exception):
     """
-    Thrown by Stylist. Allows exceptions from stylist to be distinguished from
-    other exceptions.
+    Allows exceptions from stylist to be distinguished from other exceptions.
     """
     pass

@@ -5,7 +5,7 @@ This documentation is split into two broad categories.
 
 The user documentation is intended for people who wish to use Stylist as a
 tool. Meanwhile the developer documentation is intended for those who wish to
-extend and enhance Stylist.
+extend and enhance it.
 
 .. toctree::
    :maxdepth: 2

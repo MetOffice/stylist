@@ -32,9 +32,9 @@ You may then check your source code using this style with::
 The tool will alert you to any place where a program unit has been declared
 without an ``implicit`` statement.
 
-The "rules" field is a comma separated list so to add a second rule just append
+The "rules" field is a comma-separated list so to add a second rule just append
 ``, MissingIntent``. Running the tool again will now warn you of both missing
-Implicit statements and procedure arguments without ``intent`` properties.
+``implicit`` statements and procedure arguments without ``intent`` properties.
 
 You may define as many styles as you like in the configuration file. Lets add
 a second to our example. Just add the following at the end::
@@ -48,7 +48,7 @@ use::
 
     stylist -configuration stylist.ini -style extra <path to source>
 
-Some rules take arguments. Lets get bossy about the names which can be used
+Some rules take arguments. Let's get bossy about the names which can be used
 for type kinds. To the "extra" rules add
 ``, KindPattern(integer=r'i_.*', real=r'r_.*')``. This requires that all
 integer kinds start with "i\_" and all real kinds start with "r\_".

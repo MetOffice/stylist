@@ -15,6 +15,12 @@ your taste.
    api
    todo
 
+A lot of our process is dictated by the GitHub platform used to host the
+project. For details about that, such as how change requests are handled,
+see the `project wiki`_.
+
+.. _project wiki: https://github.com/MetOffice/stylist/wiki
+
 Indices and tables
 ------------------
 
