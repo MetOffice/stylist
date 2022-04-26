@@ -128,7 +128,6 @@ class MissingImplicit(FortranRule):
             which require an ``implicit`` statement. Set this argument to check
             everywhere an ``implicit`` could exist.
         """
-        assert default.lower() in ('none', 'private', 'public')
         self._require_everywhere = require_everywhere
 
     _NATURE_MAP: Dict[Type[Fortran2003.StmtBase], str] \

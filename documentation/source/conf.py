@@ -15,7 +15,9 @@ from typing import List
 #
 sys.path.insert(0, os.path.abspath('../../source'))
 
-from stylist import __version__ as STYLIST_VERSION
+from stylist import __version__ as STYLIST_VERSION  # noqa: E402
+#
+# Must appear after path addition otherwise it wouldn't be found.
 
 
 # -- Project information -----------------------------------------------------
