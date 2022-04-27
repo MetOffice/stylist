@@ -185,7 +185,7 @@ class TestMissingImplicit(object):
         for thing in empty_program_unit_implicit[1]:
             expectation.append(f"1: {thing}")
 
-        unit_under_test = stylist.fortran.MissingImplicit('none')
+        unit_under_test = stylist.fortran.MissingImplicit()
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation
@@ -223,7 +223,7 @@ class TestMissingImplicit(object):
                 expectation.append(f"{insert_line + first_len}: {thing}")
 
         unit_under_test = stylist.fortran.MissingImplicit(
-            'none', require_everywhere=require_always)
+            require_everywhere=require_always)
         issues = unit_under_test.examine(source)
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == expectation
