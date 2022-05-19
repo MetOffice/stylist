@@ -7,6 +7,7 @@
 """Ensure the configuration module functions as expected."""
 import re
 from typing import Mapping, Optional, Sequence, Tuple, Type
+
 from pytest import fixture, raises  # type: ignore
 # ToDo: Obviously we shouldn't be importing "private" modules but until pytest
 #       sorts out its type hinting we are stuck with it.

@@ -29,7 +29,7 @@ from stylist.source import FortranSource, SourceStringReader
                             contains
                             {procedure}
                             end module test_module''',
-                        '''! move to third line to save calculating line numbers
+                        '''! pad to third line to match line numbers
                            !
                            {procedure}'''])
 def parent_container(request: FixtureRequest) -> str:

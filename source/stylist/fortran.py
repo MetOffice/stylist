@@ -9,7 +9,7 @@ Rules relating to Fortran source.
 import re
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
-from typing import Dict, List, Optional, Pattern, Type, Union
+from typing import Dict, List, Optional, Pattern, Sequence, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
@@ -571,5 +571,30 @@ class AutoCharArrayIntent(FortranRule):
                 ),
                 line=declaration.item.span[0]
             ))
+
+        return issues
+
+
+class ForbidUsage(FortranRule):
+    """
+    Checks that no attempt is made to use the specified module unless it is in
+    one of the exceptions.
+    """
+    def __init__(self, module_name: str,
+                 module_exception_name: Sequence[str] = ()):
+        self._forbid_module = module_name
+        self._exception_modules = module_exception_name
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+        for module in subject.find_all(Fortran2003.Module_Stmt):
+            in_module = str(module.items[1])
+            for use in subject.find_all(Fortran2003.Use_Stmt, module.parent):
+                use_module = str(use.items[2])
+                forbidden = (use_module == self._forbid_module
+                             and in_module not in self._exception_modules)
+                if forbidden:
+                    message = f"Attempt to use forbidden module '{use_module}'"
+                    issues.append(Issue(message, line=use.item.span[0]))
 
         return issues
