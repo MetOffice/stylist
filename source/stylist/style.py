@@ -68,6 +68,41 @@ def _all_subclasses(cls: Any) -> Set[Type]:
     return children
 
 
+def _split_arguments(argument_string: str) -> List[str]:
+    open_brackets = '([{'
+    close_brackets = {'(': ')',
+                      '[': ']',
+                      '{': '}'}
+    collection_opener = ''
+    buffer = ''
+    arguments: List[str] = []
+    state = 'argument'
+    index = 0
+    while index < len(argument_string):
+        character = argument_string[index]
+        index += 1
+        if state == 'argument':
+            if character in open_brackets:
+                buffer += character
+                collection_opener = character
+                state = 'collection'
+            elif character == ',':
+                arguments.append(buffer)
+                buffer = ''
+            else:
+                buffer += character
+        elif state == 'collection':
+            if character == close_brackets[collection_opener]:
+                buffer += character
+                arguments.append(buffer)
+                buffer = ''
+            else:
+                buffer += character
+    if buffer:
+        arguments.append(buffer)
+    return arguments
+
+
 _ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
 
 
@@ -100,11 +135,10 @@ def determine_style(configuration: Configuration,
     for rule_description in rule_list:
         rule_name, _, rule_arguments_string = rule_description.partition('(')
         rule_name = rule_name.strip()
-        rule_arguments_string, _, _ = rule_arguments_string.partition(')')
+        rule_arguments_string, _, _ = rule_arguments_string.rpartition(')')
         rule_arguments: List[str] = []
         if rule_arguments_string.strip():
-            rule_arguments = [thing.strip()
-                              for thing in rule_arguments_string.split(',')]
+            rule_arguments = _split_arguments(rule_arguments_string)
         if rule_name not in potential_rules:
             raise StylistException(f"Unrecognised rule: {rule_name}")
         if rule_arguments:

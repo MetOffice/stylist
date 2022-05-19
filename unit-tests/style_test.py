@@ -45,6 +45,19 @@ class _RuleHarnessTwo(stylist.rule.Rule):
         pass
 
 
+class _RuleHarnessThree(stylist.rule.Rule):
+    """
+    Completely empty but concrete implementation of a rule. This one has a
+    constructor with two arguments.
+    """
+    def __init__(self, thing, other_thing):
+        self.thing = thing
+        self.other_thing = other_thing
+
+    def examine(self, subject):
+        pass
+
+
 class TestStyle(object):
     """
     Tests the abstract TestStyle class.
@@ -214,3 +227,20 @@ class TestDetermineStyle:
         assert len(rules) == 1
         assert isinstance(rules[0], _RuleHarnessTwo)
         assert cast(_RuleHarnessTwo, rules[0]).thing == 'bing'
+
+    def test_collection_argument(self) -> None:
+        """
+        Checks that collection arguments are handled correctly.
+        """
+        initialiser = {'style.colarg':
+                       {'rules': "_RuleHarnessThree('arg1', "
+                           "('tup1', 'tup2'))"}}
+        conf = Configuration(initialiser)
+        style = stylist.style.determine_style(conf)
+
+        rules = style.list_rules()
+        assert len(rules) == 1
+        assert isinstance(rules[0], _RuleHarnessThree)
+        assert cast(_RuleHarnessThree, rules[0]).thing == 'arg1'
+        assert cast(_RuleHarnessThree, rules[0]).other_thing == ('tup1',
+                                                                 'tup2')
