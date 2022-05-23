@@ -132,3 +132,27 @@ class TestForbidUsage(object):
             "2: Attempt to use forbidden module 'mpi'",
             "5: Attempt to use forbidden module 'mpi'"
         ]
+
+    def test_pattern_motivation(self):
+        source_text = dedent('''
+                             module lfric_xios_one
+                               use xios
+                             end module
+                             module other_thing
+                               use xios
+                             end module
+                             module lfric_xios_two
+                               use xios
+                             end module
+                             ''').strip()
+
+        reader = SourceStringReader(source_text)
+        source = FortranSource(reader)
+
+        test_unit = ForbidUsage('xios', [r'lfric_xios.*'])
+        issues = test_unit.examine(source)
+
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == [
+            "5: Attempt to use forbidden module 'xios'"
+        ]

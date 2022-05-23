@@ -581,9 +581,12 @@ class ForbidUsage(FortranRule):
     one of the exceptions.
     """
     def __init__(self, module_name: str,
-                 module_exception_name: Sequence[str] = ()):
+                 module_exception_pattern: Sequence[str] = ()):
         self._forbid_module = module_name
-        self._exception_modules = module_exception_name
+        self._exceptions: Optional[re.Pattern] = None
+        if len(module_exception_pattern) > 0:
+            self._exceptions \
+                = re.compile(f'(?:{"|".join(module_exception_pattern)})')
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
@@ -591,8 +594,10 @@ class ForbidUsage(FortranRule):
             in_module = str(module.items[1])
             for use in subject.find_all(Fortran2003.Use_Stmt, module.parent):
                 use_module = str(use.items[2])
-                forbidden = (use_module == self._forbid_module
-                             and in_module not in self._exception_modules)
+                forbidden = (use_module == self._forbid_module)
+                if self._exceptions is not None:
+                    forbidden = (forbidden
+                                 and not self._exceptions.match(in_module))
                 if forbidden:
                     message = f"Attempt to use forbidden module '{use_module}'"
                     issues.append(Issue(message, line=use.item.span[0]))
