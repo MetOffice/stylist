@@ -92,3 +92,43 @@ class TestForbidUsage(object):
             "20: Attempt to use forbidden module 'ceramic_mod'",
             "23: Attempt to use forbidden module 'ceramic_mod'"
         ]
+
+    def test_motivating_example(self) -> None:
+        mpi_mod_text = dedent('''
+                              module mpi_mod
+                                use mpi
+                              contains
+                                subroutine init()
+                                  use mpi
+                                end subroutine
+                              end module mpi_mod
+                              ''').strip()
+
+        other_mod_text = dedent('''
+                                module other_mod
+                                  use  mpi
+                                contains
+                                  subroutine something()
+                                    use mpi
+                                  end subroutine
+                                end module
+                                ''').strip()
+
+        mpi_mod_reader = SourceStringReader(mpi_mod_text)
+        mpi_mod_source = FortranSource(mpi_mod_reader)
+
+        other_mod_reader = SourceStringReader(other_mod_text)
+        other_mod_source = FortranSource(other_mod_reader)
+
+        test_unit = ForbidUsage('mpi', ['mpi_mod'])
+        issues = test_unit.examine(mpi_mod_source)
+
+        assert len(issues) == 0
+
+        issues = test_unit.examine(other_mod_source)
+
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == [
+            "2: Attempt to use forbidden module 'mpi'",
+            "5: Attempt to use forbidden module 'mpi'"
+        ]
