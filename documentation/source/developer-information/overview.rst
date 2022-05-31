@@ -18,7 +18,7 @@ Type Hinting
 ------------
 
 This project uses type hinting in order to catch some of those bone-headed
-mistakes we all make. It should lead to long term more robust code. It also
+mistakes we all make. It should lead more robust code in the long term. It also
 furthers the goal of self documenting code by building type information into
 the (semi-)runable code. That way it is less likely to get out of date.
 
@@ -30,7 +30,8 @@ We use the `mypy`_ tool to audit typing.
 Code Style
 ----------
 
-As with most Python projects we follow the "PEP8" guidelines. The `flake8`_ tool is used for testing.
+As with most Python projects we follow the "PEP8" guidelines. The `flake8`_
+tool is used for testing.
 
 The general expectation is that source will pass the tests without incident. It
 is recognised, however, that general guidelines can not always be applied to
@@ -46,12 +47,12 @@ Documentation
 Documentation is primarily managed with the `sphinx`_ tool.
 
 We prefer API documentation to be automatically generated and wherever possible
-from the code. That way it can't get out of sink with the code. For instance
+from the code. That way it can't get out of sync with that code. For instance
 we generate argument type information from type hints rather than hand written
-entries in doc-strings.
+entries in docstrings.
 
 This does not mean there is no place for hand-written documentation. It is
-reserved for those matters which the source code cannot illuminate. The purpose
+reserved for those matters which the source code cannot illuminate: The purpose
 and reason for the code.
 
 To build the documentation change into the ``documentation`` directory and use
@@ -59,30 +60,36 @@ To build the documentation change into the ``documentation`` directory and use
 
 .. _sphinx: https://www.sphinx-doc.org/en/master/
 
-Doc-strings
-...........
+Docstrings
+..........
 
-Following PEP8 guidance Doc-strings are expected for every scoping unit.
+Following PEP8 guidance Docstrings are expected for every scoping unit. There
+is an exception for class constructors which take no arguments. The
+constructor inherits its summary from the class, only the arguments need to be
+documented.
 
-Try to avoid unecessary verbiage. If you are documenting a class there is no
+Try to avoid unnecessary verbiage. If you are documenting a class there is no
 need to mention that the thing being documented is a class. For example,
 rather than "class representing a thing" it is sufficient to say "A thing."
 
 Also try to avoid repeating what is already in the source. If a function is
 called "multiply" and takes two arguments don't document it with "Multiplies
-two numbers."
+two numbers." Instead talk about things which are not captured in the source,
+for instance there might be units associated with arguments.
 
 Remember that type hinting is used in synthesising the API documentation so
-there is no need to repeat that. When documenting arguments do say "Temperature in Kelvin." Don't say "Floating point Kelvin."
+there is no need to repeat that. When documenting arguments do say
+"Temperature in Kelvin." Don't say "Floating point Kelvin."
 
-Doc-strings should be used for information not expressed in the code. This can
-be challanging as well chosen names remove the need for much additional
-documentation.
+Docstrings should be used for information not expressed in the code. This can
+be challenging as well chosen function and argument names make the code
+largely self documenting.
 
 You may also assume the reader understands the basics of the language. For
 example there's little value to documenting a class constructor with
 "Constructor to create an object." We all know it's a constructor and that's
 what they do. Instead try to say something about the arguments passed.
+Although constructors are a special case, see previously.
 
 Todo items
 ..........
@@ -91,5 +98,5 @@ Generally future work should be raised as issues in the project database.
 
 There will be situations where a piece of future work (or potential future
 work) needs to be recorded but doesn't form a coherent issue. In these cases
-a "todo" block in the doc-string may be appropriate
+a "todo" block in the docstring may be appropriate
 

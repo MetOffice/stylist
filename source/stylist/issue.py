@@ -61,6 +61,6 @@ class Issue(object):
 
     def set_filename(self, filename: str) -> None:
         """
-        Associates a filename to this issue.
+        Associates a filename with this issue.
         """
         self._filename = filename
