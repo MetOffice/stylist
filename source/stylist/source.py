@@ -125,7 +125,7 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
     Strips out preprocessor directives.
 
     It is assumed that you want to syntax check all the Source so all
-    conditional directives such as '#ifdef' are stripped out.
+    conditional directives such as ``#ifdef`` are stripped out.
     """
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
