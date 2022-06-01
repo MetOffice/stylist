@@ -12,4 +12,7 @@ __version__ = '0.3-SNAPSHOT'
 
 
 class StylistException(Exception):
+    """
+    Allows exceptions from stylist to be distinguished from other exceptions.
+    """
     pass

@@ -21,13 +21,15 @@ class CheckEngine(object):
     """
     def __init__(self, styles: Sequence[Style]) -> None:
         """
-        Constructs a CheckEngine object from list of style lists.
+        :param styles: Styles to use when checking source.
         """
         self._styles = styles
 
     def check(self, source_filename: str) -> Sequence[Issue]:
         """
         Passes the eyes of all registered style lists over the source file.
+
+        :param source_filename: Path to source file.
         """
         issues = []
         with open(source_filename, 'rt') as source_file:
