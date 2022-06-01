@@ -117,7 +117,7 @@ class FortranCharacterset(Rule):
 
 class MissingImplicit(FortranRule):
     """
-    Catches cases where code blocks which could have an "implicit" statement
+    Catches cases where code blocks which could have an ``implicit`` statement
     don't.
     """
 

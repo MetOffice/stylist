@@ -17,10 +17,11 @@ the higher the better.
 Type Hinting
 ------------
 
-This project uses type hinting in order to catch some of those bone-headed
-mistakes we all make. It should lead more robust code in the long term. It also
-furthers the goal of self documenting code by building type information into
-the (semi-)runable code. That way it is less likely to get out of date.
+This project uses type hinting in order to catch some of those stupid mistakes
+we all make from time to time. It should lead more robust code in the long
+term. It also furthers the goal of self documenting code by building type
+information into the runnable code. That way it is less likely to get out of
+date.
 
 We use the `mypy`_ tool to audit typing.
 
