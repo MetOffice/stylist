@@ -98,12 +98,11 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          cd gh-pages
-          for brdir in $(ls branch/) ; do
+          for brdir in $(ls gh-pages/branch/) ; do
               brname=${brdir//--//\/}  # replace '--' with '/'
-              if ! git show-ref remotes/origin/$brname ; then
+              if ! git -C stylist show-ref remotes/origin/$brname ; then
                   echo "Removing $brdir"
-                  git rm branch/$brdir
+                  git -C gh-pages rm -r branch/$brdir
               fi
           done
 
