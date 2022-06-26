@@ -115,7 +115,6 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          git_hash=$(git rev-parse --short "${{ github.sha }}")
-          cd gh-pages
-          git commit -a -m "Documentation from $git_hash"
+          git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
+          git -C gh-pages commit -a -m "Documentation from $git_hash"
 
