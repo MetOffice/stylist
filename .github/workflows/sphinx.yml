@@ -89,6 +89,7 @@ jobs:
           brname="${brname##refs/heads/}"
           brdir=${brname//\//--}  # replace '/' with '--'
           cd gh-pages
+          mkdir -p branch
           git rm -r branch/${brdir}
           rsync -a ../stylist/documentation/build/html branch/${brdir}
           git add branch/${brdir}
