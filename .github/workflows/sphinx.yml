@@ -60,7 +60,7 @@ jobs:
 
       - name: Build Sphinx docs
         run: |
-          make dirhtml
+          make html
 
       # Publish
       #
@@ -79,7 +79,7 @@ jobs:
         run: |
           set -x
           find _gh-pages/ -mindepth 1 ! -path '_gh-pages/branch*' -delete
-          rsync -a _build/dirhtml/ _gh-pages/
+          rsync -a _build/html/ _gh-pages/
 
       - name: Copy new build (branch)
         if: |
@@ -90,7 +90,7 @@ jobs:
           brname="${brname##refs/heads/}"
           brdir=${brname//\//--}  # replace '/' with '--'
           rm -rf _gh-pages/branch/${brdir}
-          rsync -a _build/dirhtml/ _gh-pages/branch/${brdir}
+          rsync -a _build/html/ _gh-pages/branch/${brdir}
 
       - name: Delete old feature branches
         if: ${{ github.event_name == 'push' }}
