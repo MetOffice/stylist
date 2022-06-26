@@ -60,6 +60,7 @@ jobs:
 
       - name: Build Sphinx docs
         run: |
+          cd documentation
           make html
 
       # Publish
