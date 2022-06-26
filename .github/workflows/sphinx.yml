@@ -97,7 +97,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          for brdir in $(ls _ghpages/branch/) ; do
+          for brdir in $(ls _gh-pages/branch/) ; do
               brname${brname//\//--}  # replace '/' with '--'
               if ! git show-ref remotes/origin/$brname ; then
                   echo "Removing $brdir"
@@ -116,5 +116,5 @@ jobs:
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _gh_pages/
+          publish_dir: _gh-pages/
           force_orphan: true
