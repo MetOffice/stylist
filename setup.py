@@ -28,7 +28,7 @@ setup(
         'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
         'docs': ['sphinx',
-                 'sphinx-autodoc-typehint',
+                 'sphinx-autodoc-typehints',
                  'sphinx-rtd-theme']
     },
     entry_points={
