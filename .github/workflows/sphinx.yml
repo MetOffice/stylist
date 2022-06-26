@@ -98,7 +98,7 @@ jobs:
         run: |
           set -x
           for brdir in $(ls _gh-pages/branch/) ; do
-              brname${brname//\//--}  # replace '/' with '--'
+              brname=${brdir//--//\/}  # replace '--' with '/'
               if ! git show-ref remotes/origin/$brname ; then
                   echo "Removing $brdir"
                   rm -r _gh-pages/branch/$brdir/
