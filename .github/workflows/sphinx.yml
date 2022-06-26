@@ -52,6 +52,7 @@ jobs:
           echo "github.head_ref:" ${{github.head_ref}}
           echo "github.base_ref:" ${{github.base_ref}}
           set -x
+          cd stylist
           git rev-parse --abbrev-ref HEAD
           git branch
           git branch -a
