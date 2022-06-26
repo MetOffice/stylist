@@ -12,10 +12,18 @@ jobs:
     name: Build and deploy to gh-pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out Stylist project source
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          path: stylist
+          fetch-depth: 1
           lfs: true
+
+      - name: Checkout Stylist project pages
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: gh-pages
 
       - name: Install Python
         uses: actions/setup-python@v2
@@ -51,57 +59,45 @@ jobs:
           pip list --not-required
           pip list
 
-      # Build
-      #
-      # Problem matcher is commented out until it can be checked for security
-      # implications.
-      #
-      # - uses: ammaraskar/sphinx-problem-matcher@0.1
-
       - name: Build Sphinx docs
         run: |
-          cd documentation
+          cd stylist/documentation
           make html
 
       # Publish
       #
-      - name: Clone old gh-pages
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          set -x
-          git fetch
-          ( git branch gh-pages remotes/origin/gh-pages && git clone . --branch=gh-pages _gh-pages/ ) || mkdir _gh-pages
-          rm -rf _gh-pages/.git/
-          mkdir -p _gh-pages/branch
-
       - name: Copy new build (trunk)
         if: |
-          contains(github.event_name, 'push') && contains(github.ref, env.TRUNK_BRANCH)
+          contains(github.event_name, 'push')
+          && contains(github.ref, env.TRUNK_BRANCH)
         run: |
           set -x
-          find _gh-pages/ -mindepth 1 ! -path '_gh-pages/branch*' -delete
-          rsync -a documentation/build/html/ _gh-pages/
+          find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git rm {} \;
+          rsync -a documentation/build/html/ gh-pages/
+          find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git add {} \;
 
       - name: Copy new build (branch)
         if: |
-          contains(github.event_name, 'push') && !contains(github.ref, env.TRUNK_BRANCH)
+          contains(github.event_name, 'push')
+          && !contains(github.ref, env.TRUNK_BRANCH)
         run: |
           set -x
           brname="${{github.ref}}"
           brname="${brname##refs/heads/}"
           brdir=${brname//\//--}  # replace '/' with '--'
-          rm -rf _gh-pages/branch/${brdir}
-          rsync -a documentation/build/html/ _gh-pages/branch/${brdir}
+          git rm gh-pages/branch/${brdir}
+          rsync -a documentation/build/html/ gh-pages/branch/${brdir}
+          git add gh-pages/branch/${brdir}
 
       - name: Delete old feature branches
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          for brdir in $(ls _gh-pages/branch/) ; do
+          for brdir in $(ls gh-pages/branch/) ; do
               brname=${brdir//--//\/}  # replace '--' with '/'
               if ! git show-ref remotes/origin/$brname ; then
                   echo "Removing $brdir"
-                  rm -r _gh-pages/branch/$brdir/
+                  git rm gh-pages/branch/$brdir
               fi
           done
 
@@ -111,10 +107,8 @@ jobs:
           touch _gh-pages/.nojekyll
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' }}
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _gh-pages/
-          force_orphan: true
+        run: |
+          set -x
+          git commit gh-pages
+
