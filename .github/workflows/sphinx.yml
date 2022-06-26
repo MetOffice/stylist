@@ -98,22 +98,25 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          for brdir in $(ls gh-pages/branch/) ; do
+          cd gh-pages
+          for brdir in $(ls branch/) ; do
               brname=${brdir//--//\/}  # replace '--' with '/'
               if ! git show-ref remotes/origin/$brname ; then
                   echo "Removing $brdir"
-                  git rm gh-pages/branch/$brdir
+                  git rm branch/$brdir
               fi
           done
 
       - name: Add "no jekyll" file
         if: ${{ github.event_name == 'push' }}
         run: |
-          touch _gh-pages/.nojekyll
+          touch gh-pages/.nojekyll
 
       - name: Deploy
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
-          git commit gh-pages
+          git_hash=$(git rev-parse --short "${{ github.sha }}")
+          cd gh-pages
+          git commit -a -m "Documentation from $git_hash"
 
