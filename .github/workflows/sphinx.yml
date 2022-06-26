@@ -15,6 +15,7 @@ jobs:
       - name: Check out Stylist project source
         uses: actions/checkout@v3
         with:
+          path: stylist
           fetch-depth: 1
           lfs: true
 
@@ -40,6 +41,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd stylist
           python -m pip install --upgrade pip
           pip install .[docs]
 
@@ -60,7 +62,7 @@ jobs:
 
       - name: Build Sphinx docs
         run: |
-          cd documentation
+          cd stylist/documentation
           make html
 
       # Publish
@@ -72,7 +74,7 @@ jobs:
         run: |
           set -x
           find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git rm {} \;
-          rsync -a documentation/build/html/ gh-pages/
+          rsync -a stylist/documentation/build/html/ gh-pages/
           find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git add {} \;
 
       - name: Copy new build (branch)
@@ -85,7 +87,7 @@ jobs:
           brname="${brname##refs/heads/}"
           brdir=${brname//\//--}  # replace '/' with '--'
           git rm gh-pages/branch/${brdir}
-          rsync -a documentation/build/html/ gh-pages/branch/${brdir}
+          rsync -a stylist/documentation/build/html/ gh-pages/branch/${brdir}
           git add gh-pages/branch/${brdir}
 
       - name: Delete old feature branches
