@@ -44,6 +44,7 @@ jobs:
           cd stylist
           python -m pip install --upgrade pip
           pip install .[docs]
+          cd ..
 
       - name: Debugging information
         run: |
@@ -60,11 +61,13 @@ jobs:
           python -V
           pip list --not-required
           pip list
+          cd ..
 
       - name: Build Sphinx docs
         run: |
           cd stylist/documentation
           make html
+          cd ../..
 
       # Publish
       #
@@ -78,6 +81,7 @@ jobs:
           find . -mindepth 1 ! -path 'branch*' -exec git rm {} \;
           rsync -a ../stylist/documentation/build/html/ gh-pages/
           find . -mindepth 1 ! -path 'branch*' -exec git add {} \;
+          cd ..
 
       - name: Copy new build (branch)
         if: |
@@ -93,6 +97,7 @@ jobs:
           git rm -r branch/${brdir}
           rsync -a ../stylist/documentation/build/html branch/${brdir}
           git add branch/${brdir}
+          cd ..
 
       - name: Delete old feature branches
         if: ${{ github.event_name == 'push' }}
