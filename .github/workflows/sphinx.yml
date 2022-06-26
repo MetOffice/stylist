@@ -74,9 +74,10 @@ jobs:
           && contains(github.ref, env.TRUNK_BRANCH)
         run: |
           set -x
-          find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git rm {} \;
-          rsync -a stylist/documentation/build/html/ gh-pages/
-          find gh-pages/ -mindepth 1 ! -path 'gh-pages/branch*' -exec git add {} \;
+          cd gh-pages
+          find . -mindepth 1 ! -path 'branch*' -exec git rm {} \;
+          rsync -a ../stylist/documentation/build/html/ gh-pages/
+          find . -mindepth 1 ! -path 'branch*' -exec git add {} \;
 
       - name: Copy new build (branch)
         if: |
@@ -87,9 +88,10 @@ jobs:
           brname="${{github.ref}}"
           brname="${brname##refs/heads/}"
           brdir=${brname//\//--}  # replace '/' with '--'
-          git rm gh-pages/branch/${brdir}
-          rsync -a stylist/documentation/build/html/ gh-pages/branch/${brdir}
-          git add gh-pages/branch/${brdir}
+          cd gh-pages
+          git rm branch/${brdir}
+          rsync -a ../stylist/documentation/build/html/ branch/${brdir}
+          git add branch/${brdir}
 
       - name: Delete old feature branches
         if: ${{ github.event_name == 'push' }}
