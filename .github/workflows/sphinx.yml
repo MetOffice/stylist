@@ -1,10 +1,5 @@
 # Inspired by https://github.com/rkdarst/sphinx-actions-test/blob/master/.github/workflows/sphinx-build.yml
 
-name: Documentation generation
-
-env:
-  # SCRICT_OPTS: "-W --keep-going -T"
-
 name: sphinx
 on: 
   push:
@@ -16,6 +11,9 @@ on:
   workflow_dispatch:
     branches:
       - master
+
+env:
+  # SCRICT_OPTS: "-W --keep-going -T"
 
 jobs:
   build-and-deploy:
