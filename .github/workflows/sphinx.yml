@@ -1,6 +1,6 @@
 # Inspired by https://github.com/rkdarst/sphinx-actions-test/blob/master/.github/workflows/sphinx-build.yml
 
-name: sphinx
+name: Generate documentation
 on: 
   push:
     branches:
@@ -12,7 +12,7 @@ on:
     branches:
       - master
 
-env:
+# env:
   # SCRICT_OPTS: "-W --keep-going -T"
 
 jobs:
