@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - TRUNK_BRANCH
-  pull-request:
+  pull_request:
     branches:
       = TRUNK_BRANCH
 
