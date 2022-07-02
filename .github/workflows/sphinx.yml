@@ -1,25 +1,34 @@
 # Inspired by https://github.com/rkdarst/sphinx-actions-test/blob/master/.github/workflows/sphinx-build.yml
 
-name: sphinx
-on: [push, pull_request]
-
 env:
   TRUNK_BRANCH: "master"
   # SCRICT_OPTS: "-W --keep-going -T"
+
+name: sphinx
+on: 
+  push:
+    branches:
+      - TRUNK_BRANCH
+  pull-request:
+    branches:
+      = TRUNK_BRANCH
 
 jobs:
   build-and-deploy:
     name: Build and deploy to gh-pages
     runs-on: ubuntu-latest
     steps:
-      - name: Check out Stylist project source
+      #
+      # Preparation
+      #
+      - name: Check out source
         uses: actions/checkout@v3
         with:
           path: stylist
           fetch-depth: 1
           lfs: true
 
-      - name: Checkout Stylist project pages
+      - name: Checkout pages
         uses: actions/checkout@v3
         with:
           ref: gh-pages
@@ -61,50 +70,26 @@ jobs:
           pip list --not-required
           pip list
 
+      #
+      # Documentation
+      #
       - name: Build Sphinx docs
         run: |
           cd stylist/documentation
           make html
 
+      #
       # Publish
       #
-      - name: Copy new build (trunk)
+      - name: Copy new documentation
         if: |
           contains(github.event_name, 'push')
-          && contains(github.ref, env.TRUNK_BRANCH)
         run: |
           set -x
           cd gh-pages
-          find . -mindepth 1 ! -path 'branch*' -exec git rm {} \;
+          find . -mindepth 1 ! -path 'release*' -exec git rm {} \;
           rsync -a ../stylist/documentation/build/html/ gh-pages/
-          find . -mindepth 1 ! -path 'branch*' -exec git add {} \;
-
-      - name: Copy new build (branch)
-        if: |
-          contains(github.event_name, 'push')
-          && !contains(github.ref, env.TRUNK_BRANCH)
-        run: |
-          set -x
-          brname="${{github.ref}}"
-          brname="${brname##refs/heads/}"
-          brdir=${brname//\//--}  # replace '/' with '--'
-          cd gh-pages
-          git rm -r branch/${brdir}
-          mkdir -p branch
-          rsync -a ../stylist/documentation/build/html branch/${brdir}
-          git add branch/${brdir}
-
-      - name: Delete old feature branches
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          set -x
-          for brdir in $(ls gh-pages/branch/) ; do
-              brname=${brdir//--//\/}  # replace '--' with '/'
-              if ! git -C stylist show-ref remotes/origin/$brname ; then
-                  echo "Removing $brdir"
-                  git -C gh-pages rm -r branch/$brdir
-              fi
-          done
+          find . -mindepth 1 ! -path 'release*' -exec git add {} \;
 
       - name: Add "no jekyll" file
         if: ${{ github.event_name == 'push' }}
@@ -117,4 +102,3 @@ jobs:
           set -x
           git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
           git -C gh-pages -c "user.name=Sphinx Workflow" -c user.email=sphinx@example.com commit -a -m "Documentation from $git_hash"
-
