@@ -8,10 +8,10 @@ name: sphinx
 on: 
   push:
     branches:
-      - TRUNK_BRANCH
+      - env.TRUNK_BRANCH
   pull_request:
     branches:
-      = TRUNK_BRANCH
+      = env.TRUNK_BRANCH
 
 jobs:
   build-and-deploy:
