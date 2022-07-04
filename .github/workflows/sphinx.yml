@@ -1,0 +1,106 @@
+# Inspired by https://github.com/rkdarst/sphinx-actions-test/blob/master/.github/workflows/sphinx-build.yml
+
+name: Generate documentation
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    branches:
+      - master
+
+# env:
+  # SCRICT_OPTS: "-W --keep-going -T"
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      #
+      # Preparation
+      #
+      - name: Check out source
+        uses: actions/checkout@v3
+        with:
+          path: stylist
+          fetch-depth: 1
+          lfs: true
+
+      - name: Checkout pages
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          cd stylist
+          python -m pip install --upgrade pip
+          pip install .[docs]
+
+      - name: Debugging information
+        run: |
+          echo "github.ref:" ${{github.ref}}
+          echo "github.event_name:" ${{github.event_name}}
+          echo "github.head_ref:" ${{github.head_ref}}
+          echo "github.base_ref:" ${{github.base_ref}}
+          set -x
+          cd stylist
+          git rev-parse --abbrev-ref HEAD
+          git branch
+          git branch -a
+          git remote -v
+          python -V
+          pip list --not-required
+          pip list
+
+      #
+      # Documentation
+      #
+      - name: Build Sphinx docs
+        run: |
+          cd stylist/documentation
+          make html
+
+      #
+      # Publish
+      #
+      - name: Copy new documentation
+        if: |
+          contains(github.event_name, 'push')
+        run: |
+          set -x
+          cd gh-pages
+          find . -mindepth 1 ! -path 'release*' -exec git rm {} \;
+          rsync -a ../stylist/documentation/build/html/ gh-pages/
+          find . -mindepth 1 ! -path 'release*' -exec git add {} \;
+
+      - name: Add "no jekyll" file
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          touch gh-pages/.nojekyll
+
+      - name: Deploy
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          set -x
+          git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
+          git -C gh-pages -c "user.name=Sphinx Workflow" -c user.email=sphinx@example.com commit -a -m "Documentation from $git_hash"

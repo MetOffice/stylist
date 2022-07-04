@@ -6,8 +6,6 @@ from setuptools import setup, find_packages  # type: ignore
 
 # Get the long description from the README file
 HERE = os.path.dirname(__file__)
-with open(os.path.join(HERE, 'README.md'), encoding='utf-8',) as handle:
-    LONG_DESCRIPTION = handle.read()
 with open(
     os.path.join(HERE, 'source', 'stylist', '__init__.py'),
     encoding='utf-8',
@@ -21,27 +19,7 @@ with open(
         raise RuntimeError('Cannot determine package version.')
 
 setup(
-    name='stylist',
     version=VERSION,
-    description=(
-        'Extensible code style checker'
-        ' currently supporting Fortran, PSyclone DSL, etc'
-    ),
-    long_description=LONG_DESCRIPTION,
-    long_description_content_type='text/markdown',
-    url='https://github.com/MetOffice/stylist',
-    author='Met Office',
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Quality Assurance',
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-    ],
-    keywords='linter fortran psyclone',
     package_dir={'': 'source'},
     packages=find_packages(where='source'),
     python_requires='>=3.7, <4',
@@ -50,7 +28,7 @@ setup(
         'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
         'docs': ['sphinx',
-                 'sphinx-autodoc-typehint',
+                 'sphinx-autodoc-typehints',
                  'sphinx-rtd-theme']
     },
     entry_points={
