@@ -88,9 +88,9 @@ jobs:
           contains(github.event_name, 'push')
         run: |
           set -x
-          find gh-pages -mindepth 1 -path './.git' -prune -exec git rm {} \;
+          find gh-pages -mindepth 1 ! -path './.git*' -exec git rm {} \;
           rsync -a stylist/documentation/build/html/ gh-pages/
-          find gh-pages -mindepth 1 ! -path './.git' -prune ! -path './release*' -prune -exec git add {} \;
+          find gh-pages -mindepth 1 ! -path './.git*' ! -path './release*' -exec git add {} \;
 
       - name: Add "no jekyll" file
         if: ${{ github.event_name == 'push' }}
