@@ -91,7 +91,8 @@ jobs:
           set -x
           find gh-pages -mindepth 1 ! -path 'gh-pages/.git*' -exec git rm {} \;
           rsync -a stylist/documentation/build/html/ gh-pages/
-          find gh-pages -mindepth 1 ! -path 'gh-pages/.git*' ! -path 'gh-pages/release*' -exec git add {} \;
+          cd gh-pages
+          find . -mindepth 1 ! -path './.git*' ! -path './release*' -exec git add {} \;
 
       - name: Add "no jekyll" file
         if: ${{ github.event_name == 'push' }}
