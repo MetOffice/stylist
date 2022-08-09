@@ -8,11 +8,8 @@ Classes relating to styles made up of rules.
 """
 from abc import ABCMeta
 import logging
-import re
-from typing import Any, Dict, List, Optional, Set, Type, Union
+from typing import Any, List, Set, Type
 
-from stylist import StylistException
-from stylist.configuration import Configuration
 import stylist.fortran
 import stylist.issue
 from stylist.rule import Rule
@@ -23,13 +20,11 @@ class Style(object, metaclass=ABCMeta):
     """
     Abstract parent of all style lists.
     """
-    def __init__(self, rules: Union[List[Rule], Rule]) -> None:
+    def __init__(self, *rules: Rule) -> None:
         """
-        :param rules: Rules which make up this style.
+        :param *args: Rules which make up this style.
         """
-        if not isinstance(rules, list):
-            rules = [rules]
-        self._rules = rules
+        self._rules = list(rules)
 
     def list_rules(self) -> List[Rule]:
         """
@@ -69,72 +64,3 @@ def _all_subclasses(cls: Any) -> Set[Type]:
                 to_examine.append(child)
                 children.add(child)
     return children
-
-
-_ARGUMENT_PATTERN = re.compile(r'\s*(?:(\w+?)\s*=\s*)?(.*)')
-
-
-def determine_style(configuration: Configuration,
-                    style_name: Optional[str] = None) -> Style:
-    """
-    Builds a style from those defined in the configuration.
-
-    :param configuration: Tool configuration.
-    :param style_name: If not specified the first style defined in the
-                       configuration is used.
-    :return: Selected style.
-    """
-    available_styles = configuration.available_styles()
-
-    if style_name is None:
-        if len(available_styles) == 1:
-            style_name = available_styles[0]
-        else:
-            message = "Cannot pick a default style from file containing " \
-                      "{0} styles"
-            raise StylistException(message.format(len(available_styles)))
-
-    if style_name not in available_styles:
-        message = f"style '{style_name}' not found in configuration"
-        raise StylistException(message)
-
-    # Todo: It would be nice to remove abstracts from this list but I haven't
-    #       worked out how yet.
-    #
-    potential_rules: Dict[str, Type[Rule]] \
-        = {cls.__name__: cls for cls in _all_subclasses(Rule)}
-
-    rules: List[Rule] = []
-    rule_list = configuration.get_style(style_name)
-    if not isinstance(rule_list, list):
-        raise TypeError('Style rules should be a list of names')
-    for rule_description in rule_list:
-        rule_name, _, rule_arguments_string = rule_description.partition('(')
-        rule_name = rule_name.strip()
-        rule_arguments_string, _, _ = rule_arguments_string.partition(')')
-        rule_arguments: List[str] = []
-        if rule_arguments_string.strip():
-            rule_arguments = [thing.strip()
-                              for thing in rule_arguments_string.split(',')]
-        if rule_name not in potential_rules:
-            raise StylistException(f"Unrecognised rule: {rule_name}")
-        if rule_arguments:
-            processed_args: List[str] = []
-            processed_kwargs: Dict[str, str] = {}
-            for arg in rule_arguments:
-                match = _ARGUMENT_PATTERN.match(arg)
-                if match is None:
-                    message = "Failed to comprehend rule argument list"
-                    raise StylistException(message)
-                if match.group(1) is not None:
-                    processed_kwargs[match.group(1)] = eval(match.group(2))
-                else:
-                    processed_args.append(eval(match.group(2)))
-            # TODO: Currently the use of *args and **kwargs here confuses mypy.
-            #
-            new_rule = potential_rules[rule_name](  # type: ignore
-                *processed_args, **processed_kwargs)
-            rules.append(new_rule)
-        else:
-            rules.append(potential_rules[rule_name]())
-    return Style(rules)

@@ -58,7 +58,7 @@ class TestSystem(object):
 
         command: List[str] = ['python', '-m', 'stylist',
                               '-configuration',
-                              str(test_dir / 'configuration.ini'),
+                              str(test_dir / 'configuration.py'),
                               '-style', case.style]
         command.extend([str(test_dir / leafname) for leafname in case.files])
         process = subprocess.run(command,

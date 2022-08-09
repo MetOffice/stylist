@@ -14,11 +14,12 @@ from pathlib import Path
 import sys
 from typing import List, Sequence
 
-from stylist.configuration import Configuration, ConfigurationFile
+from stylist import StylistException
+from stylist.configuration import Configuration, ConfigTools, load_configuration
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
 from stylist.source import SourceFactory
-from stylist.style import determine_style, Style
+from stylist.style import Style
 
 
 def _parse_cli() -> argparse.Namespace:
@@ -27,16 +28,16 @@ def _parse_cli() -> argparse.Namespace:
     """
     description = 'Perform various code style checks on source code.'
 
-    max_key_len: int = max(len(key) for key in Configuration.language_tags())
+    max_key_len: int = max(len(key) for key in ConfigTools.language_keys())
     parsers = [key.ljust(max_key_len)
                + ' - '
-               + str(Configuration.language_lookup(key))
-               for key in Configuration.language_tags()]
-    max_key_len = max(len(key) for key in Configuration.preprocessor_tags())
+               + str(ConfigTools.language(key))
+               for key in ConfigTools.language_keys()]
+    max_key_len = max(len(key) for key in ConfigTools.preprocessor_keys())
     preproc = [key.ljust(max_key_len)
                + ' - '
-               + str(Configuration.preprocessor_lookup(key))
-               for key in Configuration.preprocessor_tags()]
+               + str(ConfigTools.preprocessor(key))
+               for key in ConfigTools.preprocessor_keys()]
     epilog = """"\
 IDs used in specifying extension pipelines:
   Parsers:
@@ -104,11 +105,12 @@ def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
 
 
 def _configure(project_file: Path = None) -> Configuration:
-    configuration = Configuration()
+    if project_file.is_file():
+        configuration = load_configuration(project_file)
+    else:
+        configuration = Configuration()
     # TODO /etc/fab.ini
     # TODO ~/.fab.ini - Path.home() / '.fab.ini'
-    if project_file is not None:
-        configuration = ConfigurationFile(project_file, configuration)
     return configuration
 
 
@@ -129,23 +131,27 @@ def main() -> None:
     configuration = _configure(arguments.configuration)
 
     styles = []
-    if arguments.style is not None:
-        for name in arguments.style:
-            styles.append(determine_style(configuration, name))
+    if arguments.style is None:
+        if len(configuration.styles) == 1:
+            for style in configuration.styles.values():
+                styles.append(style)
+        else:
+            message = f"No style specified and more than one defined."
+            raise StylistException(message)
     else:
-        styles.append(determine_style(configuration))
+        for name in arguments.style:
+            styles.append(configuration.styles[name])
 
     # Pipelines loaded from configuration file
     #
-    for extension, language, preprocessors in configuration.get_file_pipes():
-        SourceFactory.add_extension(extension, language, *preprocessors)
+    for extension, pipe in configuration.file_pipes.items():
+        SourceFactory.add_extension(extension, pipe)
     #
     # Pipelines from command line.
     #
     for mapping in arguments.map_extension:
-        extension, language, preprocessors \
-            = Configuration.parse_pipe_description(mapping)
-        SourceFactory.add_extension(extension, language, *preprocessors)
+        extension, pipe = ConfigTools.parse_pipe_description(mapping)
+        SourceFactory.add_extension(extension, pipe)
 
     issues = _process(arguments.source, styles)
 

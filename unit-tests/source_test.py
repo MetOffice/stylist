@@ -24,12 +24,12 @@ from stylist.source import (CPreProcessor, CSource,
                             SourceFileReader, SourceStringReader,
                             SourceText, SourceTree,
                             TextProcessor,
-                            _SourceChain)
+                            FilePipe)
 
 
 class TestSourceText(object):
     """
-    Checks the TextSource heirarchy.
+    Checks the TextSource hierarchy.
     """
     def test_source_string_reader(self) -> None:
         """
@@ -331,10 +331,8 @@ class TestSourceChain(object):
     def test_constructor(self,
                          chain_extension: str,
                          chain_text: List[Type[ProcessorHarness]]) -> None:
-        unit_under_test = _SourceChain(chain_extension,
-                                       TestSourceChain.LanguageHarness,
-                                       *chain_text)
-        assert unit_under_test.extension == chain_extension.strip('.')
+        unit_under_test = FilePipe(TestSourceChain.LanguageHarness,
+                                   *chain_text)
         assert unit_under_test.parser == TestSourceChain.LanguageHarness
         assert unit_under_test.preprocessors == tuple(chain_text)
 
@@ -421,7 +419,7 @@ END MODULE test_mod"""
         source_filename.write_text(source)
         with pytest.raises(Exception):
             result = SourceFactory.read_file(str(source_filename))
-        SourceFactory.add_extension('x90', FortranSource)
+        SourceFactory.add_extension('x90', FilePipe(FortranSource))
         result = SourceFactory.read_file(str(source_filename))
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected
