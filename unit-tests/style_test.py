@@ -75,7 +75,8 @@ class TestStyle(object):
         style.
         """
         unit_under_test = TestStyle._StyleHarness(*initials[0])
-        assert [rule.__class__.__name__ for rule in unit_under_test.list_rules()] == initials[1]
+        assert [rule.__class__.__name__
+                for rule in unit_under_test.list_rules()] == initials[1]
 
     class _RuleHarness(stylist.rule.Rule):
         def __init__(self):

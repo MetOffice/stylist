@@ -15,7 +15,9 @@ import sys
 from typing import List, Sequence
 
 from stylist import StylistException
-from stylist.configuration import Configuration, ConfigTools, load_configuration
+from stylist.configuration import (Configuration,
+                                   ConfigTools,
+                                   load_configuration)
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
 from stylist.source import SourceFactory
@@ -104,11 +106,8 @@ def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
-def _configure(project_file: Path = None) -> Configuration:
-    if project_file.is_file():
-        configuration = load_configuration(project_file)
-    else:
-        configuration = Configuration()
+def _configure(project_file: Path) -> Configuration:
+    configuration = load_configuration(project_file)
     # TODO /etc/fab.ini
     # TODO ~/.fab.ini - Path.home() / '.fab.ini'
     return configuration
@@ -136,7 +135,7 @@ def main() -> None:
             for style in configuration.styles.values():
                 styles.append(style)
         else:
-            message = f"No style specified and more than one defined."
+            message = "No style specified and more than one defined."
             raise StylistException(message)
     else:
         for name in arguments.style:

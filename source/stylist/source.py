@@ -7,7 +7,6 @@
 """
 Manages source code in various flavours.
 """
-import logging
 from abc import ABCMeta, abstractmethod
 import re
 import os.path

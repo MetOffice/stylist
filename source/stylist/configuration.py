@@ -14,7 +14,15 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Type
 
 from stylist import StylistException
-from stylist.source import CPreProcessor, CSource, FilePipe, FortranPreProcessor, FortranSource, PFUnitProcessor, PlainText, SourceTree, TextProcessor
+from stylist.source import (CPreProcessor,
+                            CSource,
+                            FilePipe,
+                            FortranPreProcessor,
+                            FortranSource,
+                            PFUnitProcessor,
+                            PlainText,
+                            SourceTree,
+                            TextProcessor)
 from stylist.style import Style
 
 
@@ -41,8 +49,12 @@ class Configuration:
 def load_configuration(config_file: Path) -> Configuration:
     spec = spec_from_file_location('configuration_file', config_file)
     if spec is None:
-        raise StylistException(f"Unable to find configuration file: {config_file}")
+        message = f"Unable to find configuration file: {config_file}"
+        raise StylistException(message)
     module = module_from_spec(spec)
+    if spec.loader is None:
+        message = f"Unable to find loader for file: {config_file}"
+        raise StylistException(message)
     spec.loader.exec_module(module)
     configuration = Configuration()
     for name, var in module.__dict__.items():
@@ -55,10 +67,11 @@ def load_configuration(config_file: Path) -> Configuration:
 
 
 class ConfigTools:
-    _LANGUAGE_MAP = {'c': CSource,
-                     'cxx': CSource,
-                     'fortran': FortranSource,
-                     'text': PlainText}
+    _LANGUAGE_MAP: Dict[str, Type[SourceTree]] \
+        = {'c': CSource,
+           'cxx': CSource,
+           'fortran': FortranSource,
+           'text': PlainText}
 
     @classmethod
     def language_keys(cls) -> List[str]:
@@ -68,9 +81,10 @@ class ConfigTools:
     def language(cls, key: str) -> Type[SourceTree]:
         return cls._LANGUAGE_MAP[key]
 
-    _PREPROCESSOR_MAP = {'cpp': CPreProcessor,
-                         'fpp': FortranPreProcessor,
-                         'pfp': PFUnitProcessor}
+    _PREPROCESSOR_MAP: Dict[str, Type[TextProcessor]] \
+        = {'cpp': CPreProcessor,
+           'fpp': FortranPreProcessor,
+           'pfp': PFUnitProcessor}
 
     @classmethod
     def preprocessor_keys(cls) -> List[str]:
@@ -93,6 +107,7 @@ class ConfigTools:
         bits = string.split(':', 2)
         extension = bits[0]
         lang_object = cls._LANGUAGE_MAP[bits[1].lower()]
+        preproc_objects: List[Type[TextProcessor]]
         if len(bits) > 2:
             preproc_objects = [cls._PREPROCESSOR_MAP[ident.lower()]
                                for ident in bits[2].split(':')]

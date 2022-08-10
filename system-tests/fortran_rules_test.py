@@ -14,15 +14,14 @@ from typing import Generator, List, Optional, Tuple
 
 from pytest import fixture  # type: ignore
 
-_CASE_TUPLE = namedtuple('_CASE_TUPLE', ['test', 'variant', 'rules'])
-_STYLE_PATTERN = re.compile(r'\s*(.+?)\s*=\s*Style\((.*)\)')
+_CASE_TUPLE = namedtuple('_CASE_TUPLE', ['test', 'variant'])
+_STYLE_PATTERN = re.compile(r'\s*(.+?)\s*=\s*Style\(')
 
 
 def _list_cases() -> List[_CASE_TUPLE]:
     test_dir = Path(__file__).parent / 'fortran'
     config_file = test_dir / 'configuration.py'
     tests: List[_CASE_TUPLE] = list()
-    style = ''
     for line in config_file.read_text().splitlines():
         match = _STYLE_PATTERN.match(line)
         if match:
@@ -30,8 +29,9 @@ def _list_cases() -> List[_CASE_TUPLE]:
             test, _, variant = style.partition('__')
             if not variant:
                 variant = None
-            tests.append(_CASE_TUPLE(test, variant, match.group(2)))
-    tests.sort(key=lambda x: f"{x.test}{x.variant}")
+            case = _CASE_TUPLE(test, variant)
+            tests.append(case)
+    tests.sort(key=lambda x: f"{x.test}#{x.variant}")
     return tests
 
 
@@ -56,9 +56,7 @@ class TestFortranRules(object):
                 buffer.append(line.replace('$$', str(test_dir)))
         return expected_output, expected_error
 
-    def test_rule(self, case: Tuple[str, Optional[str], str]) -> None:
-        with open('debug.log', 'a') as handle:
-            print(case, file=handle)
+    def test_single_rules(self, case: Tuple[str, Optional[str], str]) -> None:
         test = case[0]
         variant = case[1]
 

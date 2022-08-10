@@ -21,4 +21,6 @@ labelled_do_exit = Style(LabelledDoExit())
 missing_intent = Style(MissingIntent())
 intrinsic_module = Style(IntrinsicModule())
 auto_char_array_intent = Style(AutoCharArrayIntent())
-multiple = Style(FortranCharacterset(), MissingImplicit(require_everywhere=True), MissingPointerInit())
+multiple = Style(FortranCharacterset(),
+                 MissingImplicit(require_everywhere=True),
+                 MissingPointerInit())
