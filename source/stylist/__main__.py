@@ -9,9 +9,11 @@ Tool for checking code style.
 """
 import argparse
 import logging
+from os import linesep
 import os.path
 from pathlib import Path
 import sys
+from textwrap import indent
 from typing import List, Sequence
 
 from stylist import StylistException
@@ -40,16 +42,16 @@ def _parse_cli() -> argparse.Namespace:
                + ' - '
                + str(ConfigTools.preprocessor(key))
                for key in ConfigTools.preprocessor_keys()]
-    epilog = """"\
+    epilog = f"""
 IDs used in specifying extension pipelines:
   Parsers:
-    {parsers}
+{indent(linesep.join(parsers), '    ')}
   Preprocessors:
-    {preproc}
-    """.format(parsers='\n    '.join(parsers),
-               preproc='\n    '.join(preproc))
+{indent(linesep.join(preproc), '    ')}
+"""
     formatter_class = argparse.RawDescriptionHelpFormatter
-    cli_parser = argparse.ArgumentParser(add_help=False,
+    cli_parser = argparse.ArgumentParser(prog="stylist",
+                                         add_help=False,
                                          description=description,
                                          epilog=epilog,
                                          formatter_class=formatter_class)
