@@ -12,10 +12,6 @@ from typing import List, Tuple, Type
 
 import fparser.two.Fortran2003  # type: ignore
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist.source import (CPreProcessor, CSource,
                             FortranPreProcessor, FortranSource,
@@ -230,8 +226,7 @@ END PROGRAM test"""
                              ['Program_Unit', 'Specification_Part',
                               'Implicit_Part', 'Implicit_Stmt'],
                              ['Implicit_Stmt'])])
-    def path_case(self, request: FixtureRequest) \
-            -> Tuple[str, List[str], List[str]]:
+    def path_case(self, request):
         """
         Generates a series of test cases for path searching a source file.
         """
@@ -294,7 +289,7 @@ class TestSourceChain(object):
             return ''
 
     @pytest.fixture(scope="module", params=['.dot', 'nodot'])
-    def chain_extension(self, request: FixtureRequest) -> str:
+    def chain_extension(self, request):
         """
         Generates a file extension with and without leading dot.
         """
@@ -321,8 +316,7 @@ class TestSourceChain(object):
                     params=[[],
                             [ProcessorHarness],
                             [ProcessorHarness, ProcessorHarness]])
-    def chain_text(self, request: FixtureRequest) \
-            -> List[Type[TextProcessor]]:
+    def chain_text(self, request):
         """
         Generates a tuple of text source classes.
         """
@@ -343,7 +337,7 @@ class TestFactory(object):
     """
     @pytest.fixture(scope="module",
                     params=['f', 'F', 'f90', 'F90'])
-    def fortran_extension(self, request: FixtureRequest) -> str:
+    def fortran_extension(self, request):
         """
         Generates a series of Fortran source file extensions.
         """
@@ -351,7 +345,7 @@ class TestFactory(object):
 
     @pytest.fixture(scope="module",
                     params=['c', 'cc', 'cpp', 'h'])
-    def cxx_extension(self, request: FixtureRequest) -> str:
+    def cxx_extension(self, request):
         """
         Generates a series of C and C++ source file extensions
         """

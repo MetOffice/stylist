@@ -9,10 +9,6 @@ Ensures the 'style' module functions as expected.
 """
 
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.rule
 from stylist.source import FortranSource, SourceStringReader
@@ -63,7 +59,7 @@ class TestStyle(object):
                             ([_RuleHarnessOne()], ['_RuleHarnessOne']),
                             ([_RuleHarnessTwo('blah'), _RuleHarnessOne()],
                              ['_RuleHarnessTwo', '_RuleHarnessOne'])])
-    def initials(self, request: FixtureRequest):
+    def initials(self, request):
         """
         Parameter fixture giving initial lists and expected lists.
         """

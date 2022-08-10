@@ -8,10 +8,6 @@
 Tests of the Fortran character set rule.
 """
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 from typing import List, Tuple
 
 import stylist.fortran
@@ -78,10 +74,10 @@ _SIMPLE_FORMAT = '''
                         (_SIMPLE_COMMENT, []),
                         (_SIMPLE_STRINGS, []),
                         (_SIMPLE_FORMAT, [])])
-def simple_source(request: FixtureRequest) -> Tuple[str, List[str]]:
+def simple_source(request):
     """
     Parameter fixture giving a simple Fortran source with various
-    characterset issues.
+    character set issues.
     """
     return request.param
 

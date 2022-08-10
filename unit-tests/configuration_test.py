@@ -9,7 +9,7 @@ Ensure the configuration module functions as expected.
 """
 from pathlib import Path
 from textwrap import dedent
-from typing import Optional, List
+from typing import cast, Optional, List
 
 from stylist.configuration import load_configuration
 from stylist.issue import Issue
@@ -142,10 +142,10 @@ class TestConfiguration:
         style = configuration.styles['only_multi_rules']
         assert len(style.list_rules()) == 2
         assert isinstance(style.list_rules()[0], DummyRuleOne)
-        assert style.list_rules()[0].first == 1
+        assert cast(DummyRuleOne, style.list_rules()[0]).first == 1
         assert isinstance(style.list_rules()[1], DummyRuleTwo)
-        assert style.list_rules()[1].first == 3
-        assert style.list_rules()[1].second == 4
+        assert cast(DummyRuleTwo, style.list_rules()[1]).first == 3
+        assert cast(DummyRuleTwo, style.list_rules()[1]).second == 4
 
     def test_regex_rule(self, tmp_path: Path):
         config_file = tmp_path / 'regex.py'
@@ -161,4 +161,4 @@ class TestConfiguration:
         style = configuration.styles['regex_rule']
         assert len(style.list_rules()) == 1
         assert isinstance(style.list_rules()[0], DummyRuleOne)
-        assert style.list_rules()[0].first.pattern == r'.*'
+        assert cast(DummyRuleOne, style.list_rules()[0]).first.pattern == r'.*'

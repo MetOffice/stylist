@@ -20,7 +20,7 @@ _STYLE_PATTERN = re.compile(r'\s*(.+?)\s*=\s*Style\(')
 
 def _list_cases() -> List[_CASE_TUPLE]:
     test_dir = Path(__file__).parent / 'fortran'
-    config_file = test_dir / 'configuration.py'
+    config_file = test_dir / 'fortran.py'
     tests: List[_CASE_TUPLE] = list()
     for line in config_file.read_text().splitlines():
         match = _STYLE_PATTERN.match(line)
@@ -72,7 +72,7 @@ class TestFortranRules(object):
 
         command: List[str] = ['python', '-m', 'stylist',
                               '-configuration',
-                              str(test_dir / 'configuration.py'),
+                              str(test_dir / 'fortran.py'),
                               '-style', case_name,
                               str(test_dir / f'{test}.f90')]
         process = subprocess.run(command,

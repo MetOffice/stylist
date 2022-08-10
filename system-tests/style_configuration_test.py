@@ -12,10 +12,6 @@ import subprocess
 from typing import List
 
 from pytest import fixture  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 
 class _CaseParam:
@@ -37,7 +33,7 @@ class TestSystem(object):
                                 ['naughty.txt'], 1),
                      _CaseParam('simple', 'Dual file, mixed',
                                 ['nice.txt', 'naughty.txt'], 1)])
-    def case(self, request: FixtureRequest) -> _CaseParam:
+    def case(self, request):
         return request.param
 
     def test_case(self, case: _CaseParam):
@@ -58,7 +54,7 @@ class TestSystem(object):
 
         command: List[str] = ['python', '-m', 'stylist',
                               '-configuration',
-                              str(test_dir / 'configuration.py'),
+                              str(test_dir / 'simple.py'),
                               '-style', case.style]
         command.extend([str(test_dir / leafname) for leafname in case.files])
         process = subprocess.run(command,
