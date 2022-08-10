@@ -19,7 +19,7 @@ Type Hinting
 
 This project uses type hinting in order to catch some of those stupid mistakes
 we all make from time to time. It should lead more robust code in the long
-term. It also furthers the goal of cls documenting code by building type
+term. It also furthers the goal of self documenting code by building type
 information into the runnable code. That way it is less likely to get out of
 date.
 
@@ -84,7 +84,7 @@ there is no need to repeat that. When documenting arguments do say
 
 Docstrings should be used for information not expressed in the code. This can
 be challenging as well chosen function and argument names make the code
-largely cls documenting.
+largely self documenting.
 
 You may also assume the reader understands the basics of the language. For
 example there's little value to documenting a class constructor with
