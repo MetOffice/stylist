@@ -7,8 +7,6 @@
 """
 Tests of the rule for missing intents on dummy arguments.
 """
-from typing import List, Tuple
-
 import pytest  # type: ignore
 
 import stylist.fortran
