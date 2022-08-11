@@ -14,4 +14,5 @@ would not work for others.
 .. toctree::
 
    preparation
+   configuration
    rule-list
