@@ -50,10 +50,10 @@ The command-line tool is not complicated to use:
           [-style NAME]
           FILE ...`
 
-The only required arguments are one or more filenames. These are the files
-which will be checked. If a directory is specified then the tool will
-automatically descend into it checking all files which it recognises by
-extension.
+The only required arguments are a configuration file and one or more
+filenames. These are the files which will be checked. If a directory is
+specified then the tool will automatically descend into it checking all files
+which it recognises by extension.
 
 If you want a running commentary of what the tool is doing then use the
 `-verbose` argument.
@@ -69,24 +69,31 @@ file will be used.
 
 ### Configuration File
 
-The configuration file is in Windows `.ini` format.
+The configuration file is a python script.
 
-The processing pipelines for different file types are specified in the
-`file-pipe` section. Each key is the file extension and the value a colon
-separated list of processors starting with the language. See `stylist -help`
-for a list of processors.
-
-```
-[file-pipe]
-x90=fortran:pfp:fpp
-```
-
-Styles are defined in sections called `style.<name>`. In this section is
-expected a key `rules` with a comma separated list of rules as the value. These
-rules may take parameters which are presented in parenthesis.
+The processing pipelines for different file types are specified with
+`FilePipe` objects. The variable to which it is assigned names the
+file name extension it refers to. The first argument is the language source
+type while subsequent arguments are text preprocessing stages.
 
 ```
-[style.<name>]
-rules = FortranCharacterset, KindPattern(integer='i_.*', real='r_.*')
+from stylist.source import (FilePipe,
+                            FortranSource,
+                            PFUnitProcessor,
+                            FortranPreprocessor)
 
+pf = FilePipe(FortranSource, PFUnitProcessor, FortranPreprocessor)
+```
+
+Meanwhile styles are defined in a similar way. The variable name is the style
+name and the object is constructed with the rules of which it consists.
+
+```
+from re import compile as recompile
+from stylist.style import Style
+from stylist.fortran import FortranCharacterset, KindPattern
+
+simple = Style(FortranCharactersest(),
+               KindPattern(integer=recompile(r'i_.+'),
+                           real=recompile(r'r_.+'))
 ```
