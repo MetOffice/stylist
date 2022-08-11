@@ -29,17 +29,21 @@ jobs:
 
       - name: Update version for release
         run: |
-          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{github.releaes-version}}\2/' source/stylist/__init__.py
+          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{inputs.release-version}}\2/' source/stylist/__init__.py
           git add source/stylist/__init__.py
-          #git commit
+          git commit-c "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number for release"
+
+      - name: Tag release
+        run: |
+          git tag -a -m "Release ${{inputs.release-version}}" v${{inputs.release-version}}
 
       - name: Make release
         uses: actions/create-release@v1.1.4
         #env:
         #  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          tag_name: ${{github.ref}}
-          release_name: Release ${{github.ref}}
+          tag_name: v${{inputs.release-version}}
+          release_name: Release ${{inputs.release-version}}
           body: |
             ${{steps.Changelog.outputs.changelog }}
           generate_release_notes: true
@@ -50,6 +54,6 @@ jobs:
 
       - name: Update version after release
         run: |
-          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{github.next-version}}\2/' source/stylist/__init__.py
+          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{inputs.next-version}}\2/' source/stylist/__init__.py
           git add source/stylist/__init__.py
-          #git commit
+          git commit-c "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number after release"
