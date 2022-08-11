@@ -1,0 +1,55 @@
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: "Version identifier for this release"
+        required: true
+      next-version:
+        description: "Version identifier for subsequent development"
+        required: true
+
+jobs:
+  make-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[release]
+
+      - name: Check out source
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Update version for release
+        run: |
+          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{github.releaes-version}}\2/' source/stylist/__init__.py
+          git add source/stylist/__init__.py
+          #git commit
+
+      - name: Make release
+        uses: actions/create-release@v1.1.4
+        #env:
+        #  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: ${{github.ref}}
+          release_name: Release ${{github.ref}}
+          body: |
+            ${{steps.Changelog.outputs.changelog }}
+          generate_release_notes: true
+          draft: true
+          prerelease: true
+
+# Insert PyPi and Conda package creation here
+
+      - name: Update version after release
+        run: |
+          sed -i 's/(__version__\s*=\s*\').*(\')/\1${{github.next-version}}\2/' source/stylist/__init__.py
+          git add source/stylist/__init__.py
+          #git commit

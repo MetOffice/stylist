@@ -25,7 +25,6 @@ jobs:
         with:
           path: stylist
           fetch-depth: 1
-          lfs: true
 
       - name: Checkout pages
         uses: actions/checkout@v3
