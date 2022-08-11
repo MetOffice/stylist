@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - v*
   pull_request:
     branches:
       - master
@@ -81,23 +83,29 @@ jobs:
       # Publish
       #
       - name: Copy new documentation
-        if: |
-          contains(github.event_name, 'push')
+        if: github.event_name == 'push' && !startsWith(github.ref_name, 'v')
         run: |
           set -x
           git rm gh-pages/latest
           rsync -a stylist/documentation/build/html gh-pages/latest
           git add gh-pages/latest
 
+      - name: Copy release documentation
+        if: github.event_name == 'push' && startsWith(github.ref_name, 'v')
+        run: |
+          set -x
+          rsync -a stylist/documentation/build/html gh-pages/${{github.ref_name}}
+          git add gh-pages/${{github.ref_name}}
+
       - name: Commit new documentation
-        if: ${{ github.event_name == 'push' }}
+        if: github.event_name == 'push'
         run: |
           set -x
           git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
           git -C gh-pages -c "user.name=Sphinx Workflow" -c user.email=sphinx@example.com commit -a -m "Documentation from $git_hash"
 
       - name: Push
-        if: ${{ github.event_name == 'push' }}
+        if: github.event_name == 'push'
         run: |
           set -x
           git -C gh-pages push
