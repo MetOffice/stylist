@@ -12,9 +12,6 @@ on:
     branches:
       - master
 
-# env:
-  # SCRICT_OPTS: "-W --keep-going -T"
-
 jobs:
   build-and-deploy:
     name: Build and deploy to gh-pages
@@ -89,21 +86,11 @@ jobs:
           contains(github.event_name, 'push')
         run: |
           set -x
-          find gh-pages -mindepth 1 ! -path 'gh-pages/.git*' -exec git -C gh-pages rm {} \;
-          rsync -a stylist/documentation/build/html/ gh-pages/
-          cd gh-pages
-          find . -mindepth 1 ! -path './.git*' ! -path './release*' -exec git add {} \;
+          git rm gh-pages/latest
+          rsync -a stylist/documentation/build/html gh-pages/latest
+          git add gh-pages/latest
 
-      - name: Add "no jekyll" file
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          touch gh-pages/.nojekyll
-          git -C gh-pages add .nojekyll
-
-      #
-      # Deploy
-      #
-      - name: Commit
+      - name: Commit new documentation
         if: ${{ github.event_name == 'push' }}
         run: |
           set -x
@@ -115,4 +102,3 @@ jobs:
         run: |
           set -x
           git -C gh-pages push
-
