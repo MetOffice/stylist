@@ -13,6 +13,8 @@ your taste.
 
    overview
    api
+   environment
+   rules
    todo
 
 A lot of our process is dictated by the GitHub platform used to host the
