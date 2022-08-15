@@ -19,6 +19,7 @@ stylist.source
    
       CPreProcessor
       CSource
+      FilePipe
       FortranPreProcessor
       FortranSource
       MetaCPreProcessor

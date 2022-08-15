@@ -109,52 +109,55 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.CSource" title="stylist.source.CSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSource</span></code></a>(text)</p></td>
 <td><p>Holds a C/C++ source file as both a text block and parse tree.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.FortranPreProcessor" title="stylist.source.FortranPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranPreProcessor</span></code></a>(source)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.FilePipe" title="stylist.source.FilePipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilePipe</span></code></a>(parser, *preprocessors)</p></td>
+<td><p>Holds the chain of objects needed to understand a particular file extension.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.FortranPreProcessor" title="stylist.source.FortranPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranPreProcessor</span></code></a>(source)</p></td>
 <td><p>Strips out preprocessor directives.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranSource</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranSource</span></code></a>(text)</p></td>
 <td><p>Holds a Fortran source file as both a text block and parse tree.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaCPreProcessor" title="stylist.source.MetaCPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCPreProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaCPreProcessor" title="stylist.source.MetaCPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCPreProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
 <td><p>Identifies the C preprocessor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaCSource" title="stylist.source.MetaCSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCSource</span></code></a>(name, bases, namespace, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaCSource" title="stylist.source.MetaCSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCSource</span></code></a>(name, bases, namespace, **kwargs)</p></td>
 <td><p>Identifies C source.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaFortranPreProcessor" title="stylist.source.MetaFortranPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranPreProcessor</span></code></a>(name, bases, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaFortranPreProcessor" title="stylist.source.MetaFortranPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranPreProcessor</span></code></a>(name, bases, ...)</p></td>
 <td><p>Identifies the Fortran preprocessor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaFortranSource" title="stylist.source.MetaFortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranSource</span></code></a>(name, bases, namespace, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaFortranSource" title="stylist.source.MetaFortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranSource</span></code></a>(name, bases, namespace, ...)</p></td>
 <td><p>Identifies Fortran source.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaPFUnitProcessor" title="stylist.source.MetaPFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPFUnitProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaPFUnitProcessor" title="stylist.source.MetaPFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPFUnitProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
 <td><p>Identifies the pFUnit preprocessor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaPlainText" title="stylist.source.MetaPlainText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPlainText</span></code></a>(name, bases, namespace, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaPlainText" title="stylist.source.MetaPlainText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPlainText</span></code></a>(name, bases, namespace, **kwargs)</p></td>
 <td><p>Identifies plain text.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.PFUnitProcessor" title="stylist.source.PFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFUnitProcessor</span></code></a>(source)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.PFUnitProcessor" title="stylist.source.PFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFUnitProcessor</span></code></a>(source)</p></td>
 <td><p>Strips out pFUnit directives.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.PlainText" title="stylist.source.PlainText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlainText</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.PlainText" title="stylist.source.PlainText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlainText</span></code></a>(text)</p></td>
 <td><p>Holds a plain text file as though it were source.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.SourceFactory" title="stylist.source.SourceFactory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceFactory</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceFactory" title="stylist.source.SourceFactory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceFactory</span></code></a>()</p></td>
 <td><p>Manages the handling of source file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceFileReader" title="stylist.source.SourceFileReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceFileReader</span></code></a>(source_file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.SourceFileReader" title="stylist.source.SourceFileReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceFileReader</span></code></a>(source_file)</p></td>
 <td><p>Reads text source from a file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.SourceStringReader" title="stylist.source.SourceStringReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceStringReader</span></code></a>(source_string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceStringReader" title="stylist.source.SourceStringReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceStringReader</span></code></a>(source_string)</p></td>
 <td><p>Reads text source from a string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceText</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceText</span></code></a>()</p></td>
 <td><p>Handles source code at the text level.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceTree</span></code></a>(text)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceTree</span></code></a>(text)</p></td>
 <td><p>Abstract parent of all actual language source files.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>(source)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>(source)</p></td>
 <td><p>Preprocessor decorators inherit from this.</p></td>
 </tr>
 </tbody>
@@ -218,6 +221,22 @@ useable.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.source.FilePipe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">FilePipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">preprocessors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FilePipe" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds the chain of objects needed to understand a particular file
+extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parser</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a>]) – Underlying language parser.</p></li>
+<li><p><strong>preprocessors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>]) – Any preprocessors to apply before parsing.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -502,15 +521,15 @@ source. Although <code class="docutils literal notranslate"><span class="pre">.c
 then it can use the <code class="docutils literal notranslate"><span class="pre">add_extension(...)</span></code> call.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.SourceFactory.add_extension">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">preprocessors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceFactory.add_extension" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceFactory.add_extension" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a mapping between source file extension and source handling
 classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>extension</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – File extension which identifies this chain.</p></li>
-<li><p><strong>source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a>]) – Underlying language parser.</p></li>
-<li><p><strong>preprocessors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>]) – All preprocessors to apply before parsing.</p></li>
+<li><p><strong>source</strong> – Underlying language parser.</p></li>
+<li><p><strong>preprocessors</strong> – All preprocessors to apply before parsing.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

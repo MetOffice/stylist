@@ -9,12 +9,6 @@ stylist.style
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      determine_style
-   
    
 
    

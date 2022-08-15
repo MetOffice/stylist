@@ -9,6 +9,12 @@ stylist.configuration
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      load_configuration
+   
    
 
    
@@ -17,8 +23,8 @@ stylist.configuration
 
    .. autosummary::
    
+      ConfigTools
       Configuration
-      ConfigurationFile
    
    
 
