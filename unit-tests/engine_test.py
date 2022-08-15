@@ -18,7 +18,7 @@ from stylist.style import Style
 
 class _StyleHarness(Style):
     def __init__(self) -> None:
-        super(_StyleHarness, self).__init__([])
+        super().__init__()
         self.seen: List[SourceTree] = []
 
     def check(self, program: SourceTree) -> List[Issue]:

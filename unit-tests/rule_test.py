@@ -10,10 +10,6 @@ Tests of the generic rules.
 from typing import List, Tuple
 
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.rule
 from stylist.source import SourceStringReader
@@ -77,8 +73,7 @@ class TestTrailingWhitespace(object):
                     params=[(_NO_TWS, []),
                             (_SOME_TWS, [6, 9]),
                             (_PF_TWS, [5, 21])])
-    def example_source(self, request: FixtureRequest) \
-            -> Tuple[str, List[int]]:
+    def example_source(self, request):
         """
         Parameter fixture giving Fortran source with various
         trailing whitespace issues.

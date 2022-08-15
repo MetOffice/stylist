@@ -14,31 +14,24 @@ from typing import Generator, List, Optional, Tuple
 
 from pytest import fixture  # type: ignore
 
-_CASE_TUPLE = namedtuple('_CASE_TUPLE', ['test', 'variant', 'rules'])
-_STYLE_PATTERN = re.compile(r'\[style\.(.+)\]')
-_RULES_PATTERN = re.compile(r'rules\s*=\s*(.+)')
+_CASE_TUPLE = namedtuple('_CASE_TUPLE', ['test', 'variant'])
+_STYLE_PATTERN = re.compile(r'\s*(.+?)\s*=\s*Style\(')
 
 
 def _list_cases() -> List[_CASE_TUPLE]:
     test_dir = Path(__file__).parent / 'fortran'
-    config_file = test_dir / 'configuration.ini'
+    config_file = test_dir / 'fortran.py'
     tests: List[_CASE_TUPLE] = list()
-    style = ''
     for line in config_file.read_text().splitlines():
         match = _STYLE_PATTERN.match(line)
         if match:
             style = match.group(1)
-        else:
-            match = _RULES_PATTERN.match(line)
-            if match:
-                variant: Optional[str]
-                test, _, variant = style.partition('#')
-                if not variant:
-                    variant = None
-                tests.append(_CASE_TUPLE(test,
-                                         variant,
-                                         match.group(1)))
-    tests.sort(key=lambda x: f"{x.test}{x.variant}")
+            test, _, variant = style.partition('__')
+            if not variant:
+                variant = None
+            case = _CASE_TUPLE(test, variant)
+            tests.append(case)
+    tests.sort(key=lambda x: f"{x.test}#{x.variant}")
     return tests
 
 
@@ -53,7 +46,7 @@ class TestFortranRules(object):
         expected_output: List[str] = []
         expected_error: List[str] = []
         buffer: List[str] = expected_output
-        expected_file = test_dir / f'expected.{name}.txt'
+        expected_file = test_dir / f'expected.{name.replace("__", "#")}.txt'
         for line in expected_file.read_text().splitlines(keepends=True):
             if line == 'stdout\n':
                 buffer = expected_output
@@ -63,16 +56,14 @@ class TestFortranRules(object):
                 buffer.append(line.replace('$$', str(test_dir)))
         return expected_output, expected_error
 
-    def test_rule(self, case: Tuple[str, Optional[str], str]) -> None:
-        with open('debug.log', 'a') as handle:
-            print(case, file=handle)
+    def test_single_rules(self, case: Tuple[str, Optional[str], str]) -> None:
         test = case[0]
         variant = case[1]
 
         if variant is None:
             case_name = test
         else:
-            case_name = f"{test}#{variant}"
+            case_name = f"{test}__{variant}"
 
         test_dir = Path(__file__).parent / 'fortran'
 
@@ -81,7 +72,7 @@ class TestFortranRules(object):
 
         command: List[str] = ['python', '-m', 'stylist',
                               '-configuration',
-                              str(test_dir / 'configuration.ini'),
+                              str(test_dir / 'fortran.py'),
                               '-style', case_name,
                               str(test_dir / f'{test}.f90')]
         process = subprocess.run(command,
