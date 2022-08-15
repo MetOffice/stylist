@@ -462,34 +462,19 @@ class PlainText(SourceTree, metaclass=MetaPlainText):
         return None
 
 
-class _SourceChain(object):
+class FilePipe(object):
     """
     Holds the chain of objects needed to understand a particular file
     extension.
     """
     def __init__(self,
-                 extension: str,
                  parser: Type[SourceTree],
                  *preprocessors: Type[TextProcessor]) -> None:
         """
-        :param extension: File extension which identifies this chain.
         :param parser: Underlying language parser.
         :param preprocessors: Any preprocessors to apply before parsing.
         """
-        if extension[0] == '.':
-            extension = extension[1:]
-        self.extension = extension
-
-        if not issubclass(parser, SourceTree):
-            message = 'Object "{0}" must inherit SourceTree to be a parser.'
-            raise Exception(message.format(parser.__class__.__name__))
         self.parser = parser
-
-        for candidate in preprocessors:
-            if not issubclass(candidate, SourceText):
-                message = 'Object "{0}" must inherit SourceText' \
-                          + ' to be a preprocessor'
-                raise Exception(message.format(candidate.__class__.__name__))
         self.preprocessors = preprocessors
 
 
@@ -527,22 +512,17 @@ class SourceFactory(object):
     If your particular application needs to support some odd-ball extensions
     then it can use the ``add_extension(...)`` call.
     """
-    _extension_map = {'f90': _SourceChain('f90', FortranSource),
-                      'F90': _SourceChain('F90',
-                                          FortranSource, FortranPreProcessor),
-                      'f': _SourceChain('f', FortranSource),
-                      'F': _SourceChain('F',
-                                        FortranSource, FortranPreProcessor),
-                      'c': _SourceChain('c', CSource, CPreProcessor),
-                      'h': _SourceChain('h', CSource, CPreProcessor),
-                      'cc': _SourceChain('cc', CSource, CPreProcessor),
-                      'cpp': _SourceChain('cpp', CSource, CPreProcessor)}
+    _extension_map = {'f90': FilePipe(FortranSource),
+                      'F90': FilePipe(FortranSource, FortranPreProcessor),
+                      'f': FilePipe(FortranSource),
+                      'F': FilePipe(FortranSource, FortranPreProcessor),
+                      'c': FilePipe(CSource, CPreProcessor),
+                      'h': FilePipe(CSource, CPreProcessor),
+                      'cc': FilePipe(CSource, CPreProcessor),
+                      'cpp': FilePipe(CSource, CPreProcessor)}
 
     @classmethod
-    def add_extension(cls,
-                      extension: str,
-                      source: Type[SourceTree],
-                      *preprocessors: Type[TextProcessor]) -> None:
+    def add_extension(cls, extension: str, pipe: FilePipe) -> None:
         """
         Adds a mapping between source file extension and source handling
         classes.
@@ -555,9 +535,7 @@ class SourceFactory(object):
             raise Exception('Extension "{}" already mapped to a handler'
                             .format(extension))
 
-        cls._extension_map[extension] = _SourceChain(extension,
-                                                     source,
-                                                     *preprocessors)
+        cls._extension_map[extension] = pipe
 
     @classmethod
     def get_extensions(cls) -> Iterable[str]:

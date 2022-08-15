@@ -9,96 +9,97 @@ Handles configuration parameters coming from various potential sources.
 
 Configuration may be defined by software or read from a Windows .ini file.
 """
-from abc import ABC
-from configparser import ConfigParser, MissingSectionHeaderError
+from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
-import re
-from typing import Dict, Mapping, Optional, Sequence, Set, Tuple, Type, Pattern
+from typing import Dict, List, Tuple, Type
 
 from stylist import StylistException
 from stylist.source import (CPreProcessor,
                             CSource,
+                            FilePipe,
                             FortranPreProcessor,
                             FortranSource,
                             PFUnitProcessor,
                             PlainText,
                             SourceTree,
                             TextProcessor)
+from stylist.style import Style
 
 
-class Configuration(ABC):
-    """
-    Core configuration functionality.
-    """
-    # Pycharm is confused by referring to the class you are defining. mypy is
-    # fine with it.
-    #
-    def __init__(self,
-                 parameters: Optional[Mapping[str,
-                                              Mapping[str, str]]] = None,
-                 defaults: Optional['Configuration'] = None):
-        """
-        :param parameters: Maps section to key/value pairs.
-        :param defaults: Configuration to fall back to.
-        """
-        self._defaults = defaults
-        if parameters is not None:
-            self._parameters = parameters
-        else:
-            self._parameters = {}
+class Configuration:
+    def __init__(self):
+        self._pipes: Dict[str, FilePipe] = {}
+        self._styles: Dict[str, Style] = {}
 
-    _LANGUAGE_MAP: Mapping[str, Type[SourceTree]] \
+    def add_pipe(self, extension: str, pipe: FilePipe):
+        self._pipes[extension] = pipe
+
+    def add_style(self, name: str, style: Style):
+        self._styles[name] = style
+
+    @property
+    def file_pipes(self) -> Dict[str, FilePipe]:
+        return self._pipes
+
+    @property
+    def styles(self) -> Dict[str, Style]:
+        return self._styles
+
+
+def load_configuration(config_file: Path) -> Configuration:
+    spec = spec_from_file_location('configuration_file', config_file)
+    if spec is None:
+        message = f"Unable to find configuration file: {config_file}"
+        raise StylistException(message)
+    module = module_from_spec(spec)
+    if spec.loader is None:
+        message = f"Unable to find loader for file: {config_file}"
+        raise StylistException(message)
+    spec.loader.exec_module(module)
+    configuration = Configuration()
+    for name, var in module.__dict__.items():
+        if isinstance(var, FilePipe):
+            configuration.add_pipe(name, var)
+        elif isinstance(var, Style):
+            configuration.add_style(name, var)
+
+    return configuration
+
+
+class ConfigTools:
+    _LANGUAGE_MAP: Dict[str, Type[SourceTree]] \
         = {'c': CSource,
            'cxx': CSource,
            'fortran': FortranSource,
            'text': PlainText}
 
     @classmethod
-    def language_tags(cls) -> Sequence[str]:
-        """
-        Gets the languages understood by this configuration.
-        """
-        return tuple(cls._LANGUAGE_MAP.keys())
+    def language_keys(cls) -> List[str]:
+        return list(cls._LANGUAGE_MAP.keys())
 
     @classmethod
-    def language_lookup(cls, key: str) -> Type[SourceTree]:
-        """
-        Gets the source class associated with a particular language.
-
-        :param key: Language identifier as returned by `language_tags`.
-        """
+    def language(cls, key: str) -> Type[SourceTree]:
         return cls._LANGUAGE_MAP[key]
 
-    _PREPROCESSOR_MAP: Mapping[str, Type[TextProcessor]] \
+    _PREPROCESSOR_MAP: Dict[str, Type[TextProcessor]] \
         = {'cpp': CPreProcessor,
            'fpp': FortranPreProcessor,
            'pfp': PFUnitProcessor}
 
     @classmethod
-    def preprocessor_tags(cls):
-        """
-        Gets the preprocessors understood by this configuration.
-        """
-        return cls._PREPROCESSOR_MAP.keys()
+    def preprocessor_keys(cls) -> List[str]:
+        return list(cls._PREPROCESSOR_MAP.keys())
 
     @classmethod
-    def preprocessor_lookup(cls, key: str) -> Type[TextProcessor]:
-        """
-        Gets the class associated with a particular preprocessor.
-
-        :param key: Preprocessor identifier as returned by `preprocessor_tags`.
-        """
+    def preprocessor(cls, key: str) -> Type[TextProcessor]:
         return cls._PREPROCESSOR_MAP[key]
 
     @classmethod
-    def parse_pipe_description(cls, string: str) \
-        -> Tuple[str,
-                 Type[SourceTree],
-                 Sequence[Type[TextProcessor]]]:
+    def parse_pipe_description(cls, string: str) -> Tuple[str, FilePipe]:
         """
         Converts a pipeline description into classes.
 
-        :param string: Colon-separated list of pipeline stages.
+        :param string: Colon-separated list of extension and pipeline stages.
         """
         if not string:
             raise StylistException("Empty extension pipe description")
@@ -106,88 +107,10 @@ class Configuration(ABC):
         bits = string.split(':', 2)
         extension = bits[0]
         lang_object = cls._LANGUAGE_MAP[bits[1].lower()]
+        preproc_objects: List[Type[TextProcessor]]
         if len(bits) > 2:
             preproc_objects = [cls._PREPROCESSOR_MAP[ident.lower()]
                                for ident in bits[2].split(':')]
         else:
             preproc_objects = []
-        return extension, lang_object, preproc_objects
-
-    def get_file_pipes(self) -> Sequence[Tuple[str,
-                                               Type[SourceTree],
-                                               Sequence[Type[TextProcessor]]]]:
-        """
-        Enumerates the extension handling pipelines.
-        """
-        result = []
-        section = self._parameters.get('file-pipe')
-        if section is not None:
-            for extension in section:
-                descr = f'{extension}:{section[extension]}'
-                result.append(self.parse_pipe_description(descr))
-        return result
-
-    _STYLE_PREFIX = 'style.'
-
-    def available_styles(self) -> Sequence[str]:
-        """
-        Gets a list of all available styles.
-        """
-        styles: Set[str] = set()
-        if self._defaults is not None:
-            styles.update(self._defaults.available_styles())
-
-        for section in self._parameters.keys():
-            if section.startswith(self._STYLE_PREFIX):
-                styles.add(section[len(self._STYLE_PREFIX):])
-
-        return sorted(styles)
-
-    # This rule will not handle brackets appearing within the argument list.
-    #
-    _RULE_PATTERN: Pattern[str] \
-        = re.compile(r'(?:^|,)\s*(.+?(?:\(.*?\))?(?=,|$))')
-
-    def get_style(self, name: str) -> Sequence[str]:
-        """
-        Gets the rules associated with the provided style name.
-
-        :param name: Style name.
-        """
-        key = self._STYLE_PREFIX + name
-        if key in self._parameters:
-            rules = self._parameters[key]['rules']
-            if len(rules.strip()) == 0:
-                raise StylistException(f"Style {key} contains no rules")
-            else:
-                return self._RULE_PATTERN.findall(rules)
-        else:  # key not in self._parameters
-            if self._defaults is not None:
-                return self._defaults.get_style(name)
-            else:
-                raise KeyError(f"Style '{key}' not found in configuration")
-
-
-class ConfigurationFile(Configuration):
-    """
-    Configuration parameters read from a Windows '.ini' format file.
-    """
-    def __init__(self,
-                 filename: Path,
-                 defaults: Optional[Configuration] = None) -> None:
-        """
-        :param filename: Path to '.ini' file.
-        :param defaults: Configuration to fall back to.
-        """
-        parser = ConfigParser()
-        try:
-            with filename.open('rt') as handle:
-                parser.read_file(handle)
-        except MissingSectionHeaderError:
-            pass  # It is not an error to have an empty configuration file.
-        parameters: Dict[str, Dict[str, str]] = {}
-        for section in parser.sections():
-            parameters[section] = {}
-            for key, value in parser.items(section):
-                parameters[section][key] = value
-        super().__init__(parameters, defaults)
+        return extension, FilePipe(lang_object, *preproc_objects)

@@ -7,10 +7,7 @@
 """
 Tests of the rule for missing intents on dummy arguments.
 """
-from typing import List, Tuple
-
 import pytest  # type: ignore
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -29,10 +26,10 @@ from stylist.source import FortranSource, SourceStringReader
                             contains
                             {procedure}
                             end module test_module''',
-                        '''! move to third line to save calculating line numbers
+                        '''! Pad to third line to save calculating line numbers
                            !
                            {procedure}'''])
-def parent_container(request: FixtureRequest) -> str:
+def parent_container(request):
     """
     Parameter fixture giving possible parent containers of functions ond
     subroutines
@@ -52,7 +49,7 @@ def parent_container(request: FixtureRequest) -> str:
                         ('''function test_function({dummy_args})
                             end function test_function''', 'function'),
                         ])
-def procedure(request: FixtureRequest) -> Tuple[str, str]:
+def procedure(request):
     """
     Parameter fixture giving subprograms and their type
     """
@@ -66,7 +63,7 @@ def procedure(request: FixtureRequest) -> Tuple[str, str]:
                         ([], 'integer{intent} :: foo'),
                         (['Foo'], 'integer{intent} :: FOO')
                         ])
-def arguments(request: FixtureRequest) -> Tuple[List[str], str]:
+def arguments(request):
     """
     Parameter fixture giving dummy arguments and type declarations
     """
@@ -75,7 +72,7 @@ def arguments(request: FixtureRequest) -> Tuple[List[str], str]:
 
 @pytest.fixture(scope='module',
                 params=['intent(in)', 'intent(out)', 'intent(inout)', ''])
-def intent(request: FixtureRequest):
+def intent(request):
     """
     Parameter fixture giving possible intents. Some permutations produce
     invalid fortran, e.g. two or no intent out arguments on a function.

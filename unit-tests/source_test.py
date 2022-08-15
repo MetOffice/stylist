@@ -12,10 +12,6 @@ from typing import List, Tuple, Type
 
 import fparser.two.Fortran2003  # type: ignore
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist.source import (CPreProcessor, CSource,
                             FortranPreProcessor, FortranSource,
@@ -24,12 +20,12 @@ from stylist.source import (CPreProcessor, CSource,
                             SourceFileReader, SourceStringReader,
                             SourceText, SourceTree,
                             TextProcessor,
-                            _SourceChain)
+                            FilePipe)
 
 
 class TestSourceText(object):
     """
-    Checks the TextSource heirarchy.
+    Checks the TextSource hierarchy.
     """
     def test_source_string_reader(self) -> None:
         """
@@ -230,8 +226,7 @@ END PROGRAM test"""
                              ['Program_Unit', 'Specification_Part',
                               'Implicit_Part', 'Implicit_Stmt'],
                              ['Implicit_Stmt'])])
-    def path_case(self, request: FixtureRequest) \
-            -> Tuple[str, List[str], List[str]]:
+    def path_case(self, request):
         """
         Generates a series of test cases for path searching a source file.
         """
@@ -294,7 +289,7 @@ class TestSourceChain(object):
             return ''
 
     @pytest.fixture(scope="module", params=['.dot', 'nodot'])
-    def chain_extension(self, request: FixtureRequest) -> str:
+    def chain_extension(self, request):
         """
         Generates a file extension with and without leading dot.
         """
@@ -303,7 +298,7 @@ class TestSourceChain(object):
     class LanguageHarness(SourceTree):
         def __init__(self) -> None:
             reader = TestSourceChain.ReaderHarness()
-            super(TestSourceChain.LanguageHarness, self).__init__(reader)
+            super().__init__(reader)
 
         def get_tree(self) -> None:
             pass
@@ -321,8 +316,7 @@ class TestSourceChain(object):
                     params=[[],
                             [ProcessorHarness],
                             [ProcessorHarness, ProcessorHarness]])
-    def chain_text(self, request: FixtureRequest) \
-            -> List[Type[TextProcessor]]:
+    def chain_text(self, request):
         """
         Generates a tuple of text source classes.
         """
@@ -331,10 +325,8 @@ class TestSourceChain(object):
     def test_constructor(self,
                          chain_extension: str,
                          chain_text: List[Type[ProcessorHarness]]) -> None:
-        unit_under_test = _SourceChain(chain_extension,
-                                       TestSourceChain.LanguageHarness,
-                                       *chain_text)
-        assert unit_under_test.extension == chain_extension.strip('.')
+        unit_under_test = FilePipe(TestSourceChain.LanguageHarness,
+                                   *chain_text)
         assert unit_under_test.parser == TestSourceChain.LanguageHarness
         assert unit_under_test.preprocessors == tuple(chain_text)
 
@@ -345,7 +337,7 @@ class TestFactory(object):
     """
     @pytest.fixture(scope="module",
                     params=['f', 'F', 'f90', 'F90'])
-    def fortran_extension(self, request: FixtureRequest) -> str:
+    def fortran_extension(self, request):
         """
         Generates a series of Fortran source file extensions.
         """
@@ -353,7 +345,7 @@ class TestFactory(object):
 
     @pytest.fixture(scope="module",
                     params=['c', 'cc', 'cpp', 'h'])
-    def cxx_extension(self, request: FixtureRequest) -> str:
+    def cxx_extension(self, request):
         """
         Generates a series of C and C++ source file extensions
         """
@@ -421,7 +413,7 @@ END MODULE test_mod"""
         source_filename.write_text(source)
         with pytest.raises(Exception):
             result = SourceFactory.read_file(str(source_filename))
-        SourceFactory.add_extension('x90', FortranSource)
+        SourceFactory.add_extension('x90', FilePipe(FortranSource))
         result = SourceFactory.read_file(str(source_filename))
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected

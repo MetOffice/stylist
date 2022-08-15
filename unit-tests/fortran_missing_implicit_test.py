@@ -10,10 +10,6 @@ Tests of the rule for missing implicit statements.
 from typing import List, Tuple
 
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -56,8 +52,7 @@ from stylist.source import FortranSource, SourceStringReader
                             end subroutine baby_puss''',
                          ["Subroutine 'baby_puss' is missing an "
                           + "implicit statement"])])
-def empty_program_unit_implicit(request: FixtureRequest) \
-        -> Tuple[str, List[str]]:
+def empty_program_unit_implicit(request):
     """
     Parameter fixture giving permutations of program unit with and without
     "implicit none".
@@ -67,7 +62,7 @@ def empty_program_unit_implicit(request: FixtureRequest) \
 
 @pytest.fixture(scope='module',
                 params=[True, False])
-def require_always(request: FixtureRequest) -> bool:
+def require_always(request):
     """
     Whether to enable "always require implicit" or not.
     """
@@ -99,7 +94,7 @@ def require_always(request: FixtureRequest) -> bool:
                             end module pebbles''',
                          ["Module 'pebbles' is missing an "
                           + "implicit statement"])])
-def containing_program_unit(request: FixtureRequest) -> Tuple[str, List[str]]:
+def containing_program_unit(request):
     """
     Parameter fixture giving permutations of a program unit with or without
     an "explicit none".
@@ -129,7 +124,7 @@ def containing_program_unit(request: FixtureRequest) -> Tuple[str, List[str]]:
                             end function thong''',
                          ["Function 'thong' is missing an "
                           + "implicit statement"])])
-def subprogram_implicit(request: FixtureRequest) -> Tuple[str, List[str]]:
+def subprogram_implicit(request):
     """
     Parameter fixture giving permutations of a procedure with or without an
     "implicit none".
@@ -159,8 +154,7 @@ def subprogram_implicit(request: FixtureRequest) -> Tuple[str, List[str]]:
                             end function wibble''',
                          ["Function 'wibble' is missing "
                           + "an implicit statement"])])
-def second_subprogram_implicit(request: FixtureRequest) \
-        -> Tuple[str, List[str]]:
+def second_subprogram_implicit(request):
     """
     Parameter fixture giving permutations of a procedure with or without
     an "implicit none".

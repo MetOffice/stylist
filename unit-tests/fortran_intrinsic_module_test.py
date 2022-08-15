@@ -10,7 +10,6 @@ Test of the rule for missing exit labels.
 from typing import List
 
 import pytest  # type: ignore
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 from stylist.fortran import IntrinsicModule
 from stylist.source import FortranSource, SourceStringReader
@@ -29,7 +28,7 @@ class TestIntrinsicModule(object):
                     params=["iso_c_binding", "ISO_Fortran_env",
                             "ieee_exceptions", "ieee_arithmetic",
                             "ieee_features", "other_module"])
-    def module_name(self, request: FixtureRequest) -> str:
+    def module_name(self, request):
         """
         Parameter fixture giving module names
         """

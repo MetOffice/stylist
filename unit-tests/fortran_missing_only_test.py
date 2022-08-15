@@ -10,10 +10,6 @@ Test of the rule for missing "only" clauses.
 from typing import List, Optional, Tuple
 
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -25,7 +21,7 @@ class TestMissingOnly(object):
     """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
-    def unit_type(self, request: FixtureRequest) -> str:
+    def unit_type(self, request):
         """
         Parameter fixture giving program unit types.
         """
@@ -33,7 +29,7 @@ class TestMissingOnly(object):
 
     @pytest.fixture(scope='class',
                     params=[[], ['missing_mod']])
-    def ignorance(self, request: FixtureRequest) -> List[str]:
+    def ignorance(self, request):
         """
         Parameter fixture giving ignore lists.
         """
@@ -46,8 +42,7 @@ class TestMissingOnly(object):
                             [('multi_mod', ['one', 'two'])],
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
-    def unit_usage(self, request: FixtureRequest) \
-            -> List[Tuple[Optional[str], List[str]]]:
+    def unit_usage(self, request):
         """
         Parameter fixture giving permutations of "use" statements.
         """
@@ -60,8 +55,7 @@ class TestMissingOnly(object):
                             [('multi_mod', ['one', 'two'])],
                             [('missing_mod', []), ('present_mod', ['stuff'])],
                             [('present_mod', ['stuff']), ('missing_mod', [])]])
-    def procedure_usage(self, request: FixtureRequest) \
-            -> List[Tuple[Optional[str], List[str]]]:
+    def procedure_usage(self, request):
         """
         Parameter fixture giving permutations of "use" statements.
         """

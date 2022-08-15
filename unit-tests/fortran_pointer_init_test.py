@@ -10,10 +10,6 @@ Test of the rule for missing pointer initialisation.
 from typing import List
 
 import pytest  # type: ignore
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-#
-from _pytest.fixtures import FixtureRequest  # type: ignore
 
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
@@ -25,7 +21,7 @@ class TestMissingPointerInit(object):
     """
     @pytest.fixture(scope='class',
                     params=['program', 'module'])
-    def prog_unit(self, request: FixtureRequest) -> str:
+    def prog_unit(self, request):
         """
         Parameter fixture giving program unit types.
         """
@@ -33,7 +29,7 @@ class TestMissingPointerInit(object):
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def type_pointer(self, request: FixtureRequest) -> str:
+    def type_pointer(self, request):
         """
         Parameter fixture giving pointer type for program unit.
         """
@@ -41,7 +37,7 @@ class TestMissingPointerInit(object):
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def unit_pointer(self, request: FixtureRequest) -> str:
+    def unit_pointer(self, request):
         """
         Parameter fixture giving pointer type for program unit.
         """
@@ -49,7 +45,7 @@ class TestMissingPointerInit(object):
 
     @pytest.fixture(scope='class',
                     params=['', 'pointer', 'nullpointer'])
-    def proc_pointer(self, request: FixtureRequest) -> str:
+    def proc_pointer(self, request):
         """
         Parameter fixture giving pointer type for procedure.
         """
