@@ -298,7 +298,7 @@ class TestSourceChain(object):
     class LanguageHarness(SourceTree):
         def __init__(self) -> None:
             reader = TestSourceChain.ReaderHarness()
-            super(TestSourceChain.LanguageHarness, self).__init__(reader)
+            super().__init__(reader)
 
         def get_tree(self) -> None:
             pass
