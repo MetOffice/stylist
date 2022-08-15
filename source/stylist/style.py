@@ -8,7 +8,7 @@ Classes relating to styles made up of rules.
 """
 from abc import ABCMeta
 import logging
-from typing import Any, List, Set, Type
+from typing import List
 
 import stylist.fortran
 import stylist.issue
@@ -49,18 +49,3 @@ class Style(object, metaclass=ABCMeta):
             message = f"Rule: {rule.__class__.__name__} - {result}"
             logging.getLogger(__name__).info(message)
         return issues
-
-
-def _all_subclasses(cls: Any) -> Set[Type]:
-    """
-    Obtains the set of recursively all children of a class.
-    """
-    children: Set[Type] = set()
-    to_examine = [cls]
-    while len(to_examine) > 0:
-        this_class = to_examine.pop()
-        for child in this_class.__subclasses__():
-            if child not in children:
-                to_examine.append(child)
-                children.add(child)
-    return children
