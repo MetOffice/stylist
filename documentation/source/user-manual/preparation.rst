@@ -38,7 +38,7 @@ The Style object is constructed with all the rules which make up that style.
 To add a second rule just import it and append ``, MissingIntent()`` to the
 argument list::
 
-    from stylist.fortran import MissingImplicit
+    from stylist.fortran import MissingImplicit, MissingIntent
     from stylist.style import Style
 
     simple = Style(MissingImplicit(), MissingIntent())
