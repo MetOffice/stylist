@@ -88,7 +88,7 @@ jobs:
         run: |
           set -x
           git -C gh-pages rm -r latest
-          rsync -a stylist/documentation/build/html gh-pages/latest
+          rsync -a stylist/documentation/build/html/ gh-pages/latest/
           git -C gh-pages add latest
 
       - name: Copy release documentation
