@@ -97,7 +97,7 @@ jobs:
           rsync -a stylist/documentation/build/html gh-pages/${{github.ref_name}}
           git add gh-pages/${{github.ref_name}}
 
-      - name: Commit new documentation
+      - name: Commit documentation
         if: github.event_name == 'push'
         run: |
           set -x
