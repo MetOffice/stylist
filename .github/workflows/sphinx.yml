@@ -87,7 +87,7 @@ jobs:
         if: github.event_name == 'push' && !startsWith(github.ref_name, 'v')
         run: |
           set -x
-          git -C gh-pages rm latest
+          git -C gh-pages rm -r latest
           rsync -a stylist/documentation/build/html gh-pages/latest
           git -C gh-pages add latest
 
