@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's|\([[:space:]]*__version__[[:space:]]*=[[:space:]]*\)["'\''].*["'\'']|\1"${{inputs.release-version}}"|' source/stylist/__init__.py
           git add source/stylist/__init__.py
-          git commit-c "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number for release"
+          git commit "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number for release"
 
       - name: Tag release
         run: |
@@ -41,7 +41,7 @@ jobs:
         run: |
           sed -i 's|\([[:space:]]*__version__[[:space:]]*=[[:space:]]*\)["'\''].*["'\'']|\1"${{inputs.next-version}}"|' source/stylist/__init__.py
           git add source/stylist/__init__.py
-          git commit-c "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number after release"
+          git commit "user.name=Release Workflow" -c user.email=release@example.com commit -a -m "Update version number after release"
 
       - name: Make release
         uses: actions/create-release@v1.1.4
