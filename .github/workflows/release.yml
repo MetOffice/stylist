@@ -56,4 +56,8 @@ jobs:
           draft: true
           prerelease: true
 
-# Insert PyPi and Conda package creation here
+      - name: Deploy to PyPi
+        run: |
+          python3 setup.py sdist
+          python3 setup.py bdist_whell
+          python3 -m twine dist/*

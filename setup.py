@@ -30,7 +30,7 @@ setup(
         'docs': ['sphinx',
                  'sphinx-autodoc-typehints',
                  'sphinx-rtd-theme'],
-        'release': ['setuptools', 'wheel']
+        'release': ['setuptools', 'wheel', 'twine']
     },
     entry_points={
         'console_scripts': ['stylist=stylist.__main__:main'],
