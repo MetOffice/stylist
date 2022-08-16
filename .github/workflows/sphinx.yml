@@ -56,6 +56,7 @@ jobs:
           pip install .[docs]
 
       - name: Debugging information
+        if: ${{ false }}
         run: |
           echo "github.ref:" ${{github.ref}}
           echo "github.event_name:" ${{github.event_name}}
@@ -86,6 +87,7 @@ jobs:
         if: github.event_name == 'push' && !startsWith(github.ref_name, 'v')
         run: |
           set -x
+          mkdir gh-pages/latest
           git rm gh-pages/latest
           rsync -a stylist/documentation/build/html gh-pages/latest
           git add gh-pages/latest
