@@ -18,7 +18,7 @@ Type Hinting
 ------------
 
 This project uses type hinting in order to catch some of those stupid mistakes
-we all make from time to time. It should lead more robust code in the long
+we all make from time to time. It should lead to more robust code in the long
 term. It also furthers the goal of self documenting code by building type
 information into the runnable code. That way it is less likely to get out of
 date.
