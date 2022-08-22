@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rules &mdash; Stylist 0.3.dev1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Collected To-do items" href="todo.html" />
+    <link rel="prev" title="Create a Development Environment" href="environment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Stylist
+            <img src="../_static/stylist.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.dev1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user-manual/index.html">User Manual</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html">Create a Development Environment</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Rules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#writing-a-new-text-rule">Writing a New Text Rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-a-fortran-rule">Writing a Fortran Rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documenting-the-rule">Documenting the Rule</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="todo.html">Collected To-do items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Stylist</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Developer Information</a> &raquo;</li>
+      <li>Rules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/developer-information/rules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rules">
+<h1>Rules<a class="headerlink" href="#rules" title="Permalink to this heading"></a></h1>
+<p>The abstract base of all rules is <a class="reference internal" href="api/stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.rule.Rule</span></code></a>. Classes
+derived  from this implement an <a class="reference internal" href="api/stylist.rule.html#stylist.rule.Rule.examine" title="stylist.rule.Rule.examine"><code class="xref py py-func docutils literal notranslate"><span class="pre">stylist.rule.Rule.examine()</span></code></a> method
+which is passed a <a class="reference internal" href="api/stylist.source.html#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.source.SourceText</span></code></a> object. This allows
+the source to be treated as a plain text file.</p>
+<p>Rules relating to Fortran source may be found in the
+<a class="reference internal" href="api/stylist.fortran.html#module-stylist.fortran" title="stylist.fortran"><code class="xref py py-mod docutils literal notranslate"><span class="pre">stylist.fortran</span></code></a> module. An abstract
+<a class="reference internal" href="api/stylist.fortran.html#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.fortran.FortranRule</span></code></a> is provided which requires an
+<a class="reference internal" href="api/stylist.fortran.html#stylist.fortran.FortranRule.examine_fortran" title="stylist.fortran.FortranRule.examine_fortran"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stylist.fortran.FortranRule.examine_fortran()</span></code></a> method which is
+passed a <a class="reference internal" href="api/stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.source.FortranSource</span></code></a> object. Thus the rule may
+examine the Fortran parse tree.</p>
+<section id="writing-a-new-text-rule">
+<h2>Writing a New Text Rule<a class="headerlink" href="#writing-a-new-text-rule" title="Permalink to this heading"></a></h2>
+<p>Just sub-class <a class="reference internal" href="api/stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.rule.Rule</span></code></a> and implement the
+<a class="reference internal" href="api/stylist.rule.html#stylist.rule.Rule.examine" title="stylist.rule.Rule.examine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stylist.rule.Rule.examine()</span></code></a> method. Use the
+<a class="reference internal" href="api/stylist.source.html#stylist.source.SourceText.get_text" title="stylist.source.SourceText.get_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stylist.source.SourceText.get_text()</span></code></a> method on the passed
+<a class="reference internal" href="api/stylist.source.html#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.source.SourceText</span></code></a> object to obtain the text of the source
+file.</p>
+<p>The “trailing white space” rule gives an example of using RegEx on the source
+text. Meanwhile the “Fortran characterset” rule shows a more elaborate text
+rule which implements a state-machine to test validity.</p>
+</section>
+<section id="writing-a-fortran-rule">
+<h2>Writing a Fortran Rule<a class="headerlink" href="#writing-a-fortran-rule" title="Permalink to this heading"></a></h2>
+<p>An abstract <code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.rule.FortranRule</span></code> is provided, any new rule
+should inherit from this and implement the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">stlist.rule.FortranRule.examine_fortran()</span></code> method. Use the
+<a class="reference internal" href="api/stylist.source.html#stylist.source.FortranSource.get_tree" title="stylist.source.FortranSource.get_tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stylist.source.FortranSource.get_tree()</span></code></a> method to obtain an fparser2
+parse tree.</p>
+<p>The <a class="reference internal" href="api/stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">stylist.source.FortranSource</span></code></a> class also provides some methods
+for traversing the parse tree. It is expected that this functionality will
+eventually become available through fparser2 and so will be removed from
+stylist.</p>
+</section>
+<section id="documenting-the-rule">
+<h2>Documenting the Rule<a class="headerlink" href="#documenting-the-rule" title="Permalink to this heading"></a></h2>
+<p>Don’t forget to add your new rule to the user documentation. This is a
+slightly clunky process involving adding some boilerplate to
+<code class="docutils literal notranslate"><span class="pre">documentation/source/user-manual/rule-list.rst</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environment.html" class="btn btn-neutral float-left" title="Create a Development Environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="todo.html" class="btn btn-neutral float-right" title="Collected To-do items" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Crown Copyright.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
