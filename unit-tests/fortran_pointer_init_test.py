@@ -7,6 +7,7 @@
 """
 Test of the rule for missing pointer initialisation.
 """
+from textwrap import dedent
 from typing import List
 
 import pytest  # type: ignore
@@ -164,3 +165,36 @@ end {prog_unit} test
         print(issue_descriptions)
         print(expectation)
         assert issue_descriptions == expectation
+
+    def test_arguments_without_intent(self):
+        """
+        Checks that the rule can cope with arguments which do not specify an
+        intent.
+        """
+        source_text = dedent('''
+                             subroutine my_sub( first, second )
+                               implicit none
+                               integer, pointer :: first
+                               integer, pointer, intent(in) :: second
+                             end subroutine my_sub
+                             
+                             module this_mod
+                             contains
+                               subroutine their_sub( second )
+                                 implicit none
+                                 integer, pointer, intent(in) :: first
+                                 integer, pointer :: second
+                                end subroutine their_sub
+                             end module this_mod
+                             ''').strip()
+        source_reader = SourceStringReader(source_text)
+        source = FortranSource(source_reader)
+
+        test_unit = stylist.fortran.MissingPointerInit()
+        issues = test_unit.examine(source)
+
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == [
+            '3: Declaration of pointer "first" without initialisation.',
+            '12: Declaration of pointer "second" without initialisation.'
+        ]
