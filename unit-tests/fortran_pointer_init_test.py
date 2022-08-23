@@ -195,5 +195,5 @@ end {prog_unit} test
         issue_descriptions = [str(issue) for issue in issues]
         assert issue_descriptions == [
             '3: Declaration of pointer "first" without initialisation.',
-            '12: Declaration of pointer "second" without initialisation.'
+            '11: Declaration of pointer "second" without initialisation.'
         ]
