@@ -177,7 +177,6 @@ end {prog_unit} test
                                integer, pointer :: first
                                integer, pointer, intent(in) :: second
                              end subroutine my_sub
-                             
                              module this_mod
                              contains
                                subroutine their_sub( second )
