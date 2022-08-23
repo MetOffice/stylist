@@ -26,6 +26,11 @@ Rules relating to Fortran source code.
    :no-show-inheritance:
    :exclude-members: examine, examine_fortran
 
+.. autoclass:: stylist.fortran.ForbidUsage
+   :noindex:
+   :no-show-inheritance:
+   :exclude-members: examine, examine_fortran
+
 .. autoclass:: stylist.fortran.FortranCharacterset
    :noindex:
    :no-show-inheritance:

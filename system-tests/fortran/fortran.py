@@ -1,5 +1,6 @@
 from re import compile as re_compile
 from stylist.fortran import (AutoCharArrayIntent,
+                             ForbidUsage,
                              FortranCharacterset,
                              IntrinsicModule,
                              KindPattern,
@@ -21,6 +22,10 @@ labelled_do_exit = Style(LabelledDoExit())
 missing_intent = Style(MissingIntent())
 intrinsic_module = Style(IntrinsicModule())
 auto_char_array_intent = Style(AutoCharArrayIntent())
+forbid_usage = Style(ForbidUsage('fat_bank',
+                                 ('boss', 'contract_mod',
+                                  re_compile('share_holder_.*'))))
+
 multiple = Style(FortranCharacterset(),
                  MissingImplicit(require_everywhere=True),
                  MissingPointerInit())
