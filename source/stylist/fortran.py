@@ -348,35 +348,51 @@ class MissingPointerInit(FortranRule):
         return 'POINTER' in attribute_names
 
     @staticmethod
-    def _program_unit(unit: Union[Fortran2003.Main_Program,
-                                  Fortran2003.Module]) -> List[Issue]:
+    def _data(root: Fortran2003.Base,
+              declaration_statement: Type[Fortran2003.Base],
+              attribute_specification: Type[Fortran2003.Base],
+              entity_declaration: Type[Fortran2003.Base],
+              initialiser: Type[Fortran2003.Base],
+              ignore_names: Optional[Sequence[str]] = ()) -> List[Issue]:
         issues: List[Issue] = []
 
-        specification = fparser_get_child(unit,
-                                          Fortran2003.Specification_Part)
-
-        for var_declaration in fparser_walk(specification,
-                                            Fortran2003.Type_Declaration_Stmt):
-            if not MissingPointerInit._is_pointer(var_declaration,
-                                                  Fortran2003.Attr_Spec):
+        for data_declaration in fparser_walk(root, declaration_statement):
+            if not MissingPointerInit._is_pointer(data_declaration,
+                                                  attribute_specification):
                 continue
 
-            for entity in fparser_walk(var_declaration,
-                                       Fortran2003.Entity_Decl):
-                if fparser_get_child(entity, Fortran2003.Initialization) is None:
-                    name = str(fparser_get_child(entity, Fortran2003.Name))
+            for entity in fparser_walk(data_declaration,
+                                       entity_declaration):
+                if str(fparser_get_child(entity,
+                                         Fortran2003.Name)) in ignore_names:
+                    continue
+
+                if fparser_get_child(entity, initialiser) is None:
+                    name = str(fparser_get_child(entity,
+                                                 Fortran2003.Name))
                     message = MissingPointerInit.problem.format(name=name)
-                    issue = Issue(message, line=var_declaration.item.span[0])
+                    issue = Issue(message, line=data_declaration.item.span[0])
                     issues.append(issue)
 
-        for proc_declaration in fparser_walk(specification,
-                                             Fortran2003.Procedure_Declaration_Stmt):
-            if not MissingPointerInit._is_pointer(proc_declaration, Fortran2003.Proc_Attr_Spec):
+        return issues
+
+    @staticmethod
+    def _proc(root: Fortran2003.Base,
+              declaration_statement: Type[Fortran2003.Base],
+              attribute_specification: Type[Fortran2003.Base],
+              declaration_list: Type[Fortran2003.Base],
+              ignore_names: Optional[Sequence[str]] = ()) -> List[Issue]:
+        issues: List[Issue] = []
+
+        for proc_declaration in fparser_walk(root,
+                                             declaration_statement):
+            if not MissingPointerInit._is_pointer(proc_declaration,
+                                                  attribute_specification):
                 continue
 
             for declaration in fparser_get_child(proc_declaration,
-                                                 Fortran2003.Proc_Decl_List).children:
-                if isinstance(declaration, Fortran2003.Name):
+                                                 declaration_list).children:
+                if isinstance(declaration, Fortran2003.Name) and str(declaration) not in ignore_names:
                     name = str(declaration)
                     message = MissingPointerInit.problem.format(name=name)
                     issue = Issue(message, line=proc_declaration.item.span[0])
@@ -385,34 +401,38 @@ class MissingPointerInit(FortranRule):
         return issues
 
     @staticmethod
+    def _program_unit(unit: Union[Fortran2003.Main_Program,
+                                  Fortran2003.Module]) -> List[Issue]:
+        issues: List[Issue] = []
+
+        specification = fparser_get_child(unit,
+                                          Fortran2003.Specification_Part)
+
+        issues.extend(MissingPointerInit._data(specification,
+                                               Fortran2003.Type_Declaration_Stmt,
+                                               Fortran2003.Attr_Spec,
+                                               Fortran2003.Entity_Decl,
+                                               Fortran2003.Initialization))
+        issues.extend(MissingPointerInit._proc(specification,
+                                               Fortran2003.Procedure_Declaration_Stmt,
+                                               Fortran2003.Proc_Attr_Spec,
+                                               Fortran2003.Proc_Decl_List))
+
+        return issues
+
+    @staticmethod
     def _derived_type_definition(derived_type: Fortran2003.Derived_Type_Def) -> List[Issue]:
         issues: List[Issue] = []
 
-        for data_component in fparser_walk(derived_type,
-                                           Fortran2003.Data_Component_Def_Stmt):
-            if not MissingPointerInit._is_pointer(data_component,
-                                                  Fortran2003.Component_Attr_Spec):
-                continue
-
-            for declaration in fparser_walk(data_component, Fortran2003.Component_Decl):
-                if fparser_get_child(declaration, Fortran2003.Component_Initialization) is None:
-                    name = fparser_get_child(declaration, Fortran2003.Name)
-                    message = MissingPointerInit.problem.format(name=name)
-                    issue = Issue(message, line=data_component.item.span[0])
-                    issues.append(issue)
-
-        for proc_component in fparser_walk(derived_type,
-                                           Fortran2003.Proc_Component_Def_Stmt):
-            if not MissingPointerInit._is_pointer(proc_component, Fortran2003.Proc_Component_Attr_Spec):
-                continue
-
-            declarations = fparser_get_child(proc_component, Fortran2003.Proc_Decl_List)
-            for declaration in declarations.children:
-                if isinstance(declaration, Fortran2003.Name):
-                    name = str(declaration)
-                    message = MissingPointerInit.problem.format(name=name)
-                    issue = Issue(message, line=proc_component.item.span[0])
-                    issues.append(issue)
+        issues.extend(MissingPointerInit._data(derived_type,
+                                               Fortran2003.Data_Component_Def_Stmt,
+                                               Fortran2003.Component_Attr_Spec,
+                                               Fortran2003.Component_Decl,
+                                               Fortran2003.Component_Initialization))
+        issues.extend(MissingPointerInit._proc(derived_type,
+                                               Fortran2003.Proc_Component_Def_Stmt,
+                                               Fortran2003.Proc_Component_Attr_Spec,
+                                               Fortran2003.Proc_Decl_List))
 
         return issues
 
@@ -427,35 +447,17 @@ class MissingPointerInit(FortranRule):
         argument_names = [str(name) for name in fparser_walk(arguments,
                                                              Fortran2003.Name)]
 
-        for type_declaration in fparser_walk(subroutine,
-                                             Fortran2003.Type_Declaration_Stmt):
-            if not MissingPointerInit._is_pointer(type_declaration, Fortran2003.Attr_Spec):
-                continue
-
-            for entity in fparser_walk(type_declaration,
-                                       Fortran2003.Entity_Decl):
-                if str(fparser_get_child(entity,
-                                         Fortran2003.Name)) in argument_names:
-                    continue
-
-                if fparser_get_child(entity, Fortran2003.Initialization) is None:
-                    name = str(fparser_get_child(entity, Fortran2003.Name))
-                    message = MissingPointerInit.problem.format(name=name)
-                    issue = Issue(message, line=type_declaration.item.span[0])
-                    issues.append(issue)
-
-        for proc_declaration in fparser_walk(subroutine,
-                                             Fortran2003.Procedure_Declaration_Stmt):
-            if not MissingPointerInit._is_pointer(subroutine, Fortran2003.Proc_Attr_Spec):
-                continue
-
-            for entity in fparser_get_child(proc_declaration,
-                                            Fortran2003.Proc_Decl_List).children:
-                if isinstance(entity, Fortran2003.Name) and str(entity) not in argument_names:
-                    name = str(entity)
-                    message = MissingPointerInit.problem.format(name=name)
-                    issue = Issue(message, line=proc_declaration.item.span[0])
-                    issues.append(issue)
+        issues.extend(MissingPointerInit._data(subroutine,
+                                               Fortran2003.Type_Declaration_Stmt,
+                                               Fortran2003.Attr_Spec,
+                                               Fortran2003.Entity_Decl,
+                                               Fortran2003.Initialization,
+                                               argument_names))
+        issues.extend(MissingPointerInit._proc(subroutine,
+                                               Fortran2003.Procedure_Declaration_Stmt,
+                                               Fortran2003.Proc_Attr_Spec,
+                                               Fortran2003.Proc_Decl_List,
+                                               argument_names))
 
         return issues
 
