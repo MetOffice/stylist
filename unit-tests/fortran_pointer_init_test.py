@@ -162,8 +162,6 @@ end {prog_unit} test
         issue_descriptions = [str(issue) for issue in issues]
         issue_descriptions.sort(key=lambda x: (int(x.split(':', 1)[0]),
                                                x.split(':', 1)))
-        print(issue_descriptions)
-        print(expectation)
         assert issue_descriptions == expectation
 
     def test_arguments_without_intent(self):
@@ -179,7 +177,7 @@ end {prog_unit} test
                              end subroutine my_sub
                              module this_mod
                              contains
-                               subroutine their_sub( second )
+                               subroutine their_sub( first, second )
                                  implicit none
                                  integer, pointer, intent(in) :: first
                                  integer, pointer :: second
@@ -193,7 +191,4 @@ end {prog_unit} test
         issues = test_unit.examine(source)
 
         issue_descriptions = [str(issue) for issue in issues]
-        assert issue_descriptions == [
-            '3: Declaration of pointer "first" without initialisation.',
-            '11: Declaration of pointer "second" without initialisation.'
-        ]
+        assert issue_descriptions == []
