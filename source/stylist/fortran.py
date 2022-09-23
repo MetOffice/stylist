@@ -340,6 +340,14 @@ class MissingPointerInit(FortranRule):
     problem = 'Declaration of pointer "{name}" without initialisation.'
 
     @staticmethod
+    def _is_pointer(root: Fortran2003.Base,
+                    attr_node: Type[Fortran2003.Base]) -> bool:
+        attribute_names: List[str] = []
+        for attribute in fparser_walk(root, attr_node):
+            attribute_names.append(str(attribute).strip())
+        return 'POINTER' in attribute_names
+
+    @staticmethod
     def _program_unit(unit: Union[Fortran2003.Main_Program,
                                   Fortran2003.Module]) -> List[Issue]:
         issues: List[Issue] = []
@@ -349,10 +357,8 @@ class MissingPointerInit(FortranRule):
 
         for var_declaration in fparser_walk(specification,
                                             Fortran2003.Type_Declaration_Stmt):
-            attribute_names = [str(attr)
-                               for attr in fparser_walk(var_declaration,
-                                                        Fortran2003.Attr_Spec)]
-            if 'POINTER' not in attribute_names:
+            if not MissingPointerInit._is_pointer(var_declaration,
+                                                  Fortran2003.Attr_Spec):
                 continue
 
             for entity in fparser_walk(var_declaration,
@@ -365,10 +371,7 @@ class MissingPointerInit(FortranRule):
 
         for proc_declaration in fparser_walk(specification,
                                              Fortran2003.Procedure_Declaration_Stmt):
-            attribute_names = [str(attr)
-                               for attr in fparser_walk(proc_declaration,
-                                                        Fortran2003.Proc_Attr_Spec)]
-            if 'POINTER' not in attribute_names:
+            if not MissingPointerInit._is_pointer(proc_declaration, Fortran2003.Proc_Attr_Spec):
                 continue
 
             for declaration in fparser_get_child(proc_declaration,
@@ -387,10 +390,8 @@ class MissingPointerInit(FortranRule):
 
         for data_component in fparser_walk(derived_type,
                                            Fortran2003.Data_Component_Def_Stmt):
-            attribute_names = [str(attr)
-                               for attr in fparser_walk(data_component,
-                                                        Fortran2003.Component_Attr_Spec)]
-            if 'POINTER' not in attribute_names:
+            if not MissingPointerInit._is_pointer(data_component,
+                                                  Fortran2003.Component_Attr_Spec):
                 continue
 
             for declaration in fparser_walk(data_component, Fortran2003.Component_Decl):
@@ -402,10 +403,7 @@ class MissingPointerInit(FortranRule):
 
         for proc_component in fparser_walk(derived_type,
                                            Fortran2003.Proc_Component_Def_Stmt):
-            attribute_names = [str(attr)
-                               for attr in fparser_walk(proc_component,
-                                                        Fortran2003.Proc_Component_Attr_Spec)]
-            if 'POINTER' not in attribute_names:
+            if not MissingPointerInit._is_pointer(proc_component, Fortran2003.Proc_Component_Attr_Spec):
                 continue
 
             declarations = fparser_get_child(proc_component, Fortran2003.Proc_Decl_List)
@@ -431,9 +429,7 @@ class MissingPointerInit(FortranRule):
 
         for type_declaration in fparser_walk(subroutine,
                                              Fortran2003.Type_Declaration_Stmt):
-            attr_names = [str(attr) for attr in fparser_walk(type_declaration,
-                                                             Fortran2003.Attr_Spec)]
-            if 'POINTER' not in attr_names:
+            if not MissingPointerInit._is_pointer(type_declaration, Fortran2003.Attr_Spec):
                 continue
 
             for entity in fparser_walk(type_declaration,
@@ -450,9 +446,7 @@ class MissingPointerInit(FortranRule):
 
         for proc_declaration in fparser_walk(subroutine,
                                              Fortran2003.Procedure_Declaration_Stmt):
-            attr_names = [str(attr) for attr in fparser_walk((subroutine,
-                                                              Fortran2003.Proc_Attr_Spec))]
-            if 'POINTER' not in attr_names:
+            if not MissingPointerInit._is_pointer(subroutine, Fortran2003.Proc_Attr_Spec):
                 continue
 
             for entity in fparser_get_child(proc_declaration,
