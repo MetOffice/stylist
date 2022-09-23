@@ -9,11 +9,12 @@ Rules relating to Fortran source.
 import re
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
-from typing import Dict, List, Optional, Pattern, Type, Union, Sequence
+from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
+                    Union)
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
-from fparser.two.utils import (get_child as fparser_get_child,
+from fparser.two.utils import (get_child as fparser_get_child,  # type: ignore
                                walk as fparser_walk)
 
 from stylist.issue import Issue
@@ -353,7 +354,7 @@ class MissingPointerInit(FortranRule):
               attribute_specification: Type[Fortran2003.Base],
               entity_declaration: Type[Fortran2003.Base],
               initialiser: Type[Fortran2003.Base],
-              ignore_names: Optional[Sequence[str]] = ()) -> List[Issue]:
+              ignore_names: Sequence[str] = ()) -> List[Issue]:
         issues: List[Issue] = []
 
         for data_declaration in fparser_walk(root, declaration_statement):
@@ -381,7 +382,7 @@ class MissingPointerInit(FortranRule):
               declaration_statement: Type[Fortran2003.Base],
               attribute_specification: Type[Fortran2003.Base],
               declaration_list: Type[Fortran2003.Base],
-              ignore_names: Optional[Sequence[str]] = ()) -> List[Issue]:
+              ignore_names: Container[str] = ()) -> List[Issue]:
         issues: List[Issue] = []
 
         for proc_declaration in fparser_walk(root,
