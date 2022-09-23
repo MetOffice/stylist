@@ -13,9 +13,9 @@ from typing import Dict, List, Optional, Pattern, Type, Union, Sequence
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
-from fparser.two.utils import get_child as fparser_get_child, walk as fparser_walk
+from fparser.two.utils import (get_child as fparser_get_child,
+                               walk as fparser_walk)
 
-from stylist import StylistException
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
@@ -392,7 +392,8 @@ class MissingPointerInit(FortranRule):
 
             for declaration in fparser_get_child(proc_declaration,
                                                  declaration_list).children:
-                if isinstance(declaration, Fortran2003.Name) and str(declaration) not in ignore_names:
+                if (isinstance(declaration, Fortran2003.Name)
+                        and str(declaration) not in ignore_names):
                     name = str(declaration)
                     message = MissingPointerInit.problem.format(name=name)
                     issue = Issue(message, line=proc_declaration.item.span[0])
@@ -408,36 +409,46 @@ class MissingPointerInit(FortranRule):
         specification = fparser_get_child(unit,
                                           Fortran2003.Specification_Part)
 
-        issues.extend(MissingPointerInit._data(specification,
-                                               Fortran2003.Type_Declaration_Stmt,
-                                               Fortran2003.Attr_Spec,
-                                               Fortran2003.Entity_Decl,
-                                               Fortran2003.Initialization))
-        issues.extend(MissingPointerInit._proc(specification,
-                                               Fortran2003.Procedure_Declaration_Stmt,
-                                               Fortran2003.Proc_Attr_Spec,
-                                               Fortran2003.Proc_Decl_List))
+        issues.extend(MissingPointerInit._data(
+            specification,
+            Fortran2003.Type_Declaration_Stmt,
+            Fortran2003.Attr_Spec,
+            Fortran2003.Entity_Decl,
+            Fortran2003.Initialization)
+        )
+        issues.extend(MissingPointerInit._proc(
+            specification,
+            Fortran2003.Procedure_Declaration_Stmt,
+            Fortran2003.Proc_Attr_Spec,
+            Fortran2003.Proc_Decl_List)
+        )
 
         return issues
 
     @staticmethod
-    def _derived_type_definition(derived_type: Fortran2003.Derived_Type_Def) -> List[Issue]:
+    def _derived_type_definition(derived_type: Fortran2003.Derived_Type_Def)\
+            -> List[Issue]:
         issues: List[Issue] = []
 
-        issues.extend(MissingPointerInit._data(derived_type,
-                                               Fortran2003.Data_Component_Def_Stmt,
-                                               Fortran2003.Component_Attr_Spec,
-                                               Fortran2003.Component_Decl,
-                                               Fortran2003.Component_Initialization))
-        issues.extend(MissingPointerInit._proc(derived_type,
-                                               Fortran2003.Proc_Component_Def_Stmt,
-                                               Fortran2003.Proc_Component_Attr_Spec,
-                                               Fortran2003.Proc_Decl_List))
+        issues.extend(MissingPointerInit._data(
+            derived_type,
+            Fortran2003.Data_Component_Def_Stmt,
+            Fortran2003.Component_Attr_Spec,
+            Fortran2003.Component_Decl,
+            Fortran2003.Component_Initialization)
+        )
+        issues.extend(MissingPointerInit._proc(
+            derived_type,
+            Fortran2003.Proc_Component_Def_Stmt,
+            Fortran2003.Proc_Component_Attr_Spec,
+            Fortran2003.Proc_Decl_List)
+        )
 
         return issues
 
     @staticmethod
-    def _subroutine_definition(subroutine: Fortran2003.Subroutine_Subprogram) -> List[Issue]:
+    def _subroutine_definition(subroutine: Fortran2003.Subroutine_Subprogram)\
+            -> List[Issue]:
         issues: List[Issue] = []
 
         subroutine_statement = fparser_get_child(subroutine,
@@ -447,17 +458,21 @@ class MissingPointerInit(FortranRule):
         argument_names = [str(name) for name in fparser_walk(arguments,
                                                              Fortran2003.Name)]
 
-        issues.extend(MissingPointerInit._data(subroutine,
-                                               Fortran2003.Type_Declaration_Stmt,
-                                               Fortran2003.Attr_Spec,
-                                               Fortran2003.Entity_Decl,
-                                               Fortran2003.Initialization,
-                                               argument_names))
-        issues.extend(MissingPointerInit._proc(subroutine,
-                                               Fortran2003.Procedure_Declaration_Stmt,
-                                               Fortran2003.Proc_Attr_Spec,
-                                               Fortran2003.Proc_Decl_List,
-                                               argument_names))
+        issues.extend(MissingPointerInit._data(
+            subroutine,
+            Fortran2003.Type_Declaration_Stmt,
+            Fortran2003.Attr_Spec,
+            Fortran2003.Entity_Decl,
+            Fortran2003.Initialization,
+            argument_names)
+        )
+        issues.extend(MissingPointerInit._proc(
+            subroutine,
+            Fortran2003.Procedure_Declaration_Stmt,
+            Fortran2003.Proc_Attr_Spec,
+            Fortran2003.Proc_Decl_List,
+            argument_names)
+        )
 
         return issues
 
@@ -466,7 +481,8 @@ class MissingPointerInit(FortranRule):
 
         unit: Union[Fortran2003.Main_Program, Fortran2003.Module]
         for unit in fparser_walk(subject.get_tree(),
-                                 (Fortran2003.Main_Program, Fortran2003.Module)):
+                                 (Fortran2003.Main_Program,
+                                  Fortran2003.Module)):
             issues.extend(self._program_unit(unit))
 
         subroutine: Fortran2003.Subroutine_Subprogram
