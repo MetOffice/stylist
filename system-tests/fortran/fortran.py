@@ -7,7 +7,8 @@ from stylist.fortran import (AutoCharArrayIntent,
                              MissingImplicit,
                              MissingIntent,
                              MissingOnly,
-                             MissingPointerInit)
+                             MissingPointerInit,
+                             NakedImmediate)
 from stylist.style import Style
 
 bad_character = Style(FortranCharacterset())
@@ -21,6 +22,9 @@ labelled_do_exit = Style(LabelledDoExit())
 missing_intent = Style(MissingIntent())
 intrinsic_module = Style(IntrinsicModule())
 auto_char_array_intent = Style(AutoCharArrayIntent())
+naked_immediate = Style(NakedImmediate())
+naked_immediate__integers = Style(NakedImmediate(reals=False))
+naked_immediate__reals = Style(NakedImmediate(integers=False))
 multiple = Style(FortranCharacterset(),
                  MissingImplicit(require_everywhere=True),
                  MissingPointerInit())

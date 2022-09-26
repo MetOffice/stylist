@@ -1,0 +1,43 @@
+stdout
+Found 40 issues
+stderr
+$$/naked_immediate.f90: 5: Immediate value assigned to "smaller_init_int_mod" without kind
+$$/naked_immediate.f90: 7: Immediate value assigned to "smaller_init_float_mod" without kind
+$$/naked_immediate.f90: 9: Immediate value assigned to "larger_init_int_mod" without kind
+$$/naked_immediate.f90: 11: Immediate value assigned to "larger_init_float_mod" without kind
+$$/naked_immediate.f90: 14: Immediate value assigned to "smaller_init_int_type" without kind
+$$/naked_immediate.f90: 16: Immediate value assigned to "smaller_init_float_type" without kind
+$$/naked_immediate.f90: 18: Immediate value assigned to "larger_init_int_type" without kind
+$$/naked_immediate.f90: 20: Immediate value assigned to "larger_init_float_type" without kind
+$$/naked_immediate.f90: 26: Immediate value assigned to "smaller_init_int_sub" without kind
+$$/naked_immediate.f90: 28: Immediate value assigned to "smaller_init_float_sub" without kind
+$$/naked_immediate.f90: 30: Immediate value assigned to "larger_init_int_sub" without kind
+$$/naked_immediate.f90: 32: Immediate value assigned to "larger_init_float_sub" without kind
+$$/naked_immediate.f90: 34: Immediate value assigned to "smaller_int_mod" without kind
+$$/naked_immediate.f90: 35: Immediate value assigned to "smaller_init_int_mod" without kind
+$$/naked_immediate.f90: 36: Immediate value assigned to "smaller_float_mod" without kind
+$$/naked_immediate.f90: 37: Immediate value assigned to "smaller_init_float_mod" without kind
+$$/naked_immediate.f90: 38: Immediate value assigned to "larger_int_mod" without kind
+$$/naked_immediate.f90: 39: Immediate value assigned to "larger_init_int_mod" without kind
+$$/naked_immediate.f90: 40: Immediate value assigned to "larger_float_mod" without kind
+$$/naked_immediate.f90: 41: Immediate value assigned to "larger_init_float_mod" without kind
+$$/naked_immediate.f90: 42: Immediate value assigned to "smaller_int_sub" without kind
+$$/naked_immediate.f90: 43: Immediate value assigned to "smaller_init_int_sub" without kind
+$$/naked_immediate.f90: 44: Immediate value assigned to "smaller_float_sub" without kind
+$$/naked_immediate.f90: 45: Immediate value assigned to "smaller_init_float_sub" without kind
+$$/naked_immediate.f90: 46: Immediate value assigned to "larger_int_sub" without kind
+$$/naked_immediate.f90: 47: Immediate value assigned to "larger_init_int_sub" without kind
+$$/naked_immediate.f90: 48: Immediate value assigned to "larger_float_sub" without kind
+$$/naked_immediate.f90: 49: Immediate value assigned to "larger_init_float_sub" without kind
+$$/naked_immediate.f90: 56: Immediate value assigned to "smaller_init_int_prog" without kind
+$$/naked_immediate.f90: 58: Immediate value assigned to "smaller_init_float_prog" without kind
+$$/naked_immediate.f90: 60: Immediate value assigned to "larger_init_int_prog" without kind
+$$/naked_immediate.f90: 62: Immediate value assigned to "larger_init_float_prog" without kind
+$$/naked_immediate.f90: 64: Immediate value assigned to "smaller_int_prog" without kind
+$$/naked_immediate.f90: 65: Immediate value assigned to "smaller_init_int_prog" without kind
+$$/naked_immediate.f90: 66: Immediate value assigned to "smaller_float_prog" without kind
+$$/naked_immediate.f90: 67: Immediate value assigned to "smaller_init_float_prog" without kind
+$$/naked_immediate.f90: 68: Immediate value assigned to "larger_int_prog" without kind
+$$/naked_immediate.f90: 69: Immediate value assigned to "larger_init_int_prog" without kind
+$$/naked_immediate.f90: 70: Immediate value assigned to "larger_float_prog" without kind
+$$/naked_immediate.f90: 71: Immediate value assigned to "larger_init_float_prog" without kind
