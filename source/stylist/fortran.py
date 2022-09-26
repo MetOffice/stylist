@@ -576,12 +576,22 @@ class NakedImmediate(FortranRule):
     """
     Checks that all immediate values have their kind specified.
     """
+    def __init__(self, integers: bool = True, reals: bool = True):
+        self._integers = integers
+        self._reals = reals
+
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
 
-        for constant in fp_walk(subject.get_tree(),
-                                (Fortran2003.Int_Literal_Constant,
-                                 Fortran2003.Real_Literal_Constant)):
+        candidates: List[Fortran2003.Base] = []
+        if self._integers:
+            candidates.extend(fp_walk(subject.get_tree(),
+                                      Fortran2003.Int_Literal_Constant))
+        if self._reals:
+            candidates.extend(fp_walk(subject.get_tree(),
+                                      Fortran2003.Real_Literal_Constant))
+
+        for constant in candidates:
             if constant.items[1] is None:
                 if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
                     name = str(fp_get_child(constant.parent, Fortran2003.Name))
