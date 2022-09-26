@@ -65,3 +65,8 @@ Rules relating to Fortran source code.
    :noindex:
    :no-show-inheritance:
    :exclude-members: examine, examine_fortran
+
+.. autoclass:: stylist.fortran.NakedImmediate
+   :noindex:
+   :no-show-inheritance:
+   :exclude-members: examine, examine_fortran

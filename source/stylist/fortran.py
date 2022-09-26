@@ -575,6 +575,9 @@ class AutoCharArrayIntent(FortranRule):
 class NakedImmediate(FortranRule):
     """
     Checks that all immediate values have their kind specified.
+
+    Checking of integers and reals are controlled separately so you can have
+    one and not the other.
     """
     def __init__(self, integers: bool = True, reals: bool = True):
         self._integers = integers
