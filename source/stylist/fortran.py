@@ -13,10 +13,26 @@ from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
+from fparser.two.utils import get_child as fp_get_child, walk as fp_walk
 
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
+
+
+def _line(node: Fortran2003.Base) -> int:
+    """
+    Determines the source line on which a given node appears.
+
+    Although the range of lines covered by a particular statement is available
+    it doesn't seem to be possible to determine exactly which one a particular
+    subsidiary part appears on. Therefore it is always the first line of the
+    continuation block.
+    """
+    target = node
+    while target.item is None:
+        target = target.parent
+    return target.item.span[0]
 
 
 class FortranRule(Rule, metaclass=ABCMeta):
@@ -499,7 +515,7 @@ class AutoCharArrayIntent(FortranRule):
                 f"{name} has intent {intent}.")
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
-        issues = []
+        issues: List[Issue] = []
 
         # Collect all variable declarations
         declarations: List[Fortran2003.Type_Declaration_Stmt] = list(
@@ -553,5 +569,32 @@ class AutoCharArrayIntent(FortranRule):
                 ),
                 line=declaration.item.span[0]
             ))
+
+        return issues
+
+
+class NakedImmediate(FortranRule):
+    """
+    Checks that all immediate values have their kind specified.
+    """
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+        #print(repr(subject.get_tree()))
+        for constant in fp_walk(subject.get_tree(),
+                                (Fortran2003.Int_Literal_Constant,
+                                 Fortran2003.Real_Literal_Constant)):
+            if constant.items[1] is None:
+                if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
+                    name = str(fp_get_child(constant.parent, Fortran2003.Name))
+                    message = f'Immediate value assigned to "{name}" without kind'
+                elif isinstance(constant.parent.parent,
+                                (Fortran2003.Entity_Decl, Fortran2003.Component_Decl)):
+                    name = str(fp_get_child(constant.parent.parent, Fortran2003.Name))
+                    message = f'Immediate value assigned to "{name}" without kind'
+                else:
+                    print(repr(constant.parent.parent))
+                    line = 0
+                    message = 'Immediate value without "kind"'
+                issues.append(Issue(message, line=_line(constant)))
 
         return issues
