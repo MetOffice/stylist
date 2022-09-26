@@ -187,44 +187,48 @@ class TestNakedImmediate:
         # are for the first line of the continuation block in which the error
         # is found.
         #
-        assert sorted([str(issue) for issue in issues]) \
-               == ['11: Immediate value assigned to "larger_init_float_mod" without kind',
-                   '14: Immediate value assigned to "smaller_init_int_type" without kind',
-                   '16: Immediate value assigned to "smaller_init_float_type" without kind',
-                   '18: Immediate value assigned to "larger_init_int_type" without kind',
-                   '20: Immediate value assigned to "larger_init_float_type" without kind',
-                   '26: Immediate value assigned to "smaller_init_int_sub" without kind',
-                   '28: Immediate value assigned to "smaller_init_float_sub" without kind',
-                   '30: Immediate value assigned to "larger_init_int_sub" without kind',
-                   '32: Immediate value assigned to "larger_init_float_sub" without kind',
-                   '34: Immediate value assigned to "smaller_int_mod" without kind',
-                   '35: Immediate value assigned to "smaller_init_int_mod" without kind',
-                   '36: Immediate value assigned to "smaller_float_mod" without kind',
-                   '37: Immediate value assigned to "smaller_init_float_mod" without kind',
-                   '38: Immediate value assigned to "larger_int_mod" without kind',
-                   '39: Immediate value assigned to "larger_init_int_mod" without kind',
-                   '40: Immediate value assigned to "larger_float_mod" without kind',
-                   '41: Immediate value assigned to "larger_init_float_mod" without kind',
-                   '42: Immediate value assigned to "smaller_int_sub" without kind',
-                   '43: Immediate value assigned to "smaller_init_int_sub" without kind',
-                   '44: Immediate value assigned to "smaller_float_sub" without kind',
-                   '45: Immediate value assigned to "smaller_init_float_sub" without kind',
-                   '46: Immediate value assigned to "larger_int_sub" without kind',
-                   '47: Immediate value assigned to "larger_init_int_sub" without kind',
-                   '48: Immediate value assigned to "larger_float_sub" without kind',
-                   '49: Immediate value assigned to "larger_init_float_sub" without kind',
-                   '56: Immediate value assigned to "smaller_init_int_prog" without kind',
-                   '58: Immediate value assigned to "smaller_init_float_prog" without kind',
-                   '5: Immediate value assigned to "smaller_init_int_mod" without kind',
-                   '60: Immediate value assigned to "larger_init_int_prog" without kind',
-                   '62: Immediate value assigned to "larger_init_float_prog" without kind',
-                   '64: Immediate value assigned to "smaller_int_prog" without kind',
-                   '65: Immediate value assigned to "smaller_init_int_prog" without kind',
-                   '66: Immediate value assigned to "smaller_float_prog" without kind',
-                   '67: Immediate value assigned to "smaller_init_float_prog" without kind',
-                   '68: Immediate value assigned to "larger_int_prog" without kind',
-                   '69: Immediate value assigned to "larger_init_int_prog" without kind',
-                   '70: Immediate value assigned to "larger_float_prog" without kind',
-                   '71: Immediate value assigned to "larger_init_float_prog" without kind',
-                   '7: Immediate value assigned to "smaller_init_float_mod" without kind',
-                   '9: Immediate value assigned to "larger_init_int_mod" without kind',]
+        # Disabling pycodestyle for lines longer than 80 characters is messy
+        # but breaking up the lines would be worse.
+        #
+        assert sorted([str(issue) for issue in issues]) == [
+            '11: Immediate value assigned to "larger_init_float_mod" without kind',  # noqa
+            '14: Immediate value assigned to "smaller_init_int_type" without kind',  # noqa
+            '16: Immediate value assigned to "smaller_init_float_type" without kind',  # noqa
+            '18: Immediate value assigned to "larger_init_int_type" without kind',  # noqa
+            '20: Immediate value assigned to "larger_init_float_type" without kind',  # noqa
+            '26: Immediate value assigned to "smaller_init_int_sub" without kind',  # noqa
+            '28: Immediate value assigned to "smaller_init_float_sub" without kind',  # noqa
+            '30: Immediate value assigned to "larger_init_int_sub" without kind',  # noqa
+            '32: Immediate value assigned to "larger_init_float_sub" without kind',  # noqa
+            '34: Immediate value assigned to "smaller_int_mod" without kind',
+            '35: Immediate value assigned to "smaller_init_int_mod" without kind',  # noqa
+            '36: Immediate value assigned to "smaller_float_mod" without kind',
+            '37: Immediate value assigned to "smaller_init_float_mod" without kind',  # noqa
+            '38: Immediate value assigned to "larger_int_mod" without kind',
+            '39: Immediate value assigned to "larger_init_int_mod" without kind',  # noqa
+            '40: Immediate value assigned to "larger_float_mod" without kind',
+            '41: Immediate value assigned to "larger_init_float_mod" without kind',  # noqa
+            '42: Immediate value assigned to "smaller_int_sub" without kind',
+            '43: Immediate value assigned to "smaller_init_int_sub" without kind',  # noqa
+            '44: Immediate value assigned to "smaller_float_sub" without kind',
+            '45: Immediate value assigned to "smaller_init_float_sub" without kind',  # noqa
+            '46: Immediate value assigned to "larger_int_sub" without kind',
+            '47: Immediate value assigned to "larger_init_int_sub" without kind',  # noqa
+            '48: Immediate value assigned to "larger_float_sub" without kind',
+            '49: Immediate value assigned to "larger_init_float_sub" without kind',  # noqa
+            '56: Immediate value assigned to "smaller_init_int_prog" without kind',  # noqa
+            '58: Immediate value assigned to "smaller_init_float_prog" without kind',  # noqa
+            '5: Immediate value assigned to "smaller_init_int_mod" without kind',  # noqa
+            '60: Immediate value assigned to "larger_init_int_prog" without kind',  # noqa
+            '62: Immediate value assigned to "larger_init_float_prog" without kind',  # noqa
+            '64: Immediate value assigned to "smaller_int_prog" without kind',
+            '65: Immediate value assigned to "smaller_init_int_prog" without kind',  # noqa
+            '66: Immediate value assigned to "smaller_float_prog" without kind',  # noqa
+            '67: Immediate value assigned to "smaller_init_float_prog" without kind',  # noqa
+            '68: Immediate value assigned to "larger_int_prog" without kind',
+            '69: Immediate value assigned to "larger_init_int_prog" without kind',  # noqa
+            '70: Immediate value assigned to "larger_float_prog" without kind',
+            '71: Immediate value assigned to "larger_init_float_prog" without kind',  # noqa,
+            '7: Immediate value assigned to "smaller_init_float_mod" without kind',  # noqa
+            '9: Immediate value assigned to "larger_init_int_mod" without kind'
+        ]

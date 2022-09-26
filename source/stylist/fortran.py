@@ -13,7 +13,8 @@ from typing import Dict, List, Optional, Pattern, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
-from fparser.two.utils import get_child as fp_get_child, walk as fp_walk
+from fparser.two.utils import (get_child as fp_get_child,  # type: ignore
+                               walk as fp_walk)
 
 from stylist.issue import Issue
 from stylist.rule import Rule
@@ -584,11 +585,15 @@ class NakedImmediate(FortranRule):
             if constant.items[1] is None:
                 if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
                     name = str(fp_get_child(constant.parent, Fortran2003.Name))
-                    message = f'Immediate value assigned to "{name}" without kind'
+                    message = f'Immediate value assigned to "{name}"' \
+                              ' without kind'
                 elif isinstance(constant.parent.parent,
-                                (Fortran2003.Entity_Decl, Fortran2003.Component_Decl)):
-                    name = str(fp_get_child(constant.parent.parent, Fortran2003.Name))
-                    message = f'Immediate value assigned to "{name}" without kind'
+                                (Fortran2003.Entity_Decl,
+                                 Fortran2003.Component_Decl)):
+                    name = str(fp_get_child(constant.parent.parent,
+                                            Fortran2003.Name))
+                    message = f'Immediate value assigned to "{name}"' \
+                              ' without kind'
                 else:
                     print(repr(constant.parent.parent))
                     message = 'Immediate value without "kind"'
