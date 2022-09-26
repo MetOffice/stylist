@@ -177,8 +177,7 @@ class MissingImplicit(FortranRule):
                 description = "{thing} '{name}' is missing " \
                               + "an implicit statement"
                 description = description.format(thing=nature, name=name)
-                issues.append(Issue(description,
-                                    line=scope_statement.item.span[0]))
+                issues.append(Issue(description, line=_line(scope_statement)))
         return issues
 
 
@@ -259,8 +258,7 @@ class MissingIntent(FortranRule):
                 description = f'Dummy argument "{arg}" of {unit_type} "' \
                               f'{stmt.children[1].string}" is missing an ' \
                               f'"intent" statement'
-                issues.append(Issue(description,
-                                    line=stmt.item.span[0]))
+                issues.append(Issue(description, line=_line(stmt)))
 
         return issues
 
@@ -290,7 +288,7 @@ class MissingOnly(FortranRule):
                 if onlies is None:
                     description = 'Usage of "{module}" without "only" clause.'
                     issues.append(Issue(description.format(module=module),
-                                        line=statement.item.span[0]))
+                                        line=_line(statement)))
 
         return issues
 
@@ -314,7 +312,7 @@ class IntrinsicModule(FortranRule):
                     description = 'Usage of intrinsic module "{module}" ' \
                                   'without "intrinsic" clause.'
                     issues.append(Issue(description.format(module=module),
-                                        line=statement.item.span[0]))
+                                        line=_line(statement)))
 
         return issues
 
@@ -332,7 +330,7 @@ class LabelledDoExit(FortranRule):
                 issues.append(Issue('Usage of "exit" without label indicating '
                                     'which "do" construct is being exited '
                                     'from.',
-                                    line=exit.item.span[0]))
+                                    line=_line(exit)))
 
         # Above doesn't catch exits in inline if statements
         for statement in subject.find_all(Fortran2003.If_Stmt):
@@ -342,7 +340,7 @@ class LabelledDoExit(FortranRule):
                 issues.append(Issue('Usage of "exit" without label indicating '
                                     'which "do" construct is being exited '
                                     'from.',
-                                    line=statement.item.span[0]))
+                                    line=_line(statement)))
 
         return issues
 
@@ -414,14 +412,14 @@ class MissingPointerInit(FortranRule):
                         init = variable.items[3]
                         if init is None:
                             message = problem.format(name=name)
-                            line_number = candidate.item.span[0]
+                            line_number = _line(candidate)
                             issues.append(Issue(message, line=line_number))
                     elif isinstance(candidate,  # Is procedure
                                     (Fortran2003.Proc_Component_Def_Stmt,
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
                         if isinstance(variable, Fortran2003.Name):
-                            line_number = candidate.item.span[0]
+                            line_number = _line(candidate)
                             message = problem.format(name=name)
                             issues.append(Issue(message, line=line_number))
                     else:
@@ -498,7 +496,7 @@ class KindPattern(FortranRule):
                             name=entity_declaration,
                             pattern=self._patterns[data_type].pattern)
                         issues.append(Issue(message,
-                                            line=candidate.item.span[0]))
+                                            line=_line(candidate)))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues
@@ -567,7 +565,7 @@ class AutoCharArrayIntent(FortranRule):
                     declaration.items[2].string,
                     intent_attr.items[1]
                 ),
-                line=declaration.item.span[0]
+                line=_line(declaration)
             ))
 
         return issues
@@ -579,7 +577,7 @@ class NakedImmediate(FortranRule):
     """
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
-        #print(repr(subject.get_tree()))
+
         for constant in fp_walk(subject.get_tree(),
                                 (Fortran2003.Int_Literal_Constant,
                                  Fortran2003.Real_Literal_Constant)):
@@ -593,7 +591,6 @@ class NakedImmediate(FortranRule):
                     message = f'Immediate value assigned to "{name}" without kind'
                 else:
                     print(repr(constant.parent.parent))
-                    line = 0
                     message = 'Immediate value without "kind"'
                 issues.append(Issue(message, line=_line(constant)))
 
