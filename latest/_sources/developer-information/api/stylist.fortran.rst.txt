@@ -18,6 +18,7 @@ stylist.fortran
    .. autosummary::
    
       AutoCharArrayIntent
+      ForbidUsage
       FortranCharacterset
       FortranRule
       IntrinsicModule
