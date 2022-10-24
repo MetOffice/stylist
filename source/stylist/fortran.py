@@ -620,11 +620,11 @@ class AutoCharArrayIntent(FortranRule):
                 if isinstance(item, Fortran2003.Intent_Attr_Spec):
                     intent_attr = item
                     break
-            # If no intent, no conecern
+            # If no intent, no concern
             # Ensuring arguments specify intent should be enforced elsewhere
             if intent_attr is None:
                 continue
-            # Intent in, no conern
+            # Intent in, no concern
             if intent_attr.items[1].string == "IN":
                 continue
             issues.append(Issue(
@@ -635,4 +635,42 @@ class AutoCharArrayIntent(FortranRule):
                 line=declaration.item.span[0]
             ))
 
+        return issues
+
+
+class ForbidUsage(FortranRule):
+    """
+    Checks that no attempt is made to use the specific module unless it is in
+    one of the excepted modules.
+    """
+    def __init__(self,
+                 name: str,
+                 exceptions: Sequence[Union[str, Pattern]] = ()):
+        """
+        :param name: Name of module to forbid.
+        :param exceptions: names (or name patterns) in which module may be
+                           used.
+        """
+        self._forbidden_module = name
+        self._exceptions: List[Pattern] = []
+        for exception in exceptions:
+            if isinstance(exception, Pattern):
+                self._exceptions.append(exception)
+            else:
+                self._exceptions.append(re.compile(exception))
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+        for module_statement in subject.find_all(Fortran2003.Module_Stmt):
+            in_module = str(module_statement.items[1])
+            for use in subject.find_all(Fortran2003.Use_Stmt,
+                                        module_statement.parent):
+                use_module = str(use.items[2])
+                forbidden = (use_module == self._forbidden_module)
+                for exception_pattern in self._exceptions:
+                    forbidden = (forbidden
+                                 and not exception_pattern.match(in_module))
+                if forbidden:
+                    message = f"Attempt to use forbidden module '{use_module}'"
+                    issues.append(Issue(message, line=use.item.span[0]))
         return issues
