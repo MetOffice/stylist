@@ -1,0 +1,4 @@
+stdout
+Found 1 issue
+stderr
+$$/forbid_usage.f90: 6: Attempt to use forbidden module 'fat_bank'
