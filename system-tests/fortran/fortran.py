@@ -9,7 +9,7 @@ from stylist.fortran import (AutoCharArrayIntent,
                              MissingIntent,
                              MissingOnly,
                              MissingPointerInit,
-                             NakedImmediate)
+                             NakedLiteral)
 from stylist.style import Style
 
 bad_character = Style(FortranCharacterset())
@@ -36,9 +36,9 @@ forbid_usage = Style(ForbidUsage('fat_bank',
                                  ('boss', 'contract_mod',
                                   re_compile('share_holder_.*'))))
 
-naked_immediate = Style(NakedImmediate())
-naked_immediate__integers = Style(NakedImmediate(reals=False))
-naked_immediate__reals = Style(NakedImmediate(integers=False))
+naked_literal = Style(NakedLiteral())
+naked_literal__integers = Style(NakedLiteral(reals=False))
+naked_literal__reals = Style(NakedLiteral(integers=False))
 
 multiple = Style(FortranCharacterset(),
                  MissingImplicit(require_everywhere=True),

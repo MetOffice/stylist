@@ -5,17 +5,17 @@
 # under which the code may be used.
 ##############################################################################
 """
-Tests of the rule for immediate values with precision.
+Tests of the rule for literal values with precision.
 """
 from textwrap import dedent
 
-from stylist.fortran import NakedImmediate
+from stylist.fortran import NakedLiteral
 from stylist.source import FortranSource, SourceStringReader
 
 
-class TestNakedImmediate:
+class TestNakedLiteral:
     """
-    Tests the rule for immediate values without precision.
+    Tests the rule for literal values without precision.
     """
     def test_good(self):
         text = dedent('''
@@ -96,7 +96,7 @@ class TestNakedImmediate:
         reader = SourceStringReader(text)
         source = FortranSource(reader)
 
-        test_unit = NakedImmediate()
+        test_unit = NakedLiteral()
         issues = test_unit.examine(source)
 
         assert [str(issue) for issue in issues] == []
@@ -181,26 +181,26 @@ class TestNakedImmediate:
     # is found.
     #
     _expected_int = [
-        '14: Immediate value assigned to "smaller_init_int_type" without kind',
-        '18: Immediate value assigned to "larger_init_int_type" without kind',
-        '26: Immediate value assigned to "smaller_init_int_sub" without kind',
-        '30: Immediate value assigned to "larger_init_int_sub" without kind',
-        '34: Immediate value assigned to "smaller_int_mod" without kind',
-        '35: Immediate value assigned to "smaller_init_int_mod" without kind',
-        '38: Immediate value assigned to "larger_int_mod" without kind',
-        '39: Immediate value assigned to "larger_init_int_mod" without kind',
-        '42: Immediate value assigned to "smaller_int_sub" without kind',
-        '43: Immediate value assigned to "smaller_init_int_sub" without kind',
-        '46: Immediate value assigned to "larger_int_sub" without kind',
-        '47: Immediate value assigned to "larger_init_int_sub" without kind',
-        '56: Immediate value assigned to "smaller_init_int_prog" without kind',
-        '5: Immediate value assigned to "smaller_init_int_mod" without kind',
-        '60: Immediate value assigned to "larger_init_int_prog" without kind',
-        '64: Immediate value assigned to "smaller_int_prog" without kind',
-        '65: Immediate value assigned to "smaller_init_int_prog" without kind',
-        '68: Immediate value assigned to "larger_int_prog" without kind',
-        '69: Immediate value assigned to "larger_init_int_prog" without kind',
-        '9: Immediate value assigned to "larger_init_int_mod" without kind'
+        '14: Literal value assigned to "smaller_init_int_type" without kind',
+        '18: Literal value assigned to "larger_init_int_type" without kind',
+        '26: Literal value assigned to "smaller_init_int_sub" without kind',
+        '30: Literal value assigned to "larger_init_int_sub" without kind',
+        '34: Literal value assigned to "smaller_int_mod" without kind',
+        '35: Literal value assigned to "smaller_init_int_mod" without kind',
+        '38: Literal value assigned to "larger_int_mod" without kind',
+        '39: Literal value assigned to "larger_init_int_mod" without kind',
+        '42: Literal value assigned to "smaller_int_sub" without kind',
+        '43: Literal value assigned to "smaller_init_int_sub" without kind',
+        '46: Literal value assigned to "larger_int_sub" without kind',
+        '47: Literal value assigned to "larger_init_int_sub" without kind',
+        '56: Literal value assigned to "smaller_init_int_prog" without kind',
+        '5: Literal value assigned to "smaller_init_int_mod" without kind',
+        '60: Literal value assigned to "larger_init_int_prog" without kind',
+        '64: Literal value assigned to "smaller_int_prog" without kind',
+        '65: Literal value assigned to "smaller_init_int_prog" without kind',
+        '68: Literal value assigned to "larger_int_prog" without kind',
+        '69: Literal value assigned to "larger_init_int_prog" without kind',
+        '9: Literal value assigned to "larger_init_int_mod" without kind'
     ]
 
     # Due to an issue with fparser and continuation lines the line numbers
@@ -211,33 +211,33 @@ class TestNakedImmediate:
     # but breaking up the lines would be worse.
     #
     _expected_float = [
-        '11: Immediate value assigned to "larger_init_float_mod" without kind',
-        '16: Immediate value assigned to "smaller_init_float_type" without kind',  # noqa
-        '20: Immediate value assigned to "larger_init_float_type" without kind',  # noqa
-        '28: Immediate value assigned to "smaller_init_float_sub" without kind',  # noqa
-        '32: Immediate value assigned to "larger_init_float_sub" without kind',
-        '36: Immediate value assigned to "smaller_float_mod" without kind',
-        '37: Immediate value assigned to "smaller_init_float_mod" without kind',  # noqa
-        '40: Immediate value assigned to "larger_float_mod" without kind',
-        '41: Immediate value assigned to "larger_init_float_mod" without kind',
-        '44: Immediate value assigned to "smaller_float_sub" without kind',
-        '45: Immediate value assigned to "smaller_init_float_sub" without kind',  # noqa
-        '48: Immediate value assigned to "larger_float_sub" without kind',
-        '49: Immediate value assigned to "larger_init_float_sub" without kind',
-        '58: Immediate value assigned to "smaller_init_float_prog" without kind',  # noqa
-        '62: Immediate value assigned to "larger_init_float_prog" without kind',  # noqa
-        '66: Immediate value assigned to "smaller_float_prog" without kind',
-        '67: Immediate value assigned to "smaller_init_float_prog" without kind',  # noqa
-        '70: Immediate value assigned to "larger_float_prog" without kind',
-        '71: Immediate value assigned to "larger_init_float_prog" without kind',  # noqa,
-        '7: Immediate value assigned to "smaller_init_float_mod" without kind',
+        '11: Literal value assigned to "larger_init_float_mod" without kind',
+        '16: Literal value assigned to "smaller_init_float_type" without kind',  # noqa
+        '20: Literal value assigned to "larger_init_float_type" without kind',  # noqa
+        '28: Literal value assigned to "smaller_init_float_sub" without kind',  # noqa
+        '32: Literal value assigned to "larger_init_float_sub" without kind',
+        '36: Literal value assigned to "smaller_float_mod" without kind',
+        '37: Literal value assigned to "smaller_init_float_mod" without kind',  # noqa
+        '40: Literal value assigned to "larger_float_mod" without kind',
+        '41: Literal value assigned to "larger_init_float_mod" without kind',
+        '44: Literal value assigned to "smaller_float_sub" without kind',
+        '45: Literal value assigned to "smaller_init_float_sub" without kind',  # noqa
+        '48: Literal value assigned to "larger_float_sub" without kind',
+        '49: Literal value assigned to "larger_init_float_sub" without kind',
+        '58: Literal value assigned to "smaller_init_float_prog" without kind',  # noqa
+        '62: Literal value assigned to "larger_init_float_prog" without kind',  # noqa
+        '66: Literal value assigned to "smaller_float_prog" without kind',
+        '67: Literal value assigned to "smaller_init_float_prog" without kind',  # noqa
+        '70: Literal value assigned to "larger_float_prog" without kind',
+        '71: Literal value assigned to "larger_init_float_prog" without kind',  # noqa,
+        '7: Literal value assigned to "smaller_init_float_mod" without kind',
     ]
 
     def test_both(self):
         reader = SourceStringReader(self._bad_text)
         source = FortranSource(reader)
 
-        test_unit = NakedImmediate()
+        test_unit = NakedLiteral()
         issues = test_unit.examine(source)
 
         expected = list(self._expected_int)
@@ -248,7 +248,7 @@ class TestNakedImmediate:
         reader = SourceStringReader(self._bad_text)
         source = FortranSource(reader)
 
-        test_unit = NakedImmediate(reals=False)
+        test_unit = NakedLiteral(reals=False)
         issues = test_unit.examine(source)
         assert sorted([str(issue) for issue in issues]) == self._expected_int
 
@@ -256,6 +256,6 @@ class TestNakedImmediate:
         reader = SourceStringReader(self._bad_text)
         source = FortranSource(reader)
 
-        test_unit = NakedImmediate(integers=False)
+        test_unit = NakedLiteral(integers=False)
         issues = test_unit.examine(source)
         assert sorted([str(issue) for issue in issues]) == self._expected_float

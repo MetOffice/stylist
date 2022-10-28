@@ -572,9 +572,9 @@ class AutoCharArrayIntent(FortranRule):
         return issues
 
 
-class NakedImmediate(FortranRule):
+class NakedLiteral(FortranRule):
     """
-    Checks that all immediate values have their kind specified.
+    Checks that all literal values have their kind specified.
 
     Checking of integers and reals are controlled separately so you can have
     one and not the other.
@@ -598,18 +598,18 @@ class NakedImmediate(FortranRule):
             if constant.items[1] is None:
                 if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
                     name = str(fp_get_child(constant.parent, Fortran2003.Name))
-                    message = f'Immediate value assigned to "{name}"' \
+                    message = f'Literal value assigned to "{name}"' \
                               ' without kind'
                 elif isinstance(constant.parent.parent,
                                 (Fortran2003.Entity_Decl,
                                  Fortran2003.Component_Decl)):
                     name = str(fp_get_child(constant.parent.parent,
                                             Fortran2003.Name))
-                    message = f'Immediate value assigned to "{name}"' \
+                    message = f'Literal value assigned to "{name}"' \
                               ' without kind'
                 else:
                     print(repr(constant.parent.parent))
-                    message = 'Immediate value without "kind"'
+                    message = 'Literal value without "kind"'
                 issues.append(Issue(message, line=_line(constant)))
 
         return issues

@@ -1,0 +1,23 @@
+stdout
+Found 20 issues
+stderr
+$$/naked_literal.f90: 5: Literal value assigned to "smaller_init_int_mod" without kind
+$$/naked_literal.f90: 9: Literal value assigned to "larger_init_int_mod" without kind
+$$/naked_literal.f90: 14: Literal value assigned to "smaller_init_int_type" without kind
+$$/naked_literal.f90: 18: Literal value assigned to "larger_init_int_type" without kind
+$$/naked_literal.f90: 26: Literal value assigned to "smaller_init_int_sub" without kind
+$$/naked_literal.f90: 30: Literal value assigned to "larger_init_int_sub" without kind
+$$/naked_literal.f90: 34: Literal value assigned to "smaller_int_mod" without kind
+$$/naked_literal.f90: 35: Literal value assigned to "smaller_init_int_mod" without kind
+$$/naked_literal.f90: 38: Literal value assigned to "larger_int_mod" without kind
+$$/naked_literal.f90: 39: Literal value assigned to "larger_init_int_mod" without kind
+$$/naked_literal.f90: 42: Literal value assigned to "smaller_int_sub" without kind
+$$/naked_literal.f90: 43: Literal value assigned to "smaller_init_int_sub" without kind
+$$/naked_literal.f90: 46: Literal value assigned to "larger_int_sub" without kind
+$$/naked_literal.f90: 47: Literal value assigned to "larger_init_int_sub" without kind
+$$/naked_literal.f90: 56: Literal value assigned to "smaller_init_int_prog" without kind
+$$/naked_literal.f90: 60: Literal value assigned to "larger_init_int_prog" without kind
+$$/naked_literal.f90: 64: Literal value assigned to "smaller_int_prog" without kind
+$$/naked_literal.f90: 65: Literal value assigned to "smaller_init_int_prog" without kind
+$$/naked_literal.f90: 68: Literal value assigned to "larger_int_prog" without kind
+$$/naked_literal.f90: 69: Literal value assigned to "larger_init_int_prog" without kind
