@@ -6,7 +6,7 @@
 """
 None language specific rules.
 """
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 import re
 from typing import List
 
@@ -14,7 +14,7 @@ from stylist.issue import Issue
 from stylist.source import SourceText
 
 
-class Rule(object, metaclass=ABCMeta):
+class Rule(ABC):
     """
     Abstract parent of all rules.
     """

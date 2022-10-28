@@ -15,7 +15,7 @@ import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
 
-class TestMissingPointerInit(object):
+class TestMissingPointerInit:
     """
     Tests the checker of missing pointer initialisation.
     """

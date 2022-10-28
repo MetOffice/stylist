@@ -7,7 +7,7 @@
 Rules relating to Fortran source.
 """
 import re
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import Dict, List, Optional, Pattern, Sequence, Type, Union
 
@@ -19,7 +19,7 @@ from stylist.rule import Rule
 from stylist.source import FortranSource
 
 
-class FortranRule(Rule, metaclass=ABCMeta):
+class FortranRule(Rule, ABC):
     """
     Parent for style rules pertaining to Fortran source.
     """

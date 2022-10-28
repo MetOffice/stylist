@@ -23,7 +23,7 @@ from stylist.source import (CPreProcessor, CSource,
                             FilePipe)
 
 
-class TestSourceText(object):
+class TestSourceText:
     """
     Checks the TextSource hierarchy.
     """
@@ -60,7 +60,7 @@ class TestSourceText(object):
             assert unit_under_test.get_text() == text
 
 
-class TestPPFortranSource(object):
+class TestPPFortranSource:
     def test_name(self) -> None:
         assert str(FortranPreProcessor) == 'Fortran preprocessor'
 
@@ -100,7 +100,7 @@ end module test_mod
         assert unit_under_test.get_text() == expected
 
 
-class TestPPpFUnitSource(object):
+class TestPPpFUnitSource:
     def test_name(self) -> None:
         assert str(PFUnitProcessor) == 'pFUnit preprocessor'
 
@@ -130,7 +130,7 @@ end module test_mod
         assert unit_under_test.get_text() == expected
 
 
-class TestPPCSource(object):
+class TestPPCSource:
     def test_name(self) -> None:
         assert str(CPreProcessor) == 'C preprocessor'
 
@@ -164,7 +164,7 @@ char *more(void);
         assert unit_under_test.get_text() == expected
 
 
-class TestFortranSource(object):
+class TestFortranSource:
     """
     Checks the Fortran source class.
     """
@@ -266,7 +266,7 @@ END PROGRAM test"""
             next(result)
 
 
-class TestCSource(object):
+class TestCSource:
     """
     Checks the C/C++ source class.
     """
@@ -280,7 +280,7 @@ class TestCSource(object):
         pass
 
 
-class TestSourceChain(object):
+class TestSourceChain:
     """
     Checks the description of a chain of source processing.
     """
@@ -331,7 +331,7 @@ class TestSourceChain(object):
         assert unit_under_test.preprocessors == tuple(chain_text)
 
 
-class TestFactory(object):
+class TestFactory:
     """
     Checks the factory is able to manufacture source.
     """

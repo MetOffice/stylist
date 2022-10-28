@@ -82,7 +82,7 @@ def simple_source(request):
     return request.param
 
 
-class TestFortranCharacterset(object):
+class TestFortranCharacterset:
     """
     Tests the rule which ensures none Fortran characters do not appear in the
     source.

@@ -82,7 +82,7 @@ def intent(request):
     return request.param
 
 
-class TestMissingIntent(object):
+class TestMissingIntent:
     """
     Tests the checker of missing intent statements.
     """

@@ -10,7 +10,7 @@ Issues found in the source.
 from typing import Optional
 
 
-class Issue(object):
+class Issue:
     """
     Holds details pertaining to an issue with the source.
     """

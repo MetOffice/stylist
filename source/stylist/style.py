@@ -6,7 +6,7 @@
 """
 Classes relating to styles made up of rules.
 """
-from abc import ABCMeta
+from abc import ABC
 import logging
 from typing import List
 
@@ -16,7 +16,7 @@ from stylist.rule import Rule
 import stylist.source
 
 
-class Style(object, metaclass=ABCMeta):
+class Style(ABC):
     """
     Abstract parent of all style lists.
     """

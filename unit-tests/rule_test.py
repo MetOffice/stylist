@@ -65,7 +65,7 @@ contains
 end module trailing_whitespace_in_unit_tests'''  # noqa: W291, W293
 
 
-class TestTrailingWhitespace(object):
+class TestTrailingWhitespace:
     """
     Tests the checker of trailing whitespace.
     """
