@@ -35,12 +35,12 @@ def _parse_cli() -> argparse.Namespace:
     max_key_len: int = max(len(key) for key in ConfigTools.language_keys())
     parsers = [key.ljust(max_key_len)
                + ' - '
-               + str(ConfigTools.language(key))
+               + ConfigTools.language(key).get_name()
                for key in ConfigTools.language_keys()]
     max_key_len = max(len(key) for key in ConfigTools.preprocessor_keys())
     preproc = [key.ljust(max_key_len)
                + ' - '
-               + str(ConfigTools.preprocessor(key))
+               + ConfigTools.preprocessor(key).get_name()
                for key in ConfigTools.preprocessor_keys()]
     epilog = f"""
 IDs used in specifying extension pipelines:

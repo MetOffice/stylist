@@ -62,7 +62,7 @@ class TestSourceText(object):
 
 class TestPPFortranSource(object):
     def test_name(self) -> None:
-        assert str(FortranPreProcessor) == 'Fortran preprocessor'
+        assert FortranPreProcessor.get_name() == 'Fortran preprocessor'
 
     def test_preprocessed_fortran_source(self) -> None:
         source = """! Some things happen, others don't
@@ -102,7 +102,7 @@ end module test_mod
 
 class TestPPpFUnitSource(object):
     def test_name(self) -> None:
-        assert str(PFUnitProcessor) == 'pFUnit preprocessor'
+        assert PFUnitProcessor.get_name() == 'pFUnit preprocessor'
 
     def test_preprocessed_pfunit_source(self) -> None:
         source = """! Test all the things
@@ -132,7 +132,7 @@ end module test_mod
 
 class TestPPCSource(object):
     def test_name(self) -> None:
-        assert str(CPreProcessor) == 'C preprocessor'
+        assert CPreProcessor.get_name() == 'C preprocessor'
 
     def test_preprocessed_c_source(self) -> None:
         source = """/* Some things happen, others don't */
@@ -169,7 +169,7 @@ class TestFortranSource(object):
     Checks the Fortran source class.
     """
     def test_name(self) -> None:
-        assert str(FortranSource) == 'Fortran source'
+        assert FortranSource.get_name() == 'Fortran source'
 
     def test_constructor(self) -> None:
         """
@@ -271,7 +271,7 @@ class TestCSource(object):
     Checks the C/C++ source class.
     """
     def test_name(self) -> None:
-        assert str(CSource) == 'C source'
+        assert CSource.get_name() == 'C source'
 
     def test_constructor(self) -> None:
         """
@@ -300,6 +300,10 @@ class TestSourceChain(object):
             reader = TestSourceChain.ReaderHarness()
             super().__init__(reader)
 
+        @staticmethod
+        def get_name() -> str:
+            return "language harness"
+
         def get_tree(self) -> None:
             pass
 
@@ -307,10 +311,20 @@ class TestSourceChain(object):
             pass
 
     class TextHarness(SourceText):
-        pass
+        def get_text(self) -> str:
+            return "harness text"
+
+        @staticmethod
+        def get_name() -> str:
+            return "text harness"
 
     class ProcessorHarness(TextProcessor):
-        pass
+        def get_text(self) -> str:
+            return "processor text"
+
+        @staticmethod
+        def get_name() -> str:
+            return "processor harness"
 
     @pytest.fixture(scope="module",
                     params=[[],
