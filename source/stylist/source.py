@@ -8,8 +8,8 @@
 Manages source code in various flavours.
 """
 from abc import ABCMeta, abstractmethod
+from pathlib import Path
 import re
-import os.path
 from typing import (Generator,
                     IO,
                     Iterable,
@@ -43,13 +43,12 @@ class SourceFileReader(SourceText):
     """
     Reads text source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], str]) -> None:
+    def __init__(self, source_file: Union[IO[str], Path]) -> None:
         """
         :param source_file: The file to examine.
         """
-        if isinstance(source_file, str):
-            with open(source_file, 'rt') as handle:
-                self._cache = handle.read()
+        if isinstance(source_file, Path):
+            self._cache = source_file.read_text()
         else:
             self._cache = source_file.read()
 
@@ -545,24 +544,23 @@ class SourceFactory(object):
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
+    def read_file(cls, source_file: Union[IO[str], Path]) -> SourceTree:
         """
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
         not work on file-like objects which do not have a filename.
         """
-        if isinstance(source_file, str):
-            filename = source_file
+        if isinstance(source_file, Path):
+            extension = source_file.suffix[1:]
         else:
-            filename = source_file.name
+            extension = Path(source_file.name).suffix[1:]
 
-        ext = os.path.splitext(filename)[1][1:]
-        if ext not in cls._extension_map:
-            raise Exception('Source file extension "{0}" not in handler map'
-                            .format(ext))
+        if extension not in cls._extension_map:
+            message = f"Source file extension '{extension}' not in handler map"
+            raise Exception(message)
 
-        chain = cls._extension_map[ext]
+        chain = cls._extension_map[extension]
         reader: SourceText = SourceFileReader(source_file)
         # Decorate reader
         for handler_class in chain.preprocessors:
