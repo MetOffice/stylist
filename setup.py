@@ -25,7 +25,7 @@ setup(
     python_requires='>=3.7, <4',
     install_requires=['fparser >= 0.0.12'],
     extras_require={
-        'dev': ['check-manifest', 'flake8', 'mypy'],
+        'dev': ['check-manifest', 'flake8', 'mypy', 'pytest'],
         'test': ['pytest', 'pytest-cov'],
         'docs': ['sphinx',
                  'sphinx-autodoc-typehints',
