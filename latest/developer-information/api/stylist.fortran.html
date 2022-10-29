@@ -140,6 +140,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.MissingPointerInit" title="stylist.fortran.MissingPointerInit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingPointerInit</span></code></a>()</p></td>
 <td><p>Catches cases where a pointer is declared without being initialised.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.NakedLiteral" title="stylist.fortran.NakedLiteral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NakedLiteral</span></code></a>([integers, reals])</p></td>
+<td><p>Checks that all literal values have their kind specified.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
@@ -448,6 +451,32 @@ have specified intent.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.MissingPointerInit.examine_fortran">
 <span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingPointerInit.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.NakedLiteral">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">NakedLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Checks that all literal values have their kind specified.</p>
+<p>Checking of integers and reals are controlled separately so you can have
+one and not the other.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.NakedLiteral.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral.examine_fortran" title="Permalink to this definition"></a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

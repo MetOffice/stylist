@@ -28,6 +28,7 @@ stylist.fortran
       MissingIntent
       MissingOnly
       MissingPointerInit
+      NakedLiteral
    
    
 
