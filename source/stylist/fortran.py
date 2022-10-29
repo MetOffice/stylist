@@ -13,10 +13,27 @@ from typing import Dict, List, Optional, Pattern, Sequence, Type, Union
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
+from fparser.two.utils import (get_child as fp_get_child,  # type: ignore
+                               walk as fp_walk)
 
 from stylist.issue import Issue
 from stylist.rule import Rule
 from stylist.source import FortranSource
+
+
+def _line(node: Fortran2003.Base) -> int:
+    """
+    Determines the source line on which a given node appears.
+
+    Although the range of lines covered by a particular statement is available
+    it doesn't seem to be possible to determine exactly which one a particular
+    subsidiary part appears on. Therefore it is always the first line of the
+    continuation block.
+    """
+    target = node
+    while target.item is None:
+        target = target.parent
+    return target.item.span[0]
 
 
 class FortranRule(Rule, metaclass=ABCMeta):
@@ -161,8 +178,7 @@ class MissingImplicit(FortranRule):
                 description = "{thing} '{name}' is missing " \
                               + "an implicit statement"
                 description = description.format(thing=nature, name=name)
-                issues.append(Issue(description,
-                                    line=scope_statement.item.span[0]))
+                issues.append(Issue(description, line=_line(scope_statement)))
         return issues
 
 
@@ -243,8 +259,7 @@ class MissingIntent(FortranRule):
                 description = f'Dummy argument "{arg}" of {unit_type} "' \
                               f'{stmt.children[1].string}" is missing an ' \
                               f'"intent" statement'
-                issues.append(Issue(description,
-                                    line=stmt.item.span[0]))
+                issues.append(Issue(description, line=_line(stmt)))
 
         return issues
 
@@ -274,7 +289,7 @@ class MissingOnly(FortranRule):
                 if onlies is None:
                     description = 'Usage of "{module}" without "only" clause.'
                     issues.append(Issue(description.format(module=module),
-                                        line=statement.item.span[0]))
+                                        line=_line(statement)))
 
         return issues
 
@@ -298,7 +313,7 @@ class IntrinsicModule(FortranRule):
                     description = 'Usage of intrinsic module "{module}" ' \
                                   'without "intrinsic" clause.'
                     issues.append(Issue(description.format(module=module),
-                                        line=statement.item.span[0]))
+                                        line=_line(statement)))
 
         return issues
 
@@ -316,7 +331,7 @@ class LabelledDoExit(FortranRule):
                 issues.append(Issue('Usage of "exit" without label indicating '
                                     'which "do" construct is being exited '
                                     'from.',
-                                    line=exit.item.span[0]))
+                                    line=_line(exit)))
 
         # Above doesn't catch exits in inline if statements
         for statement in subject.find_all(Fortran2003.If_Stmt):
@@ -326,7 +341,7 @@ class LabelledDoExit(FortranRule):
                 issues.append(Issue('Usage of "exit" without label indicating '
                                     'which "do" construct is being exited '
                                     'from.',
-                                    line=statement.item.span[0]))
+                                    line=_line(statement)))
 
         return issues
 
@@ -398,14 +413,14 @@ class MissingPointerInit(FortranRule):
                         init = variable.items[3]
                         if init is None:
                             message = problem.format(name=name)
-                            line_number = candidate.item.span[0]
+                            line_number = _line(candidate)
                             issues.append(Issue(message, line=line_number))
                     elif isinstance(candidate,  # Is procedure
                                     (Fortran2003.Proc_Component_Def_Stmt,
                                      Fortran2003.Procedure_Declaration_Stmt)):
                         name = str(variable)
                         if isinstance(variable, Fortran2003.Name):
-                            line_number = candidate.item.span[0]
+                            line_number = _line(candidate)
                             message = problem.format(name=name)
                             issues.append(Issue(message, line=line_number))
                     else:
@@ -482,7 +497,7 @@ class KindPattern(FortranRule):
                             name=entity_declaration,
                             pattern=self._patterns[data_type].pattern)
                         issues.append(Issue(message,
-                                            line=candidate.item.span[0]))
+                                            line=_line(candidate)))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues
@@ -499,7 +514,7 @@ class AutoCharArrayIntent(FortranRule):
                 f"{name} has intent {intent}.")
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
-        issues = []
+        issues: List[Issue] = []
 
         # Collect all variable declarations
         declarations: List[Fortran2003.Type_Declaration_Stmt] = list(
@@ -551,8 +566,51 @@ class AutoCharArrayIntent(FortranRule):
                     declaration.items[2].string,
                     intent_attr.items[1]
                 ),
-                line=declaration.item.span[0]
+                line=_line(declaration)
             ))
+
+        return issues
+
+
+class NakedLiteral(FortranRule):
+    """
+    Checks that all literal values have their kind specified.
+
+    Checking of integers and reals are controlled separately so you can have
+    one and not the other.
+    """
+    def __init__(self, integers: bool = True, reals: bool = True):
+        self._integers = integers
+        self._reals = reals
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+
+        candidates: List[Fortran2003.Base] = []
+        if self._integers:
+            candidates.extend(fp_walk(subject.get_tree(),
+                                      Fortran2003.Int_Literal_Constant))
+        if self._reals:
+            candidates.extend(fp_walk(subject.get_tree(),
+                                      Fortran2003.Real_Literal_Constant))
+
+        for constant in candidates:
+            if constant.items[1] is None:
+                if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
+                    name = str(fp_get_child(constant.parent, Fortran2003.Name))
+                    message = f'Literal value assigned to "{name}"' \
+                              ' without kind'
+                elif isinstance(constant.parent.parent,
+                                (Fortran2003.Entity_Decl,
+                                 Fortran2003.Component_Decl)):
+                    name = str(fp_get_child(constant.parent.parent,
+                                            Fortran2003.Name))
+                    message = f'Literal value assigned to "{name}"' \
+                              ' without kind'
+                else:
+                    print(repr(constant.parent.parent))
+                    message = 'Literal value without "kind"'
+                issues.append(Issue(message, line=_line(constant)))
 
         return issues
 
