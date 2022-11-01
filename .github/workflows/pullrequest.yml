@@ -33,7 +33,7 @@ jobs:
         flake8 . --count --show-source --statistics
     - name: Check with MyPy
       run: |
-        pip install .[dev]
+        pip install -e .[dev]
         mypy source unit-tests system-tests setup.py
     - name: Test with pytest
       run: |
