@@ -12,7 +12,7 @@ dependencies = ['fparser >= 0.0.12']
 dynamic = ['version']
 
 
-[project.optional-dependnecies]
+[project.optional-dependencies]
 dev = ['check-manifest', 'flake8', 'mypy']
 test = ['pytest', 'pytest-cov']
 docs = ['sphinx',
@@ -31,7 +31,7 @@ repository = 'https://github.com/MetOffice/stylist/'
 
 [tool.setuptools.dynamic]
 readme = {file = 'README.md'}
-version = {attr = 'stylist.__VERSION__'}
+version = {attr = 'stylist.__version__'}
 
 [tool.setuptools.packages.find]
-where = 'source'
+where = ['source']
