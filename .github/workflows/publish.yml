@@ -1,0 +1,29 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"
+      - name: Prepare environment
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -e .[release]
+      - name: Create packages
+        run: |
+          python3 setup.py sdist
+          python3 setup.py bdist_wheel
+      - name: Publish packages
+        run: |
+          python3 -m twine dist/*
+
