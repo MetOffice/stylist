@@ -34,7 +34,7 @@ jobs:
     - name: Check with MyPy
       run: |
         pip install -e .[dev]
-        mypy source unit-tests system-tests setup.py
+        mypy source unit-tests system-tests
     - name: Test with pytest
       run: |
         pip install .[test]
