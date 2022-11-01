@@ -70,3 +70,8 @@ Rules relating to Fortran source code.
    :noindex:
    :no-show-inheritance:
    :exclude-members: examine, examine_fortran
+
+.. autoclass:: stylist.fortran.NakedLiteral
+   :noindex:
+   :no-show-inheritance:
+   :exclude-members: examine, examine_fortran
