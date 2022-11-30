@@ -27,17 +27,17 @@ class DummySource(SourceTree):
 
 class DummyProcOne(TextProcessor):
     def get_text(self) -> str:
-        pass
+        return "dummy text on"
 
 
 class DummyProcTwo(TextProcessor):
     def get_text(self) -> str:
-        pass
+        return "dummy text two"
 
 
 class DummyRuleZero(Rule):
     def examine(self, subject) -> List[Issue]:
-        pass
+        return []
 
 
 class DummyRuleOne(Rule):
@@ -45,7 +45,7 @@ class DummyRuleOne(Rule):
         self.first = first
 
     def examine(self, subject) -> List[Issue]:
-        pass
+        return []
 
 
 class DummyRuleTwo(Rule):
@@ -54,7 +54,7 @@ class DummyRuleTwo(Rule):
         self.second = second
 
     def examine(self, subject) -> List[Issue]:
-        pass
+        return []
 
 
 class TestConfiguration:
