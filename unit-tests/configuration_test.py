@@ -27,7 +27,7 @@ class DummySource(SourceTree):
 
 class DummyProcOne(TextProcessor):
     def get_text(self) -> str:
-        return "dummy text on"
+        return "dummy text one"
 
 
 class DummyProcTwo(TextProcessor):
