@@ -9,7 +9,8 @@ Rules relating to Fortran source.
 import re
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
-from typing import Dict, List, Optional, Pattern, Sequence, Type, Union
+from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
+                    Union)
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
@@ -350,83 +351,156 @@ class MissingPointerInit(FortranRule):
     """
     Catches cases where a pointer is declared without being initialised.
     """
+    problem = 'Declaration of pointer "{name}" without initialisation.'
+
+    @staticmethod
+    def _is_pointer(root: Fortran2003.Base,
+                    attr_node: Type[Fortran2003.Base]) -> bool:
+        attribute_names: List[str] = []
+        for attribute in fp_walk(root, attr_node):
+            attribute_names.append(str(attribute).strip())
+        return 'POINTER' in attribute_names
+
+    @staticmethod
+    def _data(root: Fortran2003.Base,
+              declaration_statement: Type[Fortran2003.Base],
+              attribute_specification: Type[Fortran2003.Base],
+              entity_declaration: Type[Fortran2003.Base],
+              initialiser: Type[Fortran2003.Base],
+              ignore_names: Sequence[str] = ()) -> List[Issue]:
+        issues: List[Issue] = []
+
+        for data_declaration in fp_walk(root, declaration_statement):
+            if not MissingPointerInit._is_pointer(data_declaration,
+                                                  attribute_specification):
+                continue
+
+            for entity in fp_walk(data_declaration, entity_declaration):
+                if str(fp_get_child(entity, Fortran2003.Name)) in ignore_names:
+                    continue
+
+                if fp_get_child(entity, initialiser) is None:
+                    name = str(fp_get_child(entity, Fortran2003.Name))
+                    message = MissingPointerInit.problem.format(name=name)
+                    issue = Issue(message, line=data_declaration.item.span[0])
+                    issues.append(issue)
+
+        return issues
+
+    @staticmethod
+    def _proc(root: Fortran2003.Base,
+              declaration_statement: Type[Fortran2003.Base],
+              attribute_specification: Type[Fortran2003.Base],
+              declaration_list: Type[Fortran2003.Base],
+              ignore_names: Container[str] = ()) -> List[Issue]:
+        issues: List[Issue] = []
+
+        for proc_declaration in fp_walk(root, declaration_statement):
+            if not MissingPointerInit._is_pointer(proc_declaration,
+                                                  attribute_specification):
+                continue
+
+            for declaration in fp_get_child(proc_declaration,
+                                            declaration_list).children:
+                if (isinstance(declaration, Fortran2003.Name)
+                        and str(declaration) not in ignore_names):
+                    name = str(declaration)
+                    message = MissingPointerInit.problem.format(name=name)
+                    issue = Issue(message, line=proc_declaration.item.span[0])
+                    issues.append(issue)
+
+        return issues
+
+    @staticmethod
+    def _program_unit(unit: Union[Fortran2003.Main_Program,
+                                  Fortran2003.Module]) -> List[Issue]:
+        issues: List[Issue] = []
+
+        specification = fp_get_child(unit, Fortran2003.Specification_Part)
+
+        issues.extend(MissingPointerInit._data(
+            specification,
+            Fortran2003.Type_Declaration_Stmt,
+            Fortran2003.Attr_Spec,
+            Fortran2003.Entity_Decl,
+            Fortran2003.Initialization)
+        )
+        issues.extend(MissingPointerInit._proc(
+            specification,
+            Fortran2003.Procedure_Declaration_Stmt,
+            Fortran2003.Proc_Attr_Spec,
+            Fortran2003.Proc_Decl_List)
+        )
+
+        return issues
+
+    @staticmethod
+    def _derived_type_definition(derived_type: Fortran2003.Derived_Type_Def)\
+            -> List[Issue]:
+        issues: List[Issue] = []
+
+        issues.extend(MissingPointerInit._data(
+            derived_type,
+            Fortran2003.Data_Component_Def_Stmt,
+            Fortran2003.Component_Attr_Spec,
+            Fortran2003.Component_Decl,
+            Fortran2003.Component_Initialization)
+        )
+        issues.extend(MissingPointerInit._proc(
+            derived_type,
+            Fortran2003.Proc_Component_Def_Stmt,
+            Fortran2003.Proc_Component_Attr_Spec,
+            Fortran2003.Proc_Decl_List)
+        )
+
+        return issues
+
+    @staticmethod
+    def _subroutine_definition(subroutine: Fortran2003.Subroutine_Subprogram)\
+            -> List[Issue]:
+        issues: List[Issue] = []
+
+        subroutine_statement = fp_get_child(subroutine,
+                                            Fortran2003.Subroutine_Stmt)
+        arguments = fp_get_child(subroutine_statement,
+                                 Fortran2003.Dummy_Arg_List)
+        argument_names = [str(name) for name in fp_walk(arguments,
+                                                        Fortran2003.Name)]
+
+        issues.extend(MissingPointerInit._data(
+            subroutine,
+            Fortran2003.Type_Declaration_Stmt,
+            Fortran2003.Attr_Spec,
+            Fortran2003.Entity_Decl,
+            Fortran2003.Initialization,
+            argument_names)
+        )
+        issues.extend(MissingPointerInit._proc(
+            subroutine,
+            Fortran2003.Procedure_Declaration_Stmt,
+            Fortran2003.Proc_Attr_Spec,
+            Fortran2003.Proc_Decl_List,
+            argument_names)
+        )
+
+        return issues
+
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
 
-        candidates: List[Fortran2003.Base] = []
-        # Component variables
-        candidates.extend(
-            subject.find_all(Fortran2003.Data_Component_Def_Stmt))
-        # Component Procedure
-        candidates.extend(
-            subject.find_all(Fortran2003.Proc_Component_Def_Stmt))
-        # Procedure declaration
-        candidates.extend(
-            subject.find_all(Fortran2003.Procedure_Declaration_Stmt))
-        # Variable declaration
-        candidates.extend(
-            subject.find_all(Fortran2003.Type_Declaration_Stmt))
+        unit: Union[Fortran2003.Main_Program, Fortran2003.Module]
+        for unit in fp_walk(subject.get_tree(),
+                            (Fortran2003.Main_Program,
+                             Fortran2003.Module)):
+            issues.extend(self._program_unit(unit))
 
-        return_variable = ''
-        for candidate in candidates:
-            if isinstance(candidate,  # Is variable
-                          (Fortran2003.Data_Component_Def_Stmt,
-                           Fortran2003.Type_Declaration_Stmt)):
-                if isinstance(candidate.parent.parent,
-                              Fortran2003.Function_Subprogram):
-                    # Is contained in a function
-                    function_block: Fortran2003.Function_Subprogram \
-                        = candidate.parent.parent
-                    statement = None
-                    for thing in function_block.children:
-                        if isinstance(thing, Fortran2003.Function_Stmt):
-                            statement = thing
-                            break
-                    if statement is None:
-                        message = "Malformed parse tree: Function subprogram" \
-                                  " without Function statement"
-                        raise Exception(message)
-                    suffix = statement.items[3]
-                    if isinstance(suffix, Fortran2003.Suffix):
-                        if isinstance(suffix.items[0], Fortran2003.Name):
-                            # Is return variable
-                            return_variable = str(suffix.items[0])
+        subroutine: Fortran2003.Subroutine_Subprogram
+        for subroutine in subject.find_all(Fortran2003.Subroutine_Subprogram):
+            issues.extend(self._subroutine_definition(subroutine))
 
-            problem = 'Declaration of pointer "{name}" without initialisation.'
-
-            attributes = candidate.items[1]
-            if attributes is None:
-                continue
-            cannon_attr = list(str(item).lower().replace(' ', '')
-                               for item in attributes.items)
-            argument_def = 'intent(in)' in cannon_attr \
-                           or 'intent(out)' in cannon_attr \
-                           or 'intent(inout)' in cannon_attr
-            if 'pointer' in cannon_attr and not argument_def:
-                for variable in candidate.items[2].items:
-                    if isinstance(candidate,  # Is variable
-                                  (Fortran2003.Data_Component_Def_Stmt,
-                                   Fortran2003.Type_Declaration_Stmt)):
-                        name = str(variable.items[0])
-                        if name == return_variable:
-                            continue  # Return variables cannot be initialised.
-                        init = variable.items[3]
-                        if init is None:
-                            message = problem.format(name=name)
-                            line_number = _line(candidate)
-                            issues.append(Issue(message, line=line_number))
-                    elif isinstance(candidate,  # Is procedure
-                                    (Fortran2003.Proc_Component_Def_Stmt,
-                                     Fortran2003.Procedure_Declaration_Stmt)):
-                        name = str(variable)
-                        if isinstance(variable, Fortran2003.Name):
-                            line_number = _line(candidate)
-                            message = problem.format(name=name)
-                            issues.append(Issue(message, line=line_number))
-                    else:
-                        message \
-                            = f"Unexpected source element: {repr(candidate)}"
-                        raise Exception(message)
+        derived_type: Fortran2003.Derived_Type_Def
+        for derived_type in subject.find_all(Fortran2003.Derived_Type_Def):
+            issues.extend(self._derived_type_definition(derived_type))
 
         issues.sort(key=lambda x: (x.filename, x.line, x.description))
         return issues
