@@ -8,7 +8,7 @@
 Extensible code style checker currently supporting Fortran, PSyclone DSL, etc
 """
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 
 class StylistException(Exception):
