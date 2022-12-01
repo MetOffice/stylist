@@ -3,11 +3,10 @@ Stylist
 
 |BSD3 License| |GitHub release| |PyPI version| |GitHub merge testing|
 
-Stylist is a code style checking tool built on a framework which supports
-multiple styles across multiple languages.
+Stylist is a tool for checking code style. It implements a framework which
+supports multiple styles across multiple languages.
 
-But aren't there many code style checking tools out there, why create a new
-one?
+But aren't there many such tools out there, why create a new one?
 
 The simple reason is that few of them support Fortran, a language still in
 widespread use in the scientific computing domain. They can also tend towards
@@ -18,8 +17,7 @@ Large models also tend to be implemented using more than one language so a
 tool which is capable of understanding all of them would be welcomed by
 science developers.
 
-Thus a tool was developed based on a framework which hopes to support ready
-extension and reconfiguration.
+Thit is the goal of Stylist development.
 
 The project is still in its infancy so only a few rules have been implemented
 and only for Fortran. Stubs are provided to show how it might be extended to
