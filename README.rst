@@ -83,6 +83,7 @@ file name extension it refers to. The first argument is the language source
 type while subsequent arguments are text preprocessing stages.
 
 ::
+
   from stylist.source import (FilePipe,
                               FortranSource,
                               PFUnitProcessor,
@@ -94,6 +95,7 @@ Meanwhile styles are defined in a similar way. The variable name is the style
 name and the object is constructed with the rules of which it consists.
 
 ::
+
   from re import compile as recompile
   from stylist.style import Style
   from stylist.fortran import FortranCharacterset, KindPattern
