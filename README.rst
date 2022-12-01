@@ -1,7 +1,7 @@
 Stylist
 =======
 
-|Merge workflow|
+|BSD3 License| |GitHub release| |PyPI version| |GitHub merge testing|
 
 Stylist is a code style checking tool built on a framework which supports
 multiple styles across multiple languages.
@@ -27,7 +27,16 @@ support C.
 
 Find the project at <https://github.com/MetOffice/stylist>
 
-.. |Merge workflow| image:: https://github.com/MetOffice/stylist/workflows/Python%20package/badge.svg
+.. |BSD3 License| image:: https://img.shields.io/badge/License-BSD_£--Clause-blue.svg
+   :target: https://opensource.org/licenses/BSD-3-Clause
+
+.. |GitHub release| image:: https://img.shields.io/github/release/MetOffice/stylist.svg
+   :target: https://github.com/MetOffice/stylist/
+
+.. |PyPI version| image:: https://badge.fury.io/py/stylist.svg
+   :target: https://pypi.python.org/pypi/stylist/
+
+.. |GitHub merge testing| image:: https://github.com/MetOffice/stylist/workflows/Merge%20Test/badge.svg
    :target: https://github.com/MetOffice/stylist/actions
 
 
