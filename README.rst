@@ -17,7 +17,7 @@ Large models also tend to be implemented using more than one language so a
 tool which is capable of understanding all of them would be welcomed by
 science developers.
 
-Thit is the goal of Stylist development.
+This is the goal of Stylist development.
 
 The project is still in its infancy so only a few rules have been implemented
 and only for Fortran. Stubs are provided to show how it might be extended to
