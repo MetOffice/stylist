@@ -1,6 +1,8 @@
 Stylist
 =======
 
+|Merge workflow|
+
 Stylist is a code style checking tool built on a framework which supports
 multiple styles across multiple languages.
 
@@ -24,6 +26,9 @@ and only for Fortran. Stubs are provided to show how it might be extended to
 support C.
 
 Find the project at <https://github.com/MetOffice/stylist>
+
+.. |Merge workflow| image:: https://github.com/MetOffice/stylist/workflows/Python%20package/badge.svg
+   :target: https://github.com/MetOffice/stylist/actions
 
 
 Installation
