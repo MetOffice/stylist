@@ -87,14 +87,14 @@ file will be used.
 Configuration File
 ------------------
 
-The configuration file is a python script.
+The configuration file is a simple python script where variable definitions
+are used to define the configuration.
 
-The processing pipelines for different file types are specified with
-``FilePipe`` objects. The variable to which it is assigned names the
-file name extension it refers to. The first argument is the language source
-type while subsequent arguments are text preprocessing stages.
+Stylist uses the concept of "File Pipes" to specify the series of steps needed
+to process a particular file type. They are defined by creating a ``FilePipe``
+object and associated with a file extension by assignment to a variable.
 
-::
+For example::
 
   from stylist.source import (FilePipe,
                               FortranSource,
@@ -103,10 +103,14 @@ type while subsequent arguments are text preprocessing stages.
   
   pf = FilePipe(FortranSource, PFUnitProcessor, FortranPreprocessor)
 
-Meanwhile styles are defined in a similar way. The variable name is the style
-name and the object is constructed with the rules of which it consists.
+Here a pipeline consisting the pFUnit processor followed by the Fortran
+preprocessor produces Fortran source. This pipeline should be used for all
+files with the ``.pf`` extension.
 
-::
+Styles are collections of rules and are defined in a similar way. The variable
+name is the style name and the object is constructed with the rules which make up the style.
+
+An illustrative example::
 
   from re import compile as recompile
   from stylist.style import Style
