@@ -27,7 +27,7 @@ support C.
 
 Find the project at <https://github.com/MetOffice/stylist>
 
-.. |BSD3 License| image:: https://img.shields.io/badge/License-BSD_£--Clause-blue.svg
+.. |BSD3 License| image:: https://img.shields.io/badge/License-BSD_3--Clause-blue.svg
    :target: https://opensource.org/licenses/BSD-3-Clause
 
 .. |GitHub release| image:: https://img.shields.io/github/release/MetOffice/stylist.svg
