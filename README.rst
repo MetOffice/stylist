@@ -1,7 +1,7 @@
 Stylist
 =======
 
-|BSD3 License| |GitHub release| |PyPI version| |GitHub merge testing|
+|BSD3 License| |GitHub release| |PyPI version| |Conda version| |GitHub merge testing|
 
 Stylist is a tool for checking code style. It implements a framework which
 supports multiple styles across multiple languages.
@@ -33,6 +33,9 @@ Find the project at <https://github.com/MetOffice/stylist>
 
 .. |PyPI version| image:: https://badge.fury.io/py/stylist.svg
    :target: https://pypi.python.org/pypi/stylist/
+
+.. |Conda version| image:: https://img.shields.io/conda/vn/conda-forge/stylist.svg
+   :target: https://anaconda.org/conda-forge/stylist
 
 .. |GitHub merge testing| image:: https://github.com/MetOffice/stylist/workflows/Merge%20Test/badge.svg
    :target: https://github.com/MetOffice/stylist/actions
