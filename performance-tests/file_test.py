@@ -6,12 +6,13 @@
 """
 Benchmark performance of all rules on some real-world code.
 """
+from argparse import ArgumentParser
 from collections import defaultdict
 from datetime import datetime
 from json import load as json_load
 from math import nan
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import pytest
@@ -31,7 +32,10 @@ def test_fortran_style(perf_source_file: Path,
     _ = benchmark(fortran_style.check, fortran_source)
 
 
-def plot_style_time_series(results_dir: Path):
+AVERAGE_WINDOW = 3
+
+
+def plot_style_time_series(results_dir: Path, plot_file: Optional[Path]):
     series: Dict[str, List[Tuple[datetime, float]]] = defaultdict(list)
     for results_file in results_dir.iterdir():
         with results_file.open('rt') as handle:
@@ -44,8 +48,8 @@ def plot_style_time_series(results_dir: Path):
                     new_datum = (timestamp, minimum)
                     series[extra_info['fortran-source']].append(new_datum)
 
-    AVERAGE_WINDOW = 3
     figure, axes = plt.subplots()
+    figure.set_size_inches(8, 6)
     for experiment, readings in series.items():
         stamps = [datum[0] for datum in readings]
         data = [datum[1] for datum in readings]
@@ -66,9 +70,17 @@ def plot_style_time_series(results_dir: Path):
     plt.xlabel("Time of run")
     figure.autofmt_xdate()
     plt.legend()
-    plt.show()
+    if plot_file is not None:
+        figure.savefig(plot_file, transparent=False, bbox_inches='tight')
+    else:
+        plt.show()
 
 
 if __name__ == '__main__':
-    results_dir = Path() / '.benchmarks' / 'Linux-CPython-3.7-64bit'
-    plot_style_time_series(results_dir)
+    default_results_dir = Path() / '.benchmarks' / 'Linux-CPython-3.7-64bit'
+    cli_parser = ArgumentParser()
+    cli_parser.add_argument('-results_dir', type=Path,
+                            default=default_results_dir)
+    cli_parser.add_argument('-plot_file', type=Path, default=None)
+    arguments = cli_parser.parse_args()
+    plot_style_time_series(arguments.results_dir, arguments.plot_file)

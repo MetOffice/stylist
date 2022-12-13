@@ -6,11 +6,12 @@
 """
 Benchmark performance of individual rules on some real-world code.
 """
+from argparse import ArgumentParser
 from collections import defaultdict
 from datetime import datetime
 from json import load as json_load
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -32,7 +33,7 @@ def test_fortran_rule(perf_source_file: Path,
     _ = benchmark(fortran_rule.examine, fortran_source)
 
 
-def plot_rule_time_series(results_dir: Path):
+def plot_rule_time_series(results_dir: Path, plot_file: Optional[Path]):
     series: Dict[str, Dict[str, List[Tuple[datetime, float]]]] \
         = defaultdict(lambda: defaultdict(list))
     for results_file in results_dir.iterdir():
@@ -49,6 +50,7 @@ def plot_rule_time_series(results_dir: Path):
                     series[source][rule].append(new_datum)
 
     figure, uber_axes = plt.subplots(2, 2, layout='constrained')
+    figure.set_size_inches(12, 8)
     axes_index = 0
     for experiment, rules in series.items():
         axes = uber_axes.flat[axes_index]
@@ -61,10 +63,19 @@ def plot_rule_time_series(results_dir: Path):
         axes.set_title(title)
         axes.set_ylabel("Duration (s)")
         axes.set_xlabel("Time of run")
-    plt.legend()
-    plt.show()
+        if axes_index == 1:
+            axes.legend(loc='best')
+    if plot_file is not None:
+        figure.savefig(plot_file, transparent=False, bbox_inches='tight')
+    else:
+        plt.show()
 
 
 if __name__ == '__main__':
-    results_dir = Path() / '.benchmarks' / 'Linux-CPython-3.7-64bit'
-    plot_rule_time_series(results_dir)
+    default_results_dir = Path() / '.benchmarks' / 'Linux-CPython-3.7-64bit'
+    cli_parser = ArgumentParser()
+    cli_parser.add_argument('-results_dir', type=Path,
+                            default=default_results_dir)
+    cli_parser.add_argument('-plot_file', type=Path, default=None)
+    arguments = cli_parser.parse_args()
+    plot_rule_time_series(arguments.results_dir, arguments.plot_file)
