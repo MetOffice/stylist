@@ -95,7 +95,7 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.ref_name, 'v')
         run: |
           set -x
-          rsync -a stylist/documentation/build/html gh-pages/${{github.ref_name}}
+          rsync -a stylist/documentation/build/html/ gh-pages/${{github.ref_name}}
           git -C gh-pages add ${{github.ref_name}}
 
       - name: Commit documentation
