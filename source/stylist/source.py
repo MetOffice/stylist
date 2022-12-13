@@ -8,13 +8,13 @@
 Manages source code in various flavours.
 """
 from abc import ABCMeta, abstractmethod
+from pathlib import Path
 import re
-import os.path
 from typing import (Generator,
-                    IO,
                     Iterable,
                     List,
                     Optional,
+                    TextIO,
                     Type,
                     Union)
 
@@ -43,12 +43,12 @@ class SourceFileReader(SourceText):
     """
     Reads text source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], str]) -> None:
+    def __init__(self, source_file: Union[TextIO, Path]) -> None:
         """
         :param source_file: The file to examine.
         """
-        if isinstance(source_file, str):
-            with open(source_file, 'rt') as handle:
+        if isinstance(source_file, Path):
+            with source_file.open('rt') as handle:
                 self._cache = handle.read()
         else:
             self._cache = source_file.read()
@@ -166,7 +166,7 @@ class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
 
 class SourceTree(object, metaclass=ABCMeta):
     """
-    Abstract parent of all actual language source files.
+    Abstract parent of all actual language  files.
     """
     def __init__(self, text: SourceText) -> None:
         """
@@ -545,22 +545,22 @@ class SourceFactory(object):
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
+    def read_file(cls, source_file: Union[TextIO, Path]) -> SourceTree:
         """
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
         not work on file-like objects which do not have a filename.
         """
-        if isinstance(source_file, str):
+        if isinstance(source_file, Path):
             filename = source_file
         else:
-            filename = source_file.name
+            filename = Path(source_file.name)
 
-        ext = os.path.splitext(filename)[1][1:]
+        ext = filename.suffix[1:]
         if ext not in cls._extension_map:
-            raise Exception('Source file extension "{0}" not in handler map'
-                            .format(ext))
+            message = f"Source file extension '{ext}' not in handler map"
+            raise Exception(message)
 
         chain = cls._extension_map[ext]
         reader: SourceText = SourceFileReader(source_file)

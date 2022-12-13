@@ -27,6 +27,7 @@ setup(
     extras_require={
         'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
+        'performance': ['pytest', 'pytest-benchmark', 'matplotlib'],
         'docs': ['sphinx',
                  'sphinx-autodoc-typehints',
                  'sphinx-rtd-theme'],
