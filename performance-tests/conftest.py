@@ -21,7 +21,8 @@ from stylist.style import Style
 
 def pytest_sessionstart(session):
     session.config._temp_dir = TemporaryDirectory()
-    unpack_archive('performance-tests/examples.tar', session.config._temp_dir.name)
+    unpack_archive('performance-tests/examples.tar',
+                   session.config._temp_dir.name)
     session.config._perf_source_files = []
     dir = Path(session.config._temp_dir.name)
     for file in list(dir.iterdir()):
@@ -61,7 +62,8 @@ def pytest_generate_tests(metafunc):
         if 'fortran_rule' in metafunc.fixturenames:
             metafunc.parametrize('fortran_rule',
                                  rules,
-                                 ids=[rule.__class__.__name__ for rule in rules])
+                                 ids=[rule.__class__.__name__
+                                      for rule in rules])
         if 'fortran_style' in metafunc.fixturenames:
             metafunc.parametrize('fortran_style',
                                  [Style(*rules)])
