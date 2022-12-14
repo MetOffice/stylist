@@ -14,7 +14,7 @@ from math import nan
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # type: ignore
 import pytest
 
 from stylist.source import FortranSource, SourceFileReader

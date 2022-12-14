@@ -13,7 +13,7 @@ from json import load as json_load
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # type: ignore
 import pytest
 
 from stylist.fortran import FortranRule
