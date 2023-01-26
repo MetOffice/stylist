@@ -249,7 +249,8 @@ class MissingIntent(FortranRule):
                                         if arg_name in dummy_args:
                                             dummy_args.remove(arg_name)
 
-                    elif spec.__class__ == Fortran2003.Procedure_Declaration_Stmt:
+                    elif spec.__class__ \
+                            == Fortran2003.Procedure_Declaration_Stmt:
                         print(repr(spec))
                         attributes = spec.children[1]
                         if attributes is not None:
