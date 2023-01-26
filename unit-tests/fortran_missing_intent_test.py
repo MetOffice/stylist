@@ -7,6 +7,8 @@
 """
 Tests of the rule for missing intents on dummy arguments.
 """
+from textwrap import dedent
+
 import pytest  # type: ignore
 
 import stylist.fortran
@@ -120,3 +122,46 @@ class TestMissingIntent(object):
         issue_descriptions = [str(issue) for issue in issues]
 
         assert issue_descriptions == expectation
+
+    def test_procedure_pointers(self) -> None:
+        """
+        Stimulates a problem seen where procedure pointers were reporting
+        missing intent despite it being present.
+        """
+        text = dedent("""
+                      module proc_ptr_mod
+                        type test_type
+                        contains
+                          procedure method_sub
+                          procedure method_func
+                        end type test_type
+                        interface
+                          subroutine callback_if(value)
+                            integer, intent(in) :: value
+                          end subroutine callback_if
+                        end interface
+                      contains
+                        subroutine plain_sub(thing)
+                          procedure(callback_if), intent(in), pointer :: thing
+                        end subroutine plain_sub
+                        function plain_func(thang)
+                          procedure(callback_if), intent(in), pointer :: thang
+                          logical :: plain_func
+                        end function plain_func
+                        subroutine method_sub(this, theng)
+                          class(test_type), intent(in) :: this
+                          procedure(callback_if), intent(in), pointer :: theng
+                        end subroutine method_sub
+                        function method_func(this, thong)
+                          class(test_type), intent(in) :: this
+                          procedure(callback_if), intent(in), pointer :: thong
+                          logical :: plain_func
+                        end function method_func
+                      end module proc_ptr_mod
+                      """)
+        reader = SourceStringReader(text)
+        source = FortranSource(reader)
+        test_unit = stylist.fortran.MissingIntent()
+        issues = test_unit.examine(source)
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == []
