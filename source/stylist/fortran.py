@@ -191,7 +191,7 @@ class MissingIntent(FortranRule):
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
-        scope_units: List[Fortran2003.Block] = []
+        scope_units: List[Fortran2003.Base] = []
 
         # get all subprograms (functions and subroutines) within programs
         scope_units.extend(subject.path(['Main_Program',
@@ -237,15 +237,29 @@ class MissingIntent(FortranRule):
                         # check if type declaration has an intent
                         attributes = spec.children[1]
                         if attributes is not None:
-                            for attribute in spec.children[1].children:
-                                if attribute.__class__ == \
-                                        Fortran2003.Intent_Attr_Spec:
+                            for attribute in attributes.children:
+                                if attribute.__class__ \
+                                        == Fortran2003.Intent_Attr_Spec:
 
                                     # if so, remove argument names from
                                     # dummy_args
                                     for arg in spec.children[2].children:
                                         arg_name = arg.children[
                                             0].string.lower()
+                                        if arg_name in dummy_args:
+                                            dummy_args.remove(arg_name)
+
+                    elif spec.__class__ == Fortran2003.Procedure_Declaration_Stmt:
+                        print(repr(spec))
+                        attributes = spec.children[1]
+                        if attributes is not None:
+                            for attribute in attributes.children:
+                                if attribute.__class__ \
+                                        == Fortran2003.Proc_Attr_Spec:
+                                    # if so, remove argument names from
+                                    # dummy_args
+                                    for arg in spec.children[2].children:
+                                        arg_name = arg.string.lower()
                                         if arg_name in dummy_args:
                                             dummy_args.remove(arg_name)
 
