@@ -45,13 +45,3 @@ def test_all_styles() -> None:
             == ['module teapot\nend module teapot\n\n']
         assert [program.get_text() for program in styles[1].seen] \
             == ['module teapot\nend module teapot\n\n']
-
-
-class LineRule(Rule):
-    def examine(self, subject) -> List[Issue]:
-        return [Issue("With line number", 12, 'beef.f90')]
-
-
-class LinelessRule(Rule):
-    def examine(self, subject) -> List[Issue]:
-        return[Issue("Without line number or file")]
