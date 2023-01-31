@@ -40,7 +40,6 @@ class Issue(object):
         other_key = (other.filename or '', other.line or 0, other.description)
         return self_key < other_key
 
-
     def __str__(self) -> str:
         string = ''
         if self._filename:

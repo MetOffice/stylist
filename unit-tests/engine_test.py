@@ -9,12 +9,10 @@ Ensures the 'engine' module functions as expected.
 """
 from pathlib import Path
 import tempfile
-from textwrap import dedent
 from typing import List
 
 from stylist.engine import CheckEngine
 from stylist.issue import Issue
-from stylist.rule import Rule
 from stylist.source import SourceTree
 from stylist.style import Style
 
