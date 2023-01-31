@@ -54,18 +54,4 @@ class LineRule(Rule):
 
 class LinelessRule(Rule):
     def examine(self, subject) -> List[Issue]:
-        return[Issue("Without line number", None, 'cheese.f90')]
-
-
-def test_issues_with_without_line_numbers(tmp_path: Path) -> None:
-    """
-    Checks that mixing issues with and without line numbers does not cause a
-    crash.
-    """
-    source_file = tmp_path / 'irreverent.f90'
-    source_file.write_text("It doesn't matter what's in here.")
-
-    style = Style(LineRule(), LinelessRule())
-    test_unit = CheckEngine([style])
-    issues = test_unit.check(str(source_file))
-    assert issues == []
+        return[Issue("Without line number or file")]

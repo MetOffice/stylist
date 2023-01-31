@@ -39,5 +39,5 @@ class CheckEngine(object):
                 for new_issue in astyle.check(source):
                     new_issue.set_filename(source_filename)
                     issues.append(new_issue)
-        issues.sort(key=lambda x: (x.filename, x.line, x.description))
+        issues.sort()
         return issues
