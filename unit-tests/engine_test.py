@@ -7,7 +7,6 @@
 """
 Ensures the 'engine' module functions as expected.
 """
-from pathlib import Path
 import tempfile
 from typing import List
 
