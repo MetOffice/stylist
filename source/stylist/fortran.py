@@ -561,7 +561,7 @@ class KindPattern(FortranRule):
 
                 if isinstance(kind_selector, Fortran2003.Kind_Selector):
                     data_type: str = type_spec.items[0].lower()
-                    kind: str = kind_selector.string.strip('()')
+                    kind: str = str(kind_selector.children[1])
                     match = self._patterns[data_type].match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
