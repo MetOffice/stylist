@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>stylist.source &mdash; Stylist 0.4.dev1 documentation</title>
@@ -11,10 +11,8 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,15 +27,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Stylist
-            <img src="../../_static/stylist.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Stylist
+              <img src="../../_static/stylist.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.4.dev1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -83,7 +85,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Information</a></li>
           <li class="breadcrumb-item"><a href="../api.html">API Documentation</a></li>
           <li class="breadcrumb-item"><a href="stylist.html">stylist</a></li>
@@ -102,10 +104,6 @@
 <p>Manages source code in various flavours.</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.CPreProcessor" title="stylist.source.CPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CPreProcessor</span></code></a>(source)</p></td>
 <td><p>Strips out preprocessor directives.</p></td>
@@ -121,24 +119,6 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranSource</span></code></a>(text)</p></td>
 <td><p>Holds a Fortran source file as both a text block and parse tree.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaCPreProcessor" title="stylist.source.MetaCPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCPreProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
-<td><p>Identifies the C preprocessor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaCSource" title="stylist.source.MetaCSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaCSource</span></code></a>(name, bases, namespace, **kwargs)</p></td>
-<td><p>Identifies C source.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaFortranPreProcessor" title="stylist.source.MetaFortranPreProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranPreProcessor</span></code></a>(name, bases, ...)</p></td>
-<td><p>Identifies the Fortran preprocessor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaFortranSource" title="stylist.source.MetaFortranSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaFortranSource</span></code></a>(name, bases, namespace, ...)</p></td>
-<td><p>Identifies Fortran source.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.MetaPFUnitProcessor" title="stylist.source.MetaPFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPFUnitProcessor</span></code></a>(name, bases, namespace, ...)</p></td>
-<td><p>Identifies the pFUnit preprocessor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.MetaPlainText" title="stylist.source.MetaPlainText"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetaPlainText</span></code></a>(name, bases, namespace, **kwargs)</p></td>
-<td><p>Identifies plain text.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.PFUnitProcessor" title="stylist.source.PFUnitProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFUnitProcessor</span></code></a>(source)</p></td>
 <td><p>Strips out pFUnit directives.</p></td>
@@ -174,18 +154,29 @@
 <p>It is assumed that you want to syntax check all the Source so all
 conditional directives such as <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> are stripped out.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – The source to be preprocessed.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.CPreProcessor.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.CPreProcessor.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the processing stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.CPreProcessor.get_text">
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.CPreProcessor.get_text" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Source as text with preprocessor directives removed.</p>
 </dd>
 </dl>
@@ -204,10 +195,21 @@ conditional directives such as <code class="docutils literal notranslate"><span 
 useable.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – Source as text.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.CSource.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.CSource.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the source tree type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.CSource.get_tree">
 <span class="sig-name descname"><span class="pre">get_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.CSource.get_tree" title="Permalink to this definition"></a></dt>
@@ -219,7 +221,7 @@ useable.</p>
 <span class="sig-name descname"><span class="pre">get_tree_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.CSource.get_tree_error" title="Permalink to this definition"></a></dt>
 <dd><p>Gets any errors raised while building the parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
@@ -234,7 +236,7 @@ useable.</p>
 <p>Holds the chain of objects needed to understand a particular file
 extension.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parser</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a>]) – Underlying language parser.</p></li>
 <li><p><strong>preprocessors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>]) – Any preprocessors to apply before parsing.</p></li>
@@ -251,18 +253,29 @@ extension.</p>
 <p>It is assumed that you want to syntax check all the Source so all
 conditional directives such as <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> are stripped out.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – The source to be preprocessed.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.FortranPreProcessor.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranPreProcessor.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the processing stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.FortranPreProcessor.get_text">
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranPreProcessor.get_text" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Source as text with preprocessor directives removed.</p>
 </dd>
 </dl>
@@ -276,7 +289,7 @@ conditional directives such as <code class="docutils literal notranslate"><span 
 <dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a></p>
 <p>Holds a Fortran source file as both a text block and parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – Source as text.</p>
 </dd>
 </dl>
@@ -286,17 +299,17 @@ conditional directives such as <code class="docutils literal notranslate"><span 
 <dd><p>Gets all instances of the specified parse element below the root.</p>
 <p>The search descends the tree but that descent is terminated by a match.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>find_node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>]) – Parse tree node class to seek.</p></li>
 <li><p><strong>root</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>]) – Point in parse tree to start. If unspecified implies the
 whole tree.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Matching nodes.</p>
 </dd>
 </dl>
@@ -311,12 +324,23 @@ whole tree.</p></li>
 <span class="sig-name descname"><span class="pre">get_first_statement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranSource.get_first_statement" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the first “statement” part of the syntax tree or part thereof.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>root</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code>]) – Point in parse tree to start. If unspecified implies the
 whole tree.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">StmtBase</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.FortranSource.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranSource.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the source tree type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -325,10 +349,10 @@ whole tree.</p>
 <dt class="sig sig-object py" id="stylist.source.FortranSource.get_tree">
 <span class="sig-name descname"><span class="pre">get_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranSource.get_tree" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Program</span></code>]</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Program unit object.</p>
 </dd>
 </dl>
@@ -339,7 +363,7 @@ whole tree.</p>
 <span class="sig-name descname"><span class="pre">get_tree_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.FortranSource.get_tree_error" title="Permalink to this definition"></a></dt>
 <dd><p>Gets any errors raised while building the parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
@@ -351,7 +375,7 @@ whole tree.</p>
 <dd><p>Gets the tree nodes at the given path.</p>
 <p>The path describes a route through the parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – a series of a node names either as a Python list object or
 a ‘/’ separated string.</p></li>
@@ -359,10 +383,10 @@ a ‘/’ separated string.</p></li>
 the whole tree.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>]</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tree nodes found.</p>
 </dd>
 </dl>
@@ -378,13 +402,13 @@ the whole tree.</p></li>
 <dd><p>Dumps a textual representation of the tree to standard out.
 Intended for debug use.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code>) – Point in parse tree to dump.</p></li>
 <li><p><strong>indent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Spaces to prefix each line with.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -393,65 +417,34 @@ Intended for debug use.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaCPreProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaCPreProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaCPreProcessor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies the C preprocessor.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaCSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaCSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaCSource" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies C source.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaFortranPreProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaFortranPreProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaFortranPreProcessor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies the Fortran preprocessor.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaFortranSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaFortranSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaFortranSource" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies Fortran source.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaPFUnitProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaPFUnitProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaPFUnitProcessor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies the pFUnit preprocessor.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="stylist.source.MetaPlainText">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">MetaPlainText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.MetaPlainText" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
-<p>Identifies plain text.</p>
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="stylist.source.PFUnitProcessor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">PFUnitProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PFUnitProcessor" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextProcessor</span></code></a></p>
 <p>Strips out pFUnit directives.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – The source to be preprocessed.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.PFUnitProcessor.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PFUnitProcessor.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the processing stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.PFUnitProcessor.get_text">
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PFUnitProcessor.get_text" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Source as text with preprocessor directives removed.</p>
 </dd>
 </dl>
@@ -465,18 +458,29 @@ Intended for debug use.</p>
 <dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a></p>
 <p>Holds a plain text file as though it were source.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – Source as text.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.PlainText.get_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PlainText.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the source tree type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.PlainText.get_tree">
 <span class="sig-name descname"><span class="pre">get_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PlainText.get_tree" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>File content line by line.</p>
 </dd>
 </dl>
@@ -487,7 +491,7 @@ Intended for debug use.</p>
 <span class="sig-name descname"><span class="pre">get_tree_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.PlainText.get_tree_error" title="Permalink to this definition"></a></dt>
 <dd><p>Gets any errors raised while building the parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
@@ -529,14 +533,14 @@ then it can use the <code class="docutils literal notranslate"><span class="pre"
 <dd><p>Adds a mapping between source file extension and source handling
 classes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>extension</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – File extension which identifies this chain.</p></li>
 <li><p><strong>source</strong> – Underlying language parser.</p></li>
 <li><p><strong>preprocessors</strong> – All preprocessors to apply before parsing.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -547,7 +551,7 @@ classes.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceFactory.get_extensions" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the file extensions recognised by the <code class="docutils literal notranslate"><span class="pre">read_file()</span></code> method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
@@ -560,7 +564,7 @@ classes.</p>
 <p>The file extension is used to determine the source type so this will
 not work on file-like objects which do not have a filename.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceTree</span></code></a></p>
 </dd>
 </dl>
@@ -574,7 +578,7 @@ not work on file-like objects which do not have a filename.</p>
 <dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a></p>
 <p>Reads text source from a file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source_file</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The file to examine.</p>
 </dd>
 </dl>
@@ -583,7 +587,7 @@ not work on file-like objects which do not have a filename.</p>
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceFileReader.get_text" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the source file as a string.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
@@ -597,7 +601,7 @@ not work on file-like objects which do not have a filename.</p>
 <dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a></p>
 <p>Reads text source from a string.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source_string</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The source.</p>
 </dd>
 </dl>
@@ -606,7 +610,7 @@ not work on file-like objects which do not have a filename.</p>
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceStringReader.get_text" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the source file as a string.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
@@ -625,7 +629,7 @@ to perform text level preprocessing.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceText.get_text" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the source file as a string.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
@@ -639,18 +643,29 @@ to perform text level preprocessing.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract parent of all actual language source files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – Source as text.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.SourceTree.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceTree.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the source tree type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stylist.source.SourceTree.get_text">
 <span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceTree.get_text" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Original source text.</p>
 </dd>
 </dl>
@@ -667,7 +682,7 @@ to perform text level preprocessing.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_tree_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceTree.get_tree_error" title="Permalink to this definition"></a></dt>
 <dd><p>Gets any errors raised while building the parse tree.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
@@ -682,10 +697,21 @@ to perform text level preprocessing.</p>
 <p>Preprocessor decorators inherit from this. This is part of the decorator
 pattern.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – The source to be preprocessed.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.source.TextProcessor.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.TextProcessor.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the processing stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>

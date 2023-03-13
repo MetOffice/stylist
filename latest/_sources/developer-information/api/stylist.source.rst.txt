@@ -22,12 +22,6 @@ stylist.source
       FilePipe
       FortranPreProcessor
       FortranSource
-      MetaCPreProcessor
-      MetaCSource
-      MetaFortranPreProcessor
-      MetaFortranSource
-      MetaPFUnitProcessor
-      MetaPlainText
       PFUnitProcessor
       PlainText
       SourceFactory
