@@ -82,16 +82,16 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
         """
         self._source = source
 
+    @staticmethod
+    @abstractmethod
+    def get_name() -> str:
+        """
+        Gets the name of the processing stage.
+        """
+        raise NotImplementedError()
 
-class MetaCPreProcessor(ABCMeta):
-    """
-    Identifies the C preprocessor.
-    """
-    def __str__(self) -> str:
-        return "C preprocessor"
 
-
-class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
+class CPreProcessor(TextProcessor):
     """
     Strips out preprocessor directives.
 
@@ -101,6 +101,10 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "C preprocessor"
 
     def get_text(self) -> str:
         """
@@ -112,15 +116,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
         return text
 
 
-class MetaFortranPreProcessor(ABCMeta):
-    """
-    Identifies the Fortran preprocessor.
-    """
-    def __str__(self) -> str:
-        return "Fortran preprocessor"
-
-
-class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
+class FortranPreProcessor(TextProcessor):
     """
     Strips out preprocessor directives.
 
@@ -130,6 +126,10 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "Fortran preprocessor"
 
     def get_text(self) -> str:
         """
@@ -141,19 +141,15 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
         return text
 
 
-class MetaPFUnitProcessor(ABCMeta):
-    """
-    Identifies the pFUnit preprocessor.
-    """
-    def __str__(self) -> str:
-        return "pFUnit preprocessor"
-
-
-class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
+class PFUnitProcessor(TextProcessor):
     """
     Strips out pFUnit directives.
     """
     _DIRECTIVE_PATTERN = re.compile(r'^(\s*)(@\w+.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "pFUnit preprocessor"
 
     def get_text(self) -> str:
         """
@@ -179,6 +175,14 @@ class SourceTree(object, metaclass=ABCMeta):
         self._tree = None
         self._tree_error: Optional[str] = 'Not parsed yet'
 
+    @staticmethod
+    @abstractmethod
+    def get_name() -> str:
+        """
+        Gets the name of the source tree type.
+        """
+        raise NotImplementedError()
+
     @abstractmethod
     def get_tree(self):
         """
@@ -200,18 +204,14 @@ class SourceTree(object, metaclass=ABCMeta):
         return self._text.get_text()
 
 
-class MetaFortranSource(ABCMeta):
-    """
-    Identifies Fortran source.
-    """
-    def __str__(self) -> str:
-        return 'Fortran source'
-
-
-class FortranSource(SourceTree, metaclass=MetaFortranSource):
+class FortranSource(SourceTree):
     """
     Holds a Fortran source file as both a text block and parse tree.
     """
+    @staticmethod
+    def get_name() -> str:
+        return 'Fortran source'
+
     def get_tree(self) -> Optional[Fortran2003.Program]:
         """
         :return: Program unit object.
@@ -416,15 +416,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                 FortranSource.print_tree(child.items, indent+1)
 
 
-class MetaCSource(ABCMeta):
-    """
-    Identifies C source.
-    """
-    def __str__(self) -> str:
-        return "C source"
-
-
-class CSource(SourceTree, metaclass=MetaCSource):
+class CSource(SourceTree):
     """
     Holds a C/C++ source file as both a text block and parse tree.
 
@@ -432,6 +424,10 @@ class CSource(SourceTree, metaclass=MetaCSource):
        This is just a stub to illustrate how it would be done. It is not
        useable.
     """
+    @staticmethod
+    def get_name() -> str:
+        return "C source"
+
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
@@ -439,18 +435,14 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
-class MetaPlainText(ABCMeta):
-    """
-    Identifies plain text.
-    """
-    def __str__(self) -> str:
-        return "plain text"
-
-
-class PlainText(SourceTree, metaclass=MetaPlainText):
+class PlainText(SourceTree):
     """
     Holds a plain text file as though it were source.
     """
+    @staticmethod
+    def get_name() -> str:
+        return "plain text"
+
     def get_tree(self) -> Generator[str, None, None]:
         """
         :return: File content line by line.
