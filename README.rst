@@ -116,6 +116,6 @@ An illustrative example::
   from stylist.style import Style
   from stylist.fortran import FortranCharacterset, KindPattern
   
-  simple = Style(FortranCharactersest(),
+  simple = Style(FortranCharacterset(),
                  KindPattern(integer=recompile(r'i_.+'),
-                             real=recompile(r'r_.+'))
+                             real=recompile(r'r_.+')))
