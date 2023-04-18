@@ -23,7 +23,7 @@ setup(
     package_dir={'': 'source'},
     packages=find_packages(where='source'),
     python_requires='>=3.7, <4',
-    install_requires=['fparser >= 0.0.12'],
+    install_requires=['fparser >= 0.0.12, < 0.1.0'],
     extras_require={
         'dev': ['check-manifest', 'flake8', 'mypy'],
         'test': ['pytest', 'pytest-cov'],
