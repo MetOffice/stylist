@@ -385,7 +385,7 @@ end module test_mod
 END MODULE test_mod"""
         source_filename = tmp_path / f'test.{fortran_extension}'
         source_filename.write_text(source)
-        result = SourceFactory.read_file(str(source_filename))
+        result = SourceFactory.read_file(source_filename)
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected
 
@@ -402,7 +402,7 @@ int main(int argc, char **argv) {
 """
         source_filename = tmp_path / f'test.{cxx_extension}'
         source_filename.write_text(source)
-        tree = SourceFactory.read_file(str(source_filename))
+        tree = SourceFactory.read_file(source_filename)
         assert isinstance(tree, CSource)
         with pytest.raises(NotImplementedError):
             _ = tree.get_tree()
@@ -426,8 +426,8 @@ END MODULE test_mod"""
         source_filename = tmp_path / 'test.x90'
         source_filename.write_text(source)
         with pytest.raises(Exception):
-            result = SourceFactory.read_file(str(source_filename))
+            result = SourceFactory.read_file(source_filename)
         SourceFactory.add_extension('x90', FilePipe(FortranSource))
-        result = SourceFactory.read_file(str(source_filename))
+        result = SourceFactory.read_file(source_filename)
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected

@@ -7,6 +7,7 @@
 """
 Issues found in the source.
 """
+from pathlib import Path
 from typing import Optional
 
 
@@ -17,7 +18,7 @@ class Issue(object):
     def __init__(self,
                  description: str,
                  line: Optional[int] = None,
-                 filename: Optional[str] = None) -> None:
+                 filename: Optional[Path] = None) -> None:
         """
         :param description: Free-format string describing the issue.
         :param line: Line number where issue found.
@@ -30,16 +31,16 @@ class Issue(object):
     def __str__(self) -> str:
         string = ''
         if self._filename:
-            string += '{filename}: '
+            string += f'{str(self._filename)}: '
         if self._line:
-            string += '{line}: '
-        string += '{description}'
+            string += f'{self._line}: '
+        string += f'{self._description}'
         return string.format(filename=self._filename,
                              line=self._line,
                              description=self._description)
 
     @property
-    def filename(self) -> Optional[str]:
+    def filename(self) -> Optional[Path]:
         """
         Filename associated with this issue.
         """
@@ -59,7 +60,7 @@ class Issue(object):
         """
         return self._description
 
-    def set_filename(self, filename: str) -> None:
+    def set_filename(self, filename: Path) -> None:
         """
         Associates a filename with this issue.
         """
