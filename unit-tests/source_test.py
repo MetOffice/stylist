@@ -62,7 +62,7 @@ class TestSourceText:
 
 class TestPPFortranSource:
     def test_name(self) -> None:
-        assert str(FortranPreProcessor) == 'Fortran preprocessor'
+        assert FortranPreProcessor.get_name() == 'Fortran preprocessor'
 
     def test_preprocessed_fortran_source(self) -> None:
         source = """! Some things happen, others don't
@@ -102,7 +102,7 @@ end module test_mod
 
 class TestPPpFUnitSource:
     def test_name(self) -> None:
-        assert str(PFUnitProcessor) == 'pFUnit preprocessor'
+        assert PFUnitProcessor.get_name() == 'pFUnit preprocessor'
 
     def test_preprocessed_pfunit_source(self) -> None:
         source = """! Test all the things
@@ -132,7 +132,7 @@ end module test_mod
 
 class TestPPCSource:
     def test_name(self) -> None:
-        assert str(CPreProcessor) == 'C preprocessor'
+        assert CPreProcessor.get_name() == 'C preprocessor'
 
     def test_preprocessed_c_source(self) -> None:
         source = """/* Some things happen, others don't */
@@ -169,7 +169,7 @@ class TestFortranSource:
     Checks the Fortran source class.
     """
     def test_name(self) -> None:
-        assert str(FortranSource) == 'Fortran source'
+        assert FortranSource.get_name() == 'Fortran source'
 
     def test_constructor(self) -> None:
         """
@@ -271,7 +271,7 @@ class TestCSource:
     Checks the C/C++ source class.
     """
     def test_name(self) -> None:
-        assert str(CSource) == 'C source'
+        assert CSource.get_name() == 'C source'
 
     def test_constructor(self) -> None:
         """
@@ -300,6 +300,10 @@ class TestSourceChain:
             reader = TestSourceChain.ReaderHarness()
             super().__init__(reader)
 
+        @staticmethod
+        def get_name() -> str:
+            return "language harness"
+
         def get_tree(self) -> None:
             pass
 
@@ -307,10 +311,20 @@ class TestSourceChain:
             pass
 
     class TextHarness(SourceText):
-        pass
+        def get_text(self) -> str:
+            return "harness text"
+
+        @staticmethod
+        def get_name() -> str:
+            return "text harness"
 
     class ProcessorHarness(TextProcessor):
-        pass
+        def get_text(self) -> str:
+            return "processor text"
+
+        @staticmethod
+        def get_name() -> str:
+            return "processor harness"
 
     @pytest.fixture(scope="module",
                     params=[[],
@@ -371,7 +385,7 @@ end module test_mod
 END MODULE test_mod"""
         source_filename = tmp_path / f'test.{fortran_extension}'
         source_filename.write_text(source)
-        result = SourceFactory.read_file(str(source_filename))
+        result = SourceFactory.read_file(source_filename)
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected
 
@@ -388,7 +402,7 @@ int main(int argc, char **argv) {
 """
         source_filename = tmp_path / f'test.{cxx_extension}'
         source_filename.write_text(source)
-        tree = SourceFactory.read_file(str(source_filename))
+        tree = SourceFactory.read_file(source_filename)
         assert isinstance(tree, CSource)
         with pytest.raises(NotImplementedError):
             _ = tree.get_tree()
@@ -412,8 +426,8 @@ END MODULE test_mod"""
         source_filename = tmp_path / 'test.x90'
         source_filename.write_text(source)
         with pytest.raises(Exception):
-            result = SourceFactory.read_file(str(source_filename))
+            result = SourceFactory.read_file(source_filename)
         SourceFactory.add_extension('x90', FilePipe(FortranSource))
-        result = SourceFactory.read_file(str(source_filename))
+        result = SourceFactory.read_file(source_filename)
         assert isinstance(result, FortranSource)
         assert str(result.get_tree()) == expected

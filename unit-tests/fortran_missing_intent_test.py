@@ -13,10 +13,6 @@ import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
 
-# ToDo: Obviously we shouldn't be importing "private" modules but until pytest
-#       sorts out its type hinting we are stuck with it.
-
-
 @pytest.fixture(scope='module',
                 params=['''program test_program
                             contains
