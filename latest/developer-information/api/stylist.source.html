@@ -620,7 +620,7 @@ not work on file-like objects which do not have a filename.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.source.SourceText">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">SourceText</span></span><a class="headerlink" href="#stylist.source.SourceText" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Handles source code at the text level. Makes use of the decorator pattern
 to perform text level preprocessing.</p>
 <dl class="py method">
@@ -639,7 +639,7 @@ to perform text level preprocessing.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.source.SourceTree">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">SourceTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Abstract parent of all actual language source files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -692,7 +692,7 @@ to perform text level preprocessing.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.source.TextProcessor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">TextProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.TextProcessor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Preprocessor decorators inherit from this. This is part of the decorator
 pattern.</p>
 <dl class="field-list simple">
