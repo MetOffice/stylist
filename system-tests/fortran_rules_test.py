@@ -35,7 +35,7 @@ def _list_cases() -> List[_CASE_TUPLE]:
     return tests
 
 
-class TestFortranRules(object):
+class TestFortranRules:
     @fixture(scope='class', params=_list_cases())
     def case(self, request) -> Generator[_CASE_TUPLE, None, None]:
         yield request.param

@@ -16,7 +16,7 @@ from stylist.source import SourceFactory
 from stylist.style import Style
 
 
-class CheckEngine(object):
+class CheckEngine:
     """
     Manages the checking of source files against style lists.
     """

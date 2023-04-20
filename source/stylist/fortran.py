@@ -7,7 +7,7 @@
 Rules relating to Fortran source.
 """
 import re
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
                     Union)
@@ -37,7 +37,7 @@ def _line(node: Fortran2003.Base) -> int:
     return target.item.span[0]
 
 
-class FortranRule(Rule, metaclass=ABCMeta):
+class FortranRule(Rule, ABC):
     """
     Parent for style rules pertaining to Fortran source.
     """

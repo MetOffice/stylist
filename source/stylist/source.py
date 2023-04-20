@@ -7,7 +7,7 @@
 """
 Manages source code in various flavours.
 """
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from pathlib import Path
 import re
 from typing import (Generator,
@@ -26,7 +26,7 @@ from fparser.two.utils import FparserException  # type: ignore
 from stylist import StylistException
 
 
-class SourceText(object, metaclass=ABCMeta):
+class SourceText(ABC):
     """
     Handles source code at the text level. Makes use of the decorator pattern
     to perform text level preprocessing.
@@ -70,7 +70,7 @@ class SourceStringReader(SourceText):
         return self._source_string
 
 
-class TextProcessor(SourceText, metaclass=ABCMeta):
+class TextProcessor(SourceText, ABC):
     """
     Preprocessor decorators inherit from this. This is part of the decorator
     pattern.
@@ -159,7 +159,7 @@ class PFUnitProcessor(TextProcessor):
         return text
 
 
-class SourceTree(object, metaclass=ABCMeta):
+class SourceTree(ABC):
     """
     Abstract parent of all actual language source files.
     """
@@ -453,7 +453,7 @@ class PlainText(SourceTree):
         return None
 
 
-class FilePipe(object):
+class FilePipe:
     """
     Holds the chain of objects needed to understand a particular file
     extension.
@@ -469,7 +469,7 @@ class FilePipe(object):
         self.preprocessors = preprocessors
 
 
-class SourceFactory(object):
+class SourceFactory:
     """
     Manages the handling of source file. Knows what chains of objects are
     needed to handle each file extension.
