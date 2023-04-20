@@ -7,7 +7,7 @@
 """
 Manages source code in various flavours.
 """
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from pathlib import Path
 import re
 from typing import (Generator,
