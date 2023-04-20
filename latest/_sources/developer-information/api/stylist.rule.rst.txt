@@ -17,6 +17,7 @@ stylist.rule
 
    .. autosummary::
    
+      LimitLineLength
       Rule
       TrailingWhitespace
    

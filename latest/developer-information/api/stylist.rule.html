@@ -104,14 +104,41 @@
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rule</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.rule.LimitLineLength" title="stylist.rule.LimitLineLength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LimitLineLength</span></code></a>([length, ...])</p></td>
+<td><p>Report instances of lines being too long.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rule</span></code></a>()</p></td>
 <td><p>Abstract parent of all rules.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.rule.TrailingWhitespace" title="stylist.rule.TrailingWhitespace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrailingWhitespace</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.rule.TrailingWhitespace" title="stylist.rule.TrailingWhitespace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrailingWhitespace</span></code></a>()</p></td>
 <td><p>Examines the text for white space at the end of lines.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.rule.LimitLineLength">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.rule.</span></span><span class="sig-name descname"><span class="pre">LimitLineLength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">79</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_leading_whitespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.rule.LimitLineLength" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rule</span></code></a></p>
+<p>Report instances of lines being too long.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.rule.LimitLineLength.examine">
+<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.rule.LimitLineLength.examine" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided source code object for issues.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – The source file to be examined.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.rule.Rule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.rule.</span></span><span class="sig-name descname"><span class="pre">Rule</span></span><a class="headerlink" href="#stylist.rule.Rule" title="Permalink to this definition"></a></dt>
