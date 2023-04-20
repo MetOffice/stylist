@@ -697,7 +697,6 @@ class NakedLiteral(FortranRule):
                     message = f'Literal value assigned to "{name}"' \
                               ' without kind'
                 else:
-                    print(repr(constant.parent.parent))
                     message = 'Literal value without "kind"'
                 issues.append(Issue(message, line=_line(constant)))
 
