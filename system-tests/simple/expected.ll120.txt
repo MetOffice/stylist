@@ -1,0 +1,5 @@
+stdout
+Found 2 issues
+stderr
+$$/line_length.txt: 10: Line exceeds 120 characters
+$$/line_length.txt: 11: Line exceeds 120 characters

@@ -19,7 +19,7 @@ from stylist.source import FortranSource, SourceStringReader
 #       sorts out its type hinting we are stuck with it.
 
 
-class TestIntrinsicModule(object):
+class TestIntrinsicModule:
     """
     Tests the checker of missing exit labels.
     """

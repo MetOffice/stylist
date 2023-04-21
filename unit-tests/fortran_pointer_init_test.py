@@ -7,6 +7,7 @@
 """
 Test of the rule for missing pointer initialisation.
 """
+from textwrap import dedent
 from typing import List
 
 import pytest  # type: ignore
@@ -15,7 +16,7 @@ import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
 
-class TestMissingPointerInit(object):
+class TestMissingPointerInit:
     """
     Tests the checker of missing pointer initialisation.
     """
@@ -161,6 +162,33 @@ end {prog_unit} test
         issue_descriptions = [str(issue) for issue in issues]
         issue_descriptions.sort(key=lambda x: (int(x.split(':', 1)[0]),
                                                x.split(':', 1)))
-        print(issue_descriptions)
-        print(expectation)
         assert issue_descriptions == expectation
+
+    def test_arguments_without_intent(self):
+        """
+        Checks that the rule can cope with arguments which do not specify an
+        intent.
+        """
+        source_text = dedent('''
+                             subroutine my_sub( first, second )
+                               implicit none
+                               integer, pointer :: first
+                               integer, pointer, intent(in) :: second
+                             end subroutine my_sub
+                             module this_mod
+                             contains
+                               subroutine their_sub( first, second )
+                                 implicit none
+                                 integer, pointer, intent(in) :: first
+                                 integer, pointer :: second
+                                end subroutine their_sub
+                             end module this_mod
+                             ''').strip()
+        source_reader = SourceStringReader(source_text)
+        source = FortranSource(source_reader)
+
+        test_unit = stylist.fortran.MissingPointerInit()
+        issues = test_unit.examine(source)
+
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == []
