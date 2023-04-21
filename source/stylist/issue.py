@@ -37,8 +37,12 @@ class Issue:
         if not isinstance(other, Issue):
             raise ValueError(f"Can't compare Issue with {other._class__}")
 
-        self_key = (self.filename or Path('/'), self.line or 0, self.description)
-        other_key = (other.filename or Path('/'), other.line or 0, other.description)
+        self_key = (self.filename or Path('/'),
+                    self.line or 0,
+                    self.description)
+        other_key = (other.filename or Path('/'),
+                     other.line or 0,
+                     other.description)
         return self_key < other_key
 
     def __str__(self) -> str:
