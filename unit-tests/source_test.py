@@ -218,7 +218,7 @@ END PROGRAM test"""
     @pytest.fixture(scope="class",
                     params=[(_SIMPLE_PROGRAM,
                              ['Program_Unit'],
-                             ['Main_Program']),
+                             ['Comment', 'Main_Program', 'Comment']),
                             (_BARE_SUBROUTINE,
                              ['Program_Unit'],
                              ['Subroutine_Subprogram']),
