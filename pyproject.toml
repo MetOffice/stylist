@@ -13,8 +13,13 @@ dynamic = ['version']
 
 
 [project.optional-dependencies]
+<<<<<<< HEAD
 dev = ['check-manifest', 'flake8', 'mypy']
 test = ['pytest', 'pytest-cov']
+=======
+dev = ['check-manifest', 'flake8']
+test = ['pytest', 'pytest-cov', 'mypy']
+>>>>>>> upstream/master
 docs = ['sphinx',
         'sphinx-autodoc-typehints',
         'sphinx-rtd-theme']

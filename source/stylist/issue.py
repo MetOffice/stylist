@@ -8,7 +8,7 @@
 Issues found in the source.
 """
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 
 class Issue:
@@ -27,6 +27,23 @@ class Issue:
         self._filename = filename
         self._line = line
         self._description = description
+
+    def __lt__(self, other: Any):
+        """
+        Bespoke less-than operator.
+
+        This is provided in order to support sorting of lists of issues.
+        """
+        if not isinstance(other, Issue):
+            raise ValueError(f"Can't compare Issue with {other._class__}")
+
+        self_key = (self.filename or Path('/'),
+                    self.line or 0,
+                    self.description)
+        other_key = (other.filename or Path('/'),
+                     other.line or 0,
+                     other.description)
+        return self_key < other_key
 
     def __str__(self) -> str:
         string = ''
