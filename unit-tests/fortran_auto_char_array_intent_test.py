@@ -38,7 +38,7 @@ TEST_EXPECTATION = [
 ]
 
 
-class TestAutoCharArrayIntent(object):
+class TestAutoCharArrayIntent:
     """
     Tests the rule that variable length character arguments should
     have intent(in)

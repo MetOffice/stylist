@@ -15,7 +15,7 @@ import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
 
-class TestMissingOnly(object):
+class TestMissingOnly:
     """
     Tests the checker of missing "use" clauses.
     """

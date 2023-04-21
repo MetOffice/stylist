@@ -162,7 +162,7 @@ def second_subprogram_implicit(request):
     return request.param[0], request.param[1]
 
 
-class TestMissingImplicit(object):
+class TestMissingImplicit:
     """
     Tests the checker of missing implicit statements.
     """

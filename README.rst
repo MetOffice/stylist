@@ -1,7 +1,7 @@
 Stylist
 =======
 
-|BSD3 License| |GitHub release| |PyPI version| |GitHub merge testing|
+|BSD3 License| |GitHub release| |PyPI version| |Conda version| |GitHub merge testing|
 
 Stylist is a tool for checking code style. It implements a framework which
 supports multiple styles across multiple languages.
@@ -34,6 +34,9 @@ Find the project at <https://github.com/MetOffice/stylist>
 .. |PyPI version| image:: https://badge.fury.io/py/stylist.svg
    :target: https://pypi.python.org/pypi/stylist/
 
+.. |Conda version| image:: https://img.shields.io/conda/vn/conda-forge/stylist.svg
+   :target: https://anaconda.org/conda-forge/stylist
+
 .. |GitHub merge testing| image:: https://github.com/MetOffice/stylist/workflows/Merge%20Test/badge.svg
    :target: https://github.com/MetOffice/stylist/actions
 
@@ -44,9 +47,9 @@ Installation
 Installation can be as simple as ``pip install stylist`` or
 ``conda install -c conda-forge stylist``.
 
-As always it is also possible to install from the project source by running
-``python setup.py``. The source may be obtained by downloading a tarball or by
-cloning the repository.
+As always it is also possible to install from the project source using
+``pip install --editable .``. The source may be obtained by downloading a
+tarball or by cloning the repository.
 
 
 Usage
@@ -116,6 +119,6 @@ An illustrative example::
   from stylist.style import Style
   from stylist.fortran import FortranCharacterset, KindPattern
   
-  simple = Style(FortranCharactersest(),
+  simple = Style(FortranCharacterset(),
                  KindPattern(integer=recompile(r'i_.+'),
-                             real=recompile(r'r_.+'))
+                             real=recompile(r'r_.+')))

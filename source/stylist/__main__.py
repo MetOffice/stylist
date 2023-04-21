@@ -10,7 +10,6 @@ Tool for checking code style.
 import argparse
 import logging
 from os import linesep
-import os.path
 from pathlib import Path
 import sys
 from textwrap import indent
@@ -35,12 +34,12 @@ def _parse_cli() -> argparse.Namespace:
     max_key_len: int = max(len(key) for key in ConfigTools.language_keys())
     parsers = [key.ljust(max_key_len)
                + ' - '
-               + str(ConfigTools.language(key))
+               + ConfigTools.language(key).get_name()
                for key in ConfigTools.language_keys()]
     max_key_len = max(len(key) for key in ConfigTools.preprocessor_keys())
     preproc = [key.ljust(max_key_len)
                + ' - '
-               + str(ConfigTools.preprocessor(key))
+               + ConfigTools.preprocessor(key).get_name()
                for key in ConfigTools.preprocessor_keys()]
     epilog = f"""
 IDs used in specifying extension pipelines:
@@ -62,11 +61,11 @@ IDs used in specifying extension pipelines:
                             type=Path,
                             metavar='FILENAME',
                             help="File which configures the tool.")
-    help = "Style to use for check. May be specified repeatedly."
+    message = "Style to use for check. May be specified repeatedly."
     cli_parser.add_argument('-style',
                             action='append',
                             metavar='NAME',
-                            help=help)
+                            help=message)
     message = 'Add a mapping between file extension and pipeline'
     cli_parser.add_argument('-map-extension',
                             metavar='EXTENSION:PARSER[:PREPROCESSOR]...',
@@ -75,6 +74,7 @@ IDs used in specifying extension pipelines:
                             action='append',
                             help=message)
     cli_parser.add_argument('source', metavar='FILE', nargs='+',
+                            type=Path,
                             help='Filename of source file or directory')
 
     arguments = cli_parser.parse_args()
@@ -82,7 +82,7 @@ IDs used in specifying extension pipelines:
     return arguments
 
 
-def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
+def _process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
     """
     Examines files for style compliance.
 
@@ -94,16 +94,14 @@ def _process(candidates: List[str], styles: Sequence[Style]) -> List[Issue]:
 
     issues: List[Issue] = []
     while candidates:
-        filename = candidates.pop(0).strip()
-        if os.path.isdir(filename):
-            for leaf in os.listdir(filename):
-                leaf_filename = os.path.join(filename, leaf)
-                _, extension = os.path.splitext(leaf_filename)
-                if extension[1:] in hot_extensions \
-                   or os.path.isdir(leaf_filename):
+        file_object = candidates.pop(0)
+        if file_object.is_dir():
+            for leaf_filename in file_object.iterdir():
+                if leaf_filename.suffix[1:] in hot_extensions \
+                   or leaf_filename.is_dir():
                     candidates.append(leaf_filename)
         else:  # Is a file
-            issues.extend(engine.check(filename))
+            issues.extend(engine.check(file_object))
 
     return issues
 

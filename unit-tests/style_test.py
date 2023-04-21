@@ -36,7 +36,7 @@ class _RuleHarnessTwo(stylist.rule.Rule):
         pass
 
 
-class TestStyle(object):
+class TestStyle:
     """
     Tests the abstract TestStyle class.
     """

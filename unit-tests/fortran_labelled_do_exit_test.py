@@ -15,7 +15,7 @@ from stylist.fortran import LabelledDoExit
 from stylist.source import FortranSource, SourceStringReader
 
 
-class TestLabelledExit(object):
+class TestLabelledExit:
     """
     Tests the checker of missing exit labels.
     """
