@@ -7,6 +7,7 @@
 """
 Ensures the 'engine' module functions as expected.
 """
+from pathlib import Path
 import tempfile
 from typing import List
 
@@ -36,7 +37,7 @@ def test_all_styles() -> None:
 
         styles = [_StyleHarness(), _StyleHarness()]
         unit_under_test = CheckEngine(styles)
-        unit_under_test.check(handle.name)
+        unit_under_test.check(Path(handle.name))
 
         assert [program.get_text() for program in styles[0].seen] \
             == ['module teapot\nend module teapot\n\n']

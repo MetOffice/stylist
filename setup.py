@@ -1,15 +1,12 @@
 """Setup Stylist for distribution on PyPI."""
 
 from ast import literal_eval
-import os
+from pathlib import Path
 from setuptools import setup, find_packages  # type: ignore
 
 # Get the long description from the README file
-HERE = os.path.dirname(__file__)
-with open(
-    os.path.join(HERE, 'source', 'stylist', '__init__.py'),
-    encoding='utf-8',
-) as handle:
+HERE = Path(__file__).parent
+with (HERE / 'source/stylist/__init__.py').open(encoding='utf-8') as handle:
     for line in handle:
         items = line.split('=', 1)
         if items[0].strip() == '__version__':
@@ -23,9 +20,9 @@ setup(
     package_dir={'': 'source'},
     packages=find_packages(where='source'),
     python_requires='>=3.7, <4',
-    install_requires=['fparser >= 0.0.12'],
+    install_requires=['fparser >= 0.0.12, < 0.1.0'],
     extras_require={
-        'dev': ['check-manifest', 'flake8', 'mypy'],
+        'dev': ['check-manifest', 'flake8', 'mypy', 'pytest'],
         'test': ['pytest', 'pytest-cov'],
         'docs': ['sphinx',
                  'sphinx-autodoc-typehints',

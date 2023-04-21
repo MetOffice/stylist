@@ -1,0 +1,11 @@
+This line goes right up to the limit of 79 characters but not one char over it.
+By contrast this line goes just over the 79 characters limit by a single letter.
+    Sometimes we ignore leading whitespace and still sneak in, under 79 characters.
+
+There is also a test 40 characters wide.
+This line is a character over that width.
+  Ignore indent to come in under 40 chars.
+
+Next we have a very long line of one hundred and twenty characters. This current line goes up to that limit but no more.
+Now a very long line which actually goes over the one hundred and twenty character point. Just a single additional glyph.
+        Even lots of initial whitespace can still bring is in under one hundred and twenty characters if the rule is configured.

@@ -7,7 +7,7 @@
 Rules relating to Fortran source.
 """
 import re
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
                     Union)
@@ -37,7 +37,7 @@ def _line(node: Fortran2003.Base) -> int:
     return target.item.span[0]
 
 
-class FortranRule(Rule, metaclass=ABCMeta):
+class FortranRule(Rule, ABC):
     """
     Parent for style rules pertaining to Fortran source.
     """
@@ -191,7 +191,7 @@ class MissingIntent(FortranRule):
 
     def examine_fortran(self, subject: FortranSource) -> List[Issue]:
         issues: List[Issue] = []
-        scope_units: List[Fortran2003.Block] = []
+        scope_units: List[Fortran2003.Base] = []
 
         # get all subprograms (functions and subroutines) within programs
         scope_units.extend(subject.path(['Main_Program',
@@ -237,15 +237,30 @@ class MissingIntent(FortranRule):
                         # check if type declaration has an intent
                         attributes = spec.children[1]
                         if attributes is not None:
-                            for attribute in spec.children[1].children:
-                                if attribute.__class__ == \
-                                        Fortran2003.Intent_Attr_Spec:
+                            for attribute in attributes.children:
+                                if attribute.__class__ \
+                                        == Fortran2003.Intent_Attr_Spec:
 
                                     # if so, remove argument names from
                                     # dummy_args
                                     for arg in spec.children[2].children:
                                         arg_name = arg.children[
                                             0].string.lower()
+                                        if arg_name in dummy_args:
+                                            dummy_args.remove(arg_name)
+
+                    elif spec.__class__ \
+                            == Fortran2003.Procedure_Declaration_Stmt:
+                        print(repr(spec))
+                        attributes = spec.children[1]
+                        if attributes is not None:
+                            for attribute in attributes.children:
+                                if attribute.__class__ \
+                                        == Fortran2003.Proc_Attr_Spec:
+                                    # if so, remove argument names from
+                                    # dummy_args
+                                    for arg in spec.children[2].children:
+                                        arg_name = arg.string.lower()
                                         if arg_name in dummy_args:
                                             dummy_args.remove(arg_name)
 
@@ -561,7 +576,7 @@ class KindPattern(FortranRule):
 
                 if isinstance(kind_selector, Fortran2003.Kind_Selector):
                     data_type: str = type_spec.items[0].lower()
-                    kind: str = kind_selector.string.strip('()')
+                    kind: str = str(kind_selector.children[1])
                     match = self._patterns[data_type].match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
@@ -682,7 +697,6 @@ class NakedLiteral(FortranRule):
                     message = f'Literal value assigned to "{name}"' \
                               ' without kind'
                 else:
-                    print(repr(constant.parent.parent))
                     message = 'Literal value without "kind"'
                 issues.append(Issue(message, line=_line(constant)))
 

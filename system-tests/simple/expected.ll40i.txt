@@ -1,0 +1,10 @@
+stdout
+Found 7 issues
+stderr
+$$/line_length.txt: 1: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 2: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 3: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 6: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 9: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 10: Line exceeds 40 characters after leading whitespace
+$$/line_length.txt: 11: Line exceeds 40 characters after leading whitespace

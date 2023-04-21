@@ -7,9 +7,9 @@
 """
 Manages source code in various flavours.
 """
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
+from pathlib import Path
 import re
-import os.path
 from typing import (Generator,
                     IO,
                     Iterable,
@@ -26,7 +26,7 @@ from fparser.two.utils import FparserException  # type: ignore
 from stylist import StylistException
 
 
-class SourceText(object, metaclass=ABCMeta):
+class SourceText(ABC):
     """
     Handles source code at the text level. Makes use of the decorator pattern
     to perform text level preprocessing.
@@ -43,13 +43,12 @@ class SourceFileReader(SourceText):
     """
     Reads text source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], str]) -> None:
+    def __init__(self, source_file: Union[IO[str], Path]) -> None:
         """
         :param source_file: The file to examine.
         """
-        if isinstance(source_file, str):
-            with open(source_file, 'rt') as handle:
-                self._cache = handle.read()
+        if isinstance(source_file, Path):
+            self._cache = source_file.read_text()
         else:
             self._cache = source_file.read()
 
@@ -71,7 +70,7 @@ class SourceStringReader(SourceText):
         return self._source_string
 
 
-class TextProcessor(SourceText, metaclass=ABCMeta):
+class TextProcessor(SourceText, ABC):
     """
     Preprocessor decorators inherit from this. This is part of the decorator
     pattern.
@@ -82,16 +81,16 @@ class TextProcessor(SourceText, metaclass=ABCMeta):
         """
         self._source = source
 
+    @staticmethod
+    @abstractmethod
+    def get_name() -> str:
+        """
+        Gets the name of the processing stage.
+        """
+        raise NotImplementedError()
 
-class MetaCPreProcessor(ABCMeta):
-    """
-    Identifies the C preprocessor.
-    """
-    def __str__(self) -> str:
-        return "C preprocessor"
 
-
-class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
+class CPreProcessor(TextProcessor):
     """
     Strips out preprocessor directives.
 
@@ -101,6 +100,10 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "C preprocessor"
 
     def get_text(self) -> str:
         """
@@ -112,15 +115,7 @@ class CPreProcessor(TextProcessor, metaclass=MetaCPreProcessor):
         return text
 
 
-class MetaFortranPreProcessor(ABCMeta):
-    """
-    Identifies the Fortran preprocessor.
-    """
-    def __str__(self) -> str:
-        return "Fortran preprocessor"
-
-
-class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
+class FortranPreProcessor(TextProcessor):
     """
     Strips out preprocessor directives.
 
@@ -130,6 +125,10 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
     _CONDITIONAL_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#if(def|\s+)*)$',
                                                 re.MULTILINE)
     _OTHER_DIRECTIVE_PATTERN = re.compile(r'^(\s*)(#.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "Fortran preprocessor"
 
     def get_text(self) -> str:
         """
@@ -141,19 +140,15 @@ class FortranPreProcessor(TextProcessor, metaclass=MetaFortranPreProcessor):
         return text
 
 
-class MetaPFUnitProcessor(ABCMeta):
-    """
-    Identifies the pFUnit preprocessor.
-    """
-    def __str__(self) -> str:
-        return "pFUnit preprocessor"
-
-
-class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
+class PFUnitProcessor(TextProcessor):
     """
     Strips out pFUnit directives.
     """
     _DIRECTIVE_PATTERN = re.compile(r'^(\s*)(@\w+.*)$', re.MULTILINE)
+
+    @staticmethod
+    def get_name() -> str:
+        return "pFUnit preprocessor"
 
     def get_text(self) -> str:
         """
@@ -164,7 +159,7 @@ class PFUnitProcessor(TextProcessor, metaclass=MetaPFUnitProcessor):
         return text
 
 
-class SourceTree(object, metaclass=ABCMeta):
+class SourceTree(ABC):
     """
     Abstract parent of all actual language source files.
     """
@@ -178,6 +173,14 @@ class SourceTree(object, metaclass=ABCMeta):
         self._text = text
         self._tree = None
         self._tree_error: Optional[str] = 'Not parsed yet'
+
+    @staticmethod
+    @abstractmethod
+    def get_name() -> str:
+        """
+        Gets the name of the source tree type.
+        """
+        raise NotImplementedError()
 
     @abstractmethod
     def get_tree(self):
@@ -200,18 +203,14 @@ class SourceTree(object, metaclass=ABCMeta):
         return self._text.get_text()
 
 
-class MetaFortranSource(ABCMeta):
-    """
-    Identifies Fortran source.
-    """
-    def __str__(self) -> str:
-        return 'Fortran source'
-
-
-class FortranSource(SourceTree, metaclass=MetaFortranSource):
+class FortranSource(SourceTree):
     """
     Holds a Fortran source file as both a text block and parse tree.
     """
+    @staticmethod
+    def get_name() -> str:
+        return 'Fortran source'
+
     def get_tree(self) -> Optional[Fortran2003.Program]:
         """
         :return: Program unit object.
@@ -416,15 +415,7 @@ class FortranSource(SourceTree, metaclass=MetaFortranSource):
                 FortranSource.print_tree(child.items, indent+1)
 
 
-class MetaCSource(ABCMeta):
-    """
-    Identifies C source.
-    """
-    def __str__(self) -> str:
-        return "C source"
-
-
-class CSource(SourceTree, metaclass=MetaCSource):
+class CSource(SourceTree):
     """
     Holds a C/C++ source file as both a text block and parse tree.
 
@@ -432,6 +423,10 @@ class CSource(SourceTree, metaclass=MetaCSource):
        This is just a stub to illustrate how it would be done. It is not
        useable.
     """
+    @staticmethod
+    def get_name() -> str:
+        return "C source"
+
     def get_tree(self):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
@@ -439,18 +434,14 @@ class CSource(SourceTree, metaclass=MetaCSource):
         raise NotImplementedError('C/C++ source is not supported yet.')
 
 
-class MetaPlainText(ABCMeta):
-    """
-    Identifies plain text.
-    """
-    def __str__(self) -> str:
-        return "plain text"
-
-
-class PlainText(SourceTree, metaclass=MetaPlainText):
+class PlainText(SourceTree):
     """
     Holds a plain text file as though it were source.
     """
+    @staticmethod
+    def get_name() -> str:
+        return "plain text"
+
     def get_tree(self) -> Generator[str, None, None]:
         """
         :return: File content line by line.
@@ -462,7 +453,7 @@ class PlainText(SourceTree, metaclass=MetaPlainText):
         return None
 
 
-class FilePipe(object):
+class FilePipe:
     """
     Holds the chain of objects needed to understand a particular file
     extension.
@@ -478,7 +469,7 @@ class FilePipe(object):
         self.preprocessors = preprocessors
 
 
-class SourceFactory(object):
+class SourceFactory:
     """
     Manages the handling of source file. Knows what chains of objects are
     needed to handle each file extension.
@@ -545,24 +536,23 @@ class SourceFactory(object):
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
+    def read_file(cls, source_file: Union[IO[str], Path]) -> SourceTree:
         """
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
         not work on file-like objects which do not have a filename.
         """
-        if isinstance(source_file, str):
-            filename = source_file
+        if isinstance(source_file, Path):
+            extension = source_file.suffix[1:]
         else:
-            filename = source_file.name
+            extension = Path(source_file.name).suffix[1:]
 
-        ext = os.path.splitext(filename)[1][1:]
-        if ext not in cls._extension_map:
-            raise Exception('Source file extension "{0}" not in handler map'
-                            .format(ext))
+        if extension not in cls._extension_map:
+            message = f"Source file extension '{extension}' not in handler map"
+            raise Exception(message)
 
-        chain = cls._extension_map[ext]
+        chain = cls._extension_map[extension]
         reader: SourceText = SourceFileReader(source_file)
         # Decorate reader
         for handler_class in chain.preprocessors:
