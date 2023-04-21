@@ -7,6 +7,7 @@
 """
 Ensures the Issue object functions as expected.
 """
+from pathlib import Path
 
 from stylist.issue import Issue
 
@@ -23,12 +24,12 @@ def test_sortability() -> None:
     """
     Checks a list of Item can be sorted.
     """
-    test_list = [Issue("With line number and file", 12, 'cheese.txt'),
+    test_list = [Issue("With line number and file", 12, Path('cheese.txt')),
                  Issue("Without line number or file"),
                  Issue("With line number but not file", 27),
                  Issue("Without line number but with file",
-                       filename='beef.txt'),
-                 Issue("With everything again", 39, 'cheese.txt')]
+                       filename=Path('beef.txt')),
+                 Issue("With everything again", 39, Path('cheese.txt'))]
     test_list.sort()
     assert [str(issue) for issue in test_list] \
            == ['Without line number or file',
