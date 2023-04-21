@@ -138,7 +138,7 @@
 <td><p>Handles source code at the text level.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#stylist.source.SourceTree" title="stylist.source.SourceTree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SourceTree</span></code></a>(text)</p></td>
-<td><p>Abstract parent of all actual language source files.</p></td>
+<td><p>Abstract parent of all actual language  files.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.source.TextProcessor" title="stylist.source.TextProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextProcessor</span></code></a>(source)</p></td>
 <td><p>Preprocessor decorators inherit from this.</p></td>
@@ -578,7 +578,7 @@ not work on file-like objects which do not have a filename.</p>
 <p>Reads text source from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>source_file</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]) – The file to examine.</p>
+<dd class="field-odd"><p><strong>source_file</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TextIO</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]) – The file to examine.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -640,7 +640,7 @@ to perform text level preprocessing.</p>
 <dt class="sig sig-object py" id="stylist.source.SourceTree">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.source.</span></span><span class="sig-name descname"><span class="pre">SourceTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.source.SourceTree" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Abstract parent of all actual language source files.</p>
+<p>Abstract parent of all actual language  files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference internal" href="#stylist.source.SourceText" title="stylist.source.SourceText"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceText</span></code></a>) – Source as text.</p>
