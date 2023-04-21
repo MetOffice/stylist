@@ -7,9 +7,9 @@
 """
 Manages source code in various flavours.
 """
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
+from pathlib import Path
 import re
-import os.path
 from typing import (Generator,
                     IO,
                     Iterable,
@@ -26,7 +26,7 @@ from fparser.two.utils import FparserException  # type: ignore
 from stylist import StylistException
 
 
-class SourceText(object, metaclass=ABCMeta):
+class SourceText(ABC):
     """
     Handles source code at the text level. Makes use of the decorator pattern
     to perform text level preprocessing.
@@ -43,13 +43,12 @@ class SourceFileReader(SourceText):
     """
     Reads text source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], str]) -> None:
+    def __init__(self, source_file: Union[IO[str], Path]) -> None:
         """
         :param source_file: The file to examine.
         """
-        if isinstance(source_file, str):
-            with open(source_file, 'rt') as handle:
-                self._cache = handle.read()
+        if isinstance(source_file, Path):
+            self._cache = source_file.read_text()
         else:
             self._cache = source_file.read()
 
@@ -71,7 +70,7 @@ class SourceStringReader(SourceText):
         return self._source_string
 
 
-class TextProcessor(SourceText, metaclass=ABCMeta):
+class TextProcessor(SourceText, ABC):
     """
     Preprocessor decorators inherit from this. This is part of the decorator
     pattern.
@@ -160,7 +159,7 @@ class PFUnitProcessor(TextProcessor):
         return text
 
 
-class SourceTree(object, metaclass=ABCMeta):
+class SourceTree(ABC):
     """
     Abstract parent of all actual language source files.
     """
@@ -454,7 +453,7 @@ class PlainText(SourceTree):
         return None
 
 
-class FilePipe(object):
+class FilePipe:
     """
     Holds the chain of objects needed to understand a particular file
     extension.
@@ -470,7 +469,7 @@ class FilePipe(object):
         self.preprocessors = preprocessors
 
 
-class SourceFactory(object):
+class SourceFactory:
     """
     Manages the handling of source file. Knows what chains of objects are
     needed to handle each file extension.
@@ -537,24 +536,23 @@ class SourceFactory(object):
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file: Union[IO[str], str]) -> SourceTree:
+    def read_file(cls, source_file: Union[IO[str], Path]) -> SourceTree:
         """
         Creates a Source object from a file.
 
         The file extension is used to determine the source type so this will
         not work on file-like objects which do not have a filename.
         """
-        if isinstance(source_file, str):
-            filename = source_file
+        if isinstance(source_file, Path):
+            extension = source_file.suffix[1:]
         else:
-            filename = source_file.name
+            extension = Path(source_file.name).suffix[1:]
 
-        ext = os.path.splitext(filename)[1][1:]
-        if ext not in cls._extension_map:
-            raise Exception('Source file extension "{0}" not in handler map'
-                            .format(ext))
+        if extension not in cls._extension_map:
+            message = f"Source file extension '{extension}' not in handler map"
+            raise Exception(message)
 
-        chain = cls._extension_map[ext]
+        chain = cls._extension_map[extension]
         reader: SourceText = SourceFileReader(source_file)
         # Decorate reader
         for handler_class in chain.preprocessors:

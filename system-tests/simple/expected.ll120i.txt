@@ -1,0 +1,4 @@
+stdout
+Found 1 issue
+stderr
+$$/line_length.txt: 10: Line exceeds 120 characters after leading whitespace
