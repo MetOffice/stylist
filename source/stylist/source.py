@@ -245,26 +245,27 @@ class FortranSource(SourceTree):
         :param root: Point in parse tree to start. If unspecified implies the
                      whole tree.
         """
-        if not root:
+        if root is None:
             root = self._tree.content
 
-        root = [root]
+        candidates = [root]
 
-        while root:
-            candidate = root.pop(0)
+        while candidates:
+            candidate = candidates.pop(0)
             if isinstance(candidate, Fortran2003.StmtBase):
                 return candidate
 
             if isinstance(candidate, Fortran2003.BlockBase):
-                root.extend(candidate.content)
+                candidates.extend(candidate.content)
             elif isinstance(candidate, Fortran2003.SequenceBase):
-                root.extend(candidate.items)
+                candidates.extend(candidate.items)
             elif isinstance(candidate, Fortran2003.Comment):
                 pass
             else:
                 message = 'Unexpected candidate type: {0}'
                 raise Exception(message.format(candidate.__class__.__name__))
-        raise StylistException("Block without any statements.")
+        message = f"Block without any statements: {root.tofortran()}"
+        raise StylistException(message)
 
     def path(self,
              path: Union[Iterable, str],
