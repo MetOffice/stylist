@@ -27,7 +27,7 @@ from stylist.style import Style
 
 
 class Configuration:
-    def __init__(self):
+    def __init__(self) -> None:
         self._pipes: Dict[str, FilePipe] = {}
         self._styles: Dict[str, Style] = {}
 
