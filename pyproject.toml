@@ -13,8 +13,8 @@ dynamic = ['version']
 
 
 [project.optional-dependencies]
-dev = ['check-manifest', 'flake8', 'mypy']
-test = ['pytest', 'pytest-cov']
+dev = ['check-manifest', 'flake8']
+test = ['pytest', 'pytest-cov', 'mypy']
 docs = ['sphinx',
         'sphinx-autodoc-typehints',
         'sphinx-rtd-theme']
