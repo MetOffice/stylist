@@ -11,10 +11,10 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 import re
 from typing import (Generator,
-                    IO,
                     Iterable,
                     List,
                     Optional,
+                    TextIO,
                     Type,
                     Union)
 
@@ -43,7 +43,7 @@ class SourceFileReader(SourceText):
     """
     Reads text source from a file.
     """
-    def __init__(self, source_file: Union[IO[str], Path]) -> None:
+    def __init__(self, source_file: Union[TextIO, Path]) -> None:
         """
         :param source_file: The file to examine.
         """
@@ -161,7 +161,7 @@ class PFUnitProcessor(TextProcessor):
 
 class SourceTree(ABC):
     """
-    Abstract parent of all actual language source files.
+    Abstract parent of all actual language  files.
     """
     def __init__(self, text: SourceText) -> None:
         """
@@ -245,26 +245,27 @@ class FortranSource(SourceTree):
         :param root: Point in parse tree to start. If unspecified implies the
                      whole tree.
         """
-        if not root:
+        if root is None:
             root = self._tree.content
 
-        root = [root]
+        candidates = [root]
 
-        while root:
-            candidate = root.pop(0)
+        while candidates:
+            candidate = candidates.pop(0)
             if isinstance(candidate, Fortran2003.StmtBase):
                 return candidate
 
             if isinstance(candidate, Fortran2003.BlockBase):
-                root.extend(candidate.content)
+                candidates.extend(candidate.content)
             elif isinstance(candidate, Fortran2003.SequenceBase):
-                root.extend(candidate.items)
+                candidates.extend(candidate.items)
             elif isinstance(candidate, Fortran2003.Comment):
                 pass
             else:
                 message = 'Unexpected candidate type: {0}'
                 raise Exception(message.format(candidate.__class__.__name__))
-        raise StylistException("Block without any statements.")
+        message = f"Block without any statements: {root.tofortran()}"
+        raise StylistException(message)
 
     def path(self,
              path: Union[Iterable, str],
@@ -536,7 +537,7 @@ class SourceFactory:
         return cls._extension_map.keys()
 
     @classmethod
-    def read_file(cls, source_file: Union[IO[str], Path]) -> SourceTree:
+    def read_file(cls, source_file: Union[TextIO, Path]) -> SourceTree:
         """
         Creates a Source object from a file.
 
@@ -544,10 +545,11 @@ class SourceFactory:
         not work on file-like objects which do not have a filename.
         """
         if isinstance(source_file, Path):
-            extension = source_file.suffix[1:]
+            filename = source_file
         else:
-            extension = Path(source_file.name).suffix[1:]
+            filename = Path(source_file.name)
 
+        extension = filename.suffix[1:]
         if extension not in cls._extension_map:
             message = f"Source file extension '{extension}' not in handler map"
             raise Exception(message)

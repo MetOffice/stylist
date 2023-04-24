@@ -1,0 +1,69 @@
+name: Performance Benchmark
+
+on:
+  push:
+    branches:
+      - master
+
+
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v3
+        with:
+          path: stylist
+          fetch-depth: 1
+
+      - name: Checkout pages
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+          path: gh-pages
+
+      - name: Set Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Prepare environment
+        run: |
+          cd stylist
+          python3 -m pip install --upgrade pip
+          pip install -e .[performance]
+
+      - name: Collect readings
+        run: |
+          set -x
+          pytest stylist/performance-tests --benchmark-autosave --benchmark-storage=file://./gh-pages/benchmarks
+          git -C gh-pages add -A benchmarks
+
+      - name: Generate plots
+        run: |
+          set -x
+          python3 stylist/performance-tests/class_test.py -results_dir gh-pages/benchmarks/ -plot_file gh-pages/class_bench.svg
+          git -C gh-pages add  class_bench.svg
+          python3 stylist/performance-tests/file_test.py -results_dir gh-pages/benchmarks/ -plot_file gh-pages/file_bench.svg
+          git -C gh-pages add  file_bench.svg
+
+      - nane: Commit results
+        run: |
+          set -x
+          git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
+          git -C gh-pages -c "user.name=Benchmark Workflow" -c user.email=benchmark@example.com commit -a -m "Benchmarks from $git_hash"
+
+      - name: Push
+        run: |
+          git -C gh-pages push

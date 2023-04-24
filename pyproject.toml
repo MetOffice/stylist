@@ -8,18 +8,14 @@ description="Flexible source code style checking tool"
 requires-python = '>=3.7, <4'
 license = {text = 'BSD 3-Clause License'}
 classifiers = ['Programming Language :: Python :: 3']
-dependencies = ['fparser >= 0.0.12, < 0.1.0']
+dependencies = ['fparser >= 0.1.0']
 dynamic = ['version']
 
 
 [project.optional-dependencies]
-<<<<<<< HEAD
-dev = ['check-manifest', 'flake8', 'mypy']
-test = ['pytest', 'pytest-cov']
-=======
 dev = ['check-manifest', 'flake8']
 test = ['pytest', 'pytest-cov', 'mypy']
->>>>>>> upstream/master
+performance = ['pytest', 'pytest-benchmark', 'matplotlib']
 docs = ['sphinx',
         'sphinx-autodoc-typehints',
         'sphinx-rtd-theme']
