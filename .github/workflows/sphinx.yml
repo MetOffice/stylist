@@ -106,7 +106,7 @@ jobs:
           if [ $git_changes ]; then
             git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
             git -C gh-pages -c "user.name=Sphinx Workflow" -c user.email=sphinx@example.com commit -a -m "Documentation from $git_hash"
-          endif
+          fi
 
       - name: Push
         if: github.event_name == 'push'
