@@ -165,8 +165,11 @@ class MissingImplicit(FortranRule):
             scope_units.extend(subject.path(['Module',
                                              'Module_Subprogram_Part',
                                              'Module_Subprogram']))
+        filtered_units = filter(lambda s: not isinstance(s,
+                                                         Fortran2003.Comment),
+                                scope_units)
         scope: Fortran2003.Block
-        for scope in scope_units:
+        for scope in filtered_units:
             scope_statement = subject.get_first_statement(root=scope)
 
             implication = subject.path(['Specification_Part',
