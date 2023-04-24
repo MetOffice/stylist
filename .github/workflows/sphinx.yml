@@ -103,7 +103,7 @@ jobs:
         run: |
           set -x
           git_changes=$(git -C gh-pages status --porcelain)
-          if [ $git_changes ]; then
+          if [ "$git_changes" ]; then
             git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
             git -C gh-pages -c "user.name=Sphinx Workflow" -c user.email=sphinx@example.com commit -a -m "Documentation from $git_hash"
           fi
