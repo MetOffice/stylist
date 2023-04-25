@@ -53,9 +53,9 @@ jobs:
       - name: Generate plots
         run: |
           set -x
-          python3 stylist/performance-tests/class_test.py -results_dir gh-pages/benchmarks/ -plot_file gh-pages/class_bench.svg
+          python3 stylist/performance-tests/class_test.py -results_dir gh-pages/benchmarks/Linux-CPython-3.7-64bit -plot_file gh-pages/class_bench.svg
           git -C gh-pages add  class_bench.svg
-          python3 stylist/performance-tests/file_test.py -results_dir gh-pages/benchmarks/ -plot_file gh-pages/file_bench.svg
+          python3 stylist/performance-tests/file_test.py -results_dir gh-pages/benchmarks/Linux-CPython-3.7-64bit -plot_file gh-pages/file_bench.svg
           git -C gh-pages add  file_bench.svg
 
       - name: Commit results
