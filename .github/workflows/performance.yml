@@ -58,7 +58,7 @@ jobs:
           python3 stylist/performance-tests/file_test.py -results_dir gh-pages/benchmarks/ -plot_file gh-pages/file_bench.svg
           git -C gh-pages add  file_bench.svg
 
-      - nane: Commit results
+      - name: Commit results
         run: |
           set -x
           git_hash=$(git -C stylist rev-parse --short "${{ github.sha }}")
