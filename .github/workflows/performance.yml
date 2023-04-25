@@ -47,7 +47,7 @@ jobs:
       - name: Collect readings
         run: |
           set -x
-          pytest stylist/performance-tests --benchmark-autosave --benchmark-storage=file://./gh-pages/benchmarks
+          pytest stylist/performance-tests --benchmark-autosave --benchmark-storage=file://gh-pages/benchmarks
           git -C gh-pages add -A benchmarks
 
       - name: Generate plots
