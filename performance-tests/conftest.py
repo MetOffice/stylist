@@ -21,7 +21,7 @@ from stylist.style import Style
 
 def pytest_sessionstart(session):
     session.config._temp_dir = TemporaryDirectory()
-    unpack_archive('performance-tests/examples.tar',
+    unpack_archive(Path(__file__).parent / 'examples.tar',
                    session.config._temp_dir.name)
     session.config._perf_source_files = []
     dir = Path(session.config._temp_dir.name)
