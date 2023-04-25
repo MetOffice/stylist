@@ -1,0 +1,40 @@
+stylist.fortran
+===============
+
+.. automodule:: stylist.fortran
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AutoCharArrayIntent
+      ForbidUsage
+      FortranCharacterset
+      FortranRule
+      IntrinsicModule
+      KindPattern
+      LabelledDoExit
+      MissingImplicit
+      MissingIntent
+      MissingOnly
+      MissingPointerInit
+      NakedLiteral
+   
+   
+
+   
+   
+   
+
+
+
