@@ -5,7 +5,7 @@ Tests for the auto char array intent rule
 import stylist.fortran
 from stylist.source import FortranSource, SourceStringReader
 
-TEST_CASE = """
+NORMAL_TEST_CASE = """
 program cases
     ! A char array outside a function or subroutine, no exception
     character (*) :: autochar_glob
@@ -30,12 +30,35 @@ program cases
 end program cases
 """
 
-TEST_EXPECTATION = [
+NORMAL_TEST_EXPECTATION = [
     ('12: Arguments of type character(*) must have intent IN, '
         'but autochar_inout has intent INOUT.'),
     ('14: Arguments of type character(*) must have intent IN, '
         'but autochar_out has intent OUT.')
 ]
+
+SINGLE_CHAR_CASE = """
+program single_char
+
+  implicit none
+
+  character :: single_program_character
+
+contains
+
+  subroutine single_character( char_in, char_inout, char_out, char_def )
+
+    implicit none
+
+    character, intent(in)    :: char_in
+    character, intent(inout) :: char_inout
+    character, intent(out)   :: char_out
+    character                :: char_def
+
+  end subroutine single_character
+
+end program single_char
+"""
 
 
 class TestAutoCharArrayIntent:
@@ -44,14 +67,26 @@ class TestAutoCharArrayIntent:
     have intent(in)
     """
 
-    def test(self):
+    def test_normal_behaviour(self):
         """
         Ensures the test case produces exactly the issues in expectation
         """
-        reader = SourceStringReader(TEST_CASE)
+        reader = SourceStringReader(NORMAL_TEST_CASE)
         source = FortranSource(reader)
         unit_under_test = stylist.fortran.AutoCharArrayIntent()
         issues = unit_under_test.examine(source)
         strings = [str(issue) for issue in issues]
 
-        assert strings == TEST_EXPECTATION
+        assert strings == NORMAL_TEST_EXPECTATION
+
+    def test_single_char(self):
+        """
+        Ensures the test can handle no length being specified.
+        """
+        reader = SourceStringReader(SINGLE_CHAR_CASE)
+        source = FortranSource(reader)
+        test_unit = stylist.fortran.AutoCharArrayIntent()
+        issues = test_unit.examine(source)
+
+        strings = [str(issue) for issue in issues]
+        assert strings == []

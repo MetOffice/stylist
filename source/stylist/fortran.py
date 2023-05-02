@@ -601,7 +601,8 @@ class AutoCharArrayIntent(FortranRule):
     subroutine or function arguments have intent(in) to avoid writing
     outside the given array.
     """
-    def _message(self, name, intent):
+    @staticmethod
+    def __message(name, intent):
         return (f"Arguments of type character(*) must have intent IN, but "
                 f"{name} has intent {intent}.")
 
@@ -630,6 +631,9 @@ class AutoCharArrayIntent(FortranRule):
             if not type_spec.items[0] == "CHARACTER":
                 continue
             param_value = type_spec.items[1]
+            # If no length is specified we don't care
+            if param_value is None:
+                continue
             # This might be a length selector, if so get the param value
             if isinstance(param_value, Fortran2003.Length_Selector):
                 param_value = param_value.items[1]
@@ -654,7 +658,7 @@ class AutoCharArrayIntent(FortranRule):
             if intent_attr.items[1].string == "IN":
                 continue
             issues.append(Issue(
-                self._message(
+                self.__message(
                     declaration.items[2].string,
                     intent_attr.items[1]
                 ),
