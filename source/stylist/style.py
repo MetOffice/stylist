@@ -20,17 +20,29 @@ class Style(ABC):
     """
     Abstract parent of all style lists.
     """
+    __unnamed_tally = 1
+
     def __init__(self, *rules: Rule) -> None:
         """
         :param *args: Rules which make up this style.
         """
-        self._rules = list(rules)
+        self.__rules = list(rules)
+        self.__name = f"Unnamed style {self.__unnamed_tally}"
+        self.__unnamed_tally += 1
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @name.setter
+    def name(self, name: str):
+        self.__name = name
 
     def list_rules(self) -> List[Rule]:
         """
         Gets a list of the rules which make up this style.
         """
-        return self._rules
+        return self.__rules
 
     def check(self,
               source: stylist.source.SourceTree) -> List[stylist.issue.Issue]:
@@ -42,7 +54,7 @@ class Style(ABC):
         """
         logging.getLogger(__name__).info('Style: ' + self.__class__.__name__)
         issues: List[stylist.issue.Issue] = []
-        for rule in self._rules:
+        for rule in self.__rules:
             additional_issues = rule.examine(source)
             issues.extend(additional_issues)
             result = "Failed" if additional_issues else "Passed"

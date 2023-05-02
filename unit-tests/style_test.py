@@ -74,6 +74,17 @@ class TestStyle:
         assert [rule.__class__.__name__
                 for rule in unit_under_test.list_rules()] == initials[1]
 
+    def test_naming(self):
+        """
+        Checks a style can be named and renamed.
+        """
+        test_unit = stylist.style.Style()
+        assert test_unit.name == "Unnamed style 1"
+        test_unit.name = "Cheese style"
+        assert test_unit.name == "Cheese style"
+        test_unit.name = "Fish style"
+        assert test_unit.name == "Fish style"
+
     class _RuleHarness(stylist.rule.Rule):
         def __init__(self):
             self.examined = []
