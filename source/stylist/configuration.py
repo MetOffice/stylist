@@ -61,6 +61,7 @@ def load_configuration(config_file: Path) -> Configuration:
         if isinstance(var, FilePipe):
             configuration.add_pipe(name, var)
         elif isinstance(var, Style):
+            var.name = name
             configuration.add_style(name, var)
 
     return configuration

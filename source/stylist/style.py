@@ -52,7 +52,7 @@ class Style(ABC):
         :param source: Source code to inspect.
         :return: All issues found in the source.
         """
-        logging.getLogger(__name__).info('Style: ' + self.__class__.__name__)
+        logging.getLogger(__name__).info(f"Style: {self.name}")
         issues: List[stylist.issue.Issue] = []
         for rule in self.__rules:
             additional_issues = rule.examine(source)
