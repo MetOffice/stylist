@@ -166,8 +166,8 @@ end {prog_unit} test
 
     def test_arguments_without_intent(self):
         """
-        Checks that the rule can cope with arguments which do not specify an
-        intent.
+        Checks that the rule can cope with arguments which should not specify
+        an intent.
         """
         source_text = dedent('''
                              subroutine my_sub( first, second )

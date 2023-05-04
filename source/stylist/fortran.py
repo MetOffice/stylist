@@ -398,14 +398,7 @@ class MissingPointerInit(FortranRule):
             potential_interface_block = data_declaration.parent.parent.parent
             if isinstance(potential_interface_block,
                           Fortran2003.Interface_Block):
-                interface_statement = fp_get_child(potential_interface_block,
-                                                   Fortran2003.Interface_Stmt)
-                #
-                # It's not clear if the exemption applies only to abstract
-                # interfaces or normal ones too.
-                #
-                if interface_statement.children[0] == 'ABSTRACT':
-                    continue
+                continue
 
             for entity in fp_walk(data_declaration, entity_declaration):
                 if str(fp_get_child(entity, Fortran2003.Name)) in ignore_names:
