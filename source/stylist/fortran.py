@@ -8,9 +8,8 @@ Rules relating to Fortran source.
 """
 import re
 from abc import ABC, abstractmethod
-from collections import defaultdict
 from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
-                    Union)
+                    Union, Any, cast)
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
@@ -580,32 +579,32 @@ class KindPattern(FortranRule):
                 type_spec: Fortran2003.Intrinsic_Type_Spec = candidate.items[0]
                 data_type: str = type_spec.items[0].lower()
 
+                if self._patterns.get(data_type) is None:
+                    continue
+                pattern = cast(Pattern[Any], self._patterns[data_type])
+
                 kind_selector: Fortran2003.Kind_Selector = type_spec.items[1]
-                if kind_selector is None and self._patterns.get(data_type) is not None:
+                if kind_selector is None:
                     entity_declaration = candidate.items[2]
                     message = self._ISSUE_TEMPLATE.format(
                         type=data_type,
                         kind='',
                         name=entity_declaration,
-                        pattern=self._patterns[data_type].pattern)
+                        pattern=pattern.pattern)
                     issues.append(Issue(message,
                                         line=_line(candidate)))
                     continue
 
-                if self._patterns.get(data_type) is None:
-                    continue
-
                 if isinstance(kind_selector, Fortran2003.Kind_Selector):
-                    data_type: str = type_spec.items[0].lower()
                     kind: str = str(kind_selector.children[1])
-                    match = self._patterns[data_type].match(kind)
+                    match = pattern.match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
                         message = self._ISSUE_TEMPLATE.format(
                             type=data_type,
                             kind=kind,
                             name=entity_declaration,
-                            pattern=self._patterns[data_type].pattern)
+                            pattern=pattern.pattern)
                         issues.append(Issue(message,
                                             line=_line(candidate)))
 
