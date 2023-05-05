@@ -9,6 +9,8 @@ Test of the rule for kind name pattern.
 import re
 from textwrap import dedent
 
+import pytest
+
 from stylist.fortran import KindPattern
 from stylist.source import (FortranPreProcessor,
                             FortranSource,
@@ -238,8 +240,9 @@ class TestKindPattern:
 
         assert len(issues) == 28
 
-    def test_missing_kind(self):
-        case = dedent("""
+    @pytest.fixture
+    def missing_kind_text(self) -> str:
+        return dedent("""
         module passing_mod
           implicit none
           integer :: global_int
@@ -273,9 +276,43 @@ class TestKindPattern:
         end module passing_mod
         """)
 
-        reader = SourceStringReader(case)
+    def test_missing_kind_expected(self, missing_kind_text):
+        reader = SourceStringReader(missing_kind_text)
         source = FortranSource(reader)
-        unit_under_test = KindPattern(integer=r'.+_beef',
-                                      real=re.compile(r'.+_cheese'))
+        unit_under_test = KindPattern()
         issues = unit_under_test.examine(source)
-        assert len(issues) == 0
+        assert [str(issue) for issue in issues] == []
+
+    def test_missing_kind_integer(self, missing_kind_text):
+        reader = SourceStringReader(missing_kind_text)
+        source = FortranSource(reader)
+        unit_under_test = KindPattern(integer=re.compile('i_.*_var'))
+        issues = unit_under_test.examine(source)
+        assert [str(issue) for issue in issues] \
+               == ["4: Kind '' found for integer variable 'global_int' "
+                   "does not fit the pattern /i_.*_var/.",
+                   "8: Kind '' found for integer variable 'member_int' "
+                   "does not fit the pattern /i_.*_var/.",
+                   "17: Kind '' found for integer variable 'arg_int' "
+                   "does not fit the pattern /i_.*_var/.",
+                   "20: Kind '' found for integer variable 'return_int' "
+                   "does not fit the pattern /i_.*_var/.",
+                   "27: Kind '' found for integer variable 'marg_int' "
+                   "does not fit the pattern /i_.*_var/."]
+
+    def test_missing_kind_float(self, missing_kind_text):
+        reader = SourceStringReader(missing_kind_text)
+        source = FortranSource(reader)
+        unit_under_test = KindPattern(real=re.compile('r_.*_var'))
+        issues = unit_under_test.examine(source)
+        assert [str(issue) for issue in issues] \
+               == ["5: Kind '' found for real variable 'global_float' "
+                   "does not fit the pattern /r_.*_var/.",
+                   "9: Kind '' found for real variable 'member_float' "
+                   "does not fit the pattern /r_.*_var/.",
+                   "18: Kind '' found for real variable 'arg_float' "
+                   "does not fit the pattern /r_.*_var/.",
+                   "28: Kind '' found for real variable 'marg_float' "
+                   "does not fit the pattern /r_.*_var/.",
+                   "30: Kind '' found for real variable 'return_float' "
+                   "does not fit the pattern /r_.*_var/."]
