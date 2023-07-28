@@ -266,7 +266,7 @@ class TestNakedLiteral:
       implicit none
       integer(int32) :: integer_32_good(2_int32), integer_32_bad(2)
       integer(kind=int64) :: integer_64_good(2_int64), integer_64_bad(2)
-      real(real32)   :: real_32_good(2_int32), real_64_bad(2)
+      real(real32)   :: real_32_good(2_int32), real_32_bad(2)
       real(kind=real64)   :: real_64_good(2_int64), real_64_bad(2)
     contains
       subroutine assign_values()

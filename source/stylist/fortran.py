@@ -687,21 +687,30 @@ class NakedLiteral(FortranRule):
                                       Fortran2003.Real_Literal_Constant))
 
         for constant in candidates:
-            if constant.items[1] is None:
-                if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
-                    name = str(fp_get_child(constant.parent, Fortran2003.Name))
-                    message = f'Literal value assigned to "{name}"' \
-                              ' without kind'
-                elif isinstance(constant.parent.parent,
-                                (Fortran2003.Entity_Decl,
-                                 Fortran2003.Component_Decl)):
-                    name = str(fp_get_child(constant.parent.parent,
-                                            Fortran2003.Name))
-                    message = f'Literal value assigned to "{name}"' \
-                              ' without kind'
-                else:
-                    message = 'Literal value without "kind"'
-                issues.append(Issue(message, line=_line(constant)))
+            if constant.items[1] is not None:
+                continue
+
+            if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
+                name = str(fp_get_child(constant.parent, Fortran2003.Name))
+                message = f'Literal value assigned to "{name}"' \
+                          ' without kind'
+            elif isinstance(constant.parent.parent,
+                            (Fortran2003.Entity_Decl,
+                             Fortran2003.Component_Decl)):
+                name = str(fp_get_child(constant.parent.parent,
+                                        Fortran2003.Name))
+                message = f'Literal value assigned to "{name}"' \
+                          ' without kind'
+            elif isinstance(constant.parent.parent.parent,
+                            (Fortran2003.Entity_Decl,
+                             Fortran2003.Assignment_Stmt)):
+                name = str(fp_get_child(constant.parent.parent.parent,
+                                        Fortran2003.Name))
+                message = f'Literal value assigned to "{name}"' \
+                          ' without kind'
+            else:
+                message = 'Literal value without "kind"'
+            issues.append(Issue(message, line=_line(constant)))
 
         return issues
 
