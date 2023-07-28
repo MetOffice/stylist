@@ -304,4 +304,5 @@ class TestNakedLiteral:
 
         test_unit = NakedLiteral(integers=True, reals=True)
         issues = test_unit.examine(source)
-        assert sorted([str(issue) for issue in issues]) == self.__expected_array
+        assert sorted([str(issue) for issue in issues]) \
+               == self.__expected_array
