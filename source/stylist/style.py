@@ -22,7 +22,7 @@ class Style(ABC):
     """
     def __init__(self, *rules: Rule) -> None:
         """
-        :param *args: Rules which make up this style.
+        :param rules: Rules which make up this style.
         """
         self._rules = list(rules)
 
