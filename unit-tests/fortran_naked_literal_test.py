@@ -259,3 +259,49 @@ class TestNakedLiteral:
         test_unit = NakedLiteral(integers=False)
         issues = test_unit.examine(source)
         assert sorted([str(issue) for issue in issues]) == self._expected_float
+
+    __array_text = dedent('''
+    module array_mod
+      use iso_fortran_env, only : int64, int32, real64, real32
+      implicit none
+      integer(int32) :: integer_32_good(2_int32), integer_32_bad(2)
+      integer(kind=int64) :: integer_64_good(2_int64), integer_64_bad(2)
+      real(real32)   :: real_32_good(2_int32), real_64_bad(2)
+      real(kind=real64)   :: real_64_good(2_int64), real_64_bad(2)
+    contains
+      subroutine assign_values()
+        implicit none
+        integer_32_good = (/12_int32, 24_int32/)
+        integer_32_bad  = (/13, 26/)
+        integer_64_good = (/14_int64, 28_int64/)
+        integer_64_bad = (/15, 30/)
+        real_32_good = (/2.3_real32, 4.6_real32/)
+        real_32_bad = (/3.4, 6.8/)
+        real_64_good = (/4.5_real64, 6.0_real64/)
+        real_64_bad = (/5.6, 11.2/)
+      end subroutine assign_values
+    end module array_mod
+    ''')
+
+    __expected_array = [
+        '13: Literal value assigned to "integer_32_bad" without kind',
+        '13: Literal value assigned to "integer_32_bad" without kind',
+        '15: Literal value assigned to "integer_64_bad" without kind',
+        '15: Literal value assigned to "integer_64_bad" without kind',
+        '17: Literal value assigned to "real_32_bad" without kind',
+        '17: Literal value assigned to "real_32_bad" without kind',
+        '19: Literal value assigned to "real_64_bad" without kind',
+        '19: Literal value assigned to "real_64_bad" without kind',
+        '5: Literal value assigned to "integer_32_bad" without kind',
+        '6: Literal value assigned to "integer_64_bad" without kind',
+        '7: Literal value assigned to "real_32_bad" without kind',
+        '8: Literal value assigned to "real_64_bad" without kind'
+    ]
+
+    def test_arrays(self):
+        reader = SourceStringReader(self.__array_text)
+        source = FortranSource(reader)
+
+        test_unit = NakedLiteral(integers=True, reals=True)
+        issues = test_unit.examine(source)
+        assert sorted([str(issue) for issue in issues]) == self.__expected_array
