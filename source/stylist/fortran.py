@@ -686,45 +686,35 @@ class NakedLiteral(FortranRule):
             candidates.extend(fp_walk(subject.get_tree(),
                                       Fortran2003.Real_Literal_Constant))
 
-        for constant in candidates:
-            if constant.items[1] is not None:
+        for literal in candidates:
+            if literal.items[1] is not None:  # Skip when kind is present
                 continue
 
-            if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
-                parent = fp_get_child(constant.parent, Fortran2003.Part_Ref)
-                if parent is None:
-                    parent = constant.parent
-                name = str(fp_get_child(parent, Fortran2003.Name))
-                if name is None:
-                    print(repr(constant.parent))
-                message = f'Literal value assigned to "{name}"' \
-                          ' without kind'
-            elif isinstance(constant.parent.parent,
-                            (Fortran2003.Entity_Decl,
-                             Fortran2003.Component_Decl)):
-                name = str(fp_get_child(constant.parent.parent,
-                                        Fortran2003.Name))
-                if name is None:
-                    print(repr(constant.parent.parent))
-                message = f'Literal value assigned to "{name}"' \
-                          ' without kind'
-            elif isinstance(constant.parent.parent, Fortran2003.Part_Ref):
-                name = str(fp_get_child(constant.parent.parent,
-                                        Fortran2003.Name))
-                message = f'Literal value index used with "{name}"' \
-                          ' without kind'
-            elif isinstance(constant.parent.parent.parent,
-                            (Fortran2003.Entity_Decl,
-                             Fortran2003.Assignment_Stmt)):
-                name = str(fp_get_child(constant.parent.parent.parent,
-                                        Fortran2003.Name))
-                if name is None:
-                    print(repr(constant.parent.parent.parent))
-                message = f'Literal value assigned to "{name}"' \
-                          ' without kind'
-            else:
+            name: Optional[str] = None
+            parent = literal.parent
+            while parent is not None:
+                if isinstance(parent, Fortran2003.Part_Ref):
+                    name = str(fp_get_child(parent,
+                                            Fortran2003.Name))
+                    message = f'Literal value index used with "{name}"' \
+                              ' without kind'
+                    break
+                elif isinstance(parent, (Fortran2003.Assignment_Stmt,
+                                         Fortran2003.Entity_Decl,
+                                         Fortran2003.Component_Decl)):
+                    array_slice = fp_get_child(parent, Fortran2003.Part_Ref)
+                    if array_slice is None:
+                        name = str(fp_get_child(parent, Fortran2003.Name))
+                    else:
+                        name = str(fp_get_child(array_slice, Fortran2003.Name))
+                    message = f'Literal value assigned to "{name}"' \
+                              ' without kind'
+                    break
+                else:
+                    parent = parent.parent
+            if name is None:
                 message = 'Literal value without "kind"'
-            issues.append(Issue(message, line=_line(constant)))
+            issues.append(Issue(message, line=_line(literal)))
 
         return issues
 

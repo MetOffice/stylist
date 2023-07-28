@@ -290,6 +290,12 @@ class TestNakedLiteral:
         real_64_good(1_int64) = 9.3_real64
         real_64_bad(2) = 18.6
       end subroutine
+      subroutine array_slices()
+        integer_32_bad(1:1) = 20_int32
+        integer_64_bad(1:1) = 21_int64
+        real_32_bad(1:1) = 22.2_real32
+        real_64_bad(1:1) = 23.3_real64
+      end subroutine
     end module array_mod
     ''')
 
@@ -310,6 +316,14 @@ class TestNakedLiteral:
         '27: Literal value index used with "real_32_bad" without kind',
         '29: Literal value assigned to "real_64_bad" without kind',
         '29: Literal value index used with "real_64_bad" without kind',
+        '32: Literal value index used with "integer_32_bad" without kind',
+        '32: Literal value index used with "integer_32_bad" without kind',
+        '33: Literal value index used with "integer_64_bad" without kind',
+        '33: Literal value index used with "integer_64_bad" without kind',
+        '34: Literal value index used with "real_32_bad" without kind',
+        '34: Literal value index used with "real_32_bad" without kind',
+        '35: Literal value index used with "real_64_bad" without kind',
+        '35: Literal value index used with "real_64_bad" without kind',
         '5: Literal value assigned to "integer_32_bad" without kind',
         '6: Literal value assigned to "integer_64_bad" without kind',
         '7: Literal value assigned to "real_32_bad" without kind',
