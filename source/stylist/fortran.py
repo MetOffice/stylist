@@ -691,7 +691,12 @@ class NakedLiteral(FortranRule):
                 continue
 
             if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
-                name = str(fp_get_child(constant.parent, Fortran2003.Name))
+                parent = fp_get_child(constant.parent, Fortran2003.Part_Ref)
+                if parent is None:
+                    parent = constant.parent
+                name = str(fp_get_child(parent, Fortran2003.Name))
+                if name is None:
+                    print(repr(constant.parent))
                 message = f'Literal value assigned to "{name}"' \
                           ' without kind'
             elif isinstance(constant.parent.parent,
@@ -699,13 +704,22 @@ class NakedLiteral(FortranRule):
                              Fortran2003.Component_Decl)):
                 name = str(fp_get_child(constant.parent.parent,
                                         Fortran2003.Name))
+                if name is None:
+                    print(repr(constant.parent.parent))
                 message = f'Literal value assigned to "{name}"' \
+                          ' without kind'
+            elif isinstance(constant.parent.parent, Fortran2003.Part_Ref):
+                name = str(fp_get_child(constant.parent.parent,
+                                        Fortran2003.Name))
+                message = f'Literal value index used with "{name}"' \
                           ' without kind'
             elif isinstance(constant.parent.parent.parent,
                             (Fortran2003.Entity_Decl,
                              Fortran2003.Assignment_Stmt)):
                 name = str(fp_get_child(constant.parent.parent.parent,
                                         Fortran2003.Name))
+                if name is None:
+                    print(repr(constant.parent.parent.parent))
                 message = f'Literal value assigned to "{name}"' \
                           ' without kind'
             else:
