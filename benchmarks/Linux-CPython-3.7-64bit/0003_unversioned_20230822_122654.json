@@ -1,0 +1,1988 @@
+{
+    "machine_info": {
+        "node": "fv-az1412-328",
+        "processor": "x86_64",
+        "machine": "x86_64",
+        "python_compiler": "GCC 11.3.0",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.7.17",
+        "python_version": "3.7.17",
+        "python_build": [
+            "default",
+            "Jun 23 2023 13:13:52"
+        ],
+        "release": "5.15.0-1041-azure",
+        "system": "Linux",
+        "cpu": {
+            "python_version": "3.7.17.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "X86_64",
+            "bits": 64,
+            "count": 2,
+            "arch_string_raw": "x86_64",
+            "vendor_id_raw": "GenuineIntel",
+            "brand_raw": "Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+            "hz_advertised_friendly": "2.6000 GHz",
+            "hz_actual_friendly": "2.5939 GHz",
+            "hz_advertised": [
+                2600000000,
+                0
+            ],
+            "hz_actual": [
+                2593907000,
+                0
+            ],
+            "stepping": 7,
+            "model": 85,
+            "family": 6,
+            "flags": [
+                "3dnowprefetch",
+                "abm",
+                "adx",
+                "aes",
+                "apic",
+                "avx",
+                "avx2",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512vl",
+                "bmi1",
+                "bmi2",
+                "clflush",
+                "clflushopt",
+                "cmov",
+                "constant_tsc",
+                "cpuid",
+                "cx16",
+                "cx8",
+                "de",
+                "erms",
+                "f16c",
+                "fma",
+                "fpu",
+                "fsgsbase",
+                "fxsr",
+                "hle",
+                "ht",
+                "hypervisor",
+                "invpcid",
+                "invpcid_single",
+                "lahf_lm",
+                "lm",
+                "mca",
+                "mce",
+                "md_clear",
+                "mmx",
+                "movbe",
+                "msr",
+                "mtrr",
+                "nopl",
+                "nx",
+                "osxsave",
+                "pae",
+                "pat",
+                "pcid",
+                "pclmulqdq",
+                "pdpe1gb",
+                "pge",
+                "pni",
+                "popcnt",
+                "pse",
+                "pse36",
+                "pti",
+                "rdrand",
+                "rdrnd",
+                "rdseed",
+                "rdtscp",
+                "rep_good",
+                "rtm",
+                "sep",
+                "smap",
+                "smep",
+                "ss",
+                "sse",
+                "sse2",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "syscall",
+                "tsc",
+                "vme",
+                "xsave",
+                "xsavec",
+                "xsaveopt",
+                "xsaves",
+                "xtopology"
+            ],
+            "l3_cache_size": 37486592,
+            "l2_cache_size": 2097152,
+            "l1_data_cache_size": 65536,
+            "l1_instruction_cache_size": 65536,
+            "l2_cache_line_size": 256,
+            "l2_cache_associativity": 6
+        }
+    },
+    "commit_info": {
+        "id": "unversioned",
+        "time": null,
+        "author_time": null,
+        "dirty": false,
+        "project": "stylist",
+        "branch": "(unknown)"
+    },
+    "benchmarks": [
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-AutoCharArrayIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-AutoCharArrayIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.AutoCharArrayIntent object at 0x7fb07bfcf610>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-AutoCharArrayIntent",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "AutoCharArrayIntent",
+                "timestamp": 1692707216.450539
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0018326309999991963,
+                "max": 0.0018952310000059924,
+                "mean": 0.0018609109999999872,
+                "stddev": 2.3257084944802177e-05,
+                "rounds": 5,
+                "median": 0.0018606309999995574,
+                "iqr": 2.9450000003095056e-05,
+                "q1": 0.0018447809999972975,
+                "q3": 0.0018742310000003926,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.0018326309999991963,
+                "hd15iqr": 0.0018952310000059924,
+                "ops": 537.3712122718425,
+                "total": 0.009304554999999937,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-ForbidUsage]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-ForbidUsage]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.ForbidUsage object at 0x7fb07bfcbf50>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-ForbidUsage",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "ForbidUsage",
+                "timestamp": 1692707219.451258
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0037203619999957027,
+                "max": 0.00373256200000327,
+                "mean": 0.0037257819999979348,
+                "stddev": 4.612699862954773e-06,
+                "rounds": 5,
+                "median": 0.0037264619999959336,
+                "iqr": 5.900000003222772e-06,
+                "q1": 0.003722236999996298,
+                "q3": 0.0037281369999995206,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.0037203619999957027,
+                "hd15iqr": 0.00373256200000327,
+                "ops": 268.4000298462321,
+                "total": 0.018628909999989673,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-IntrinsicModule]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-IntrinsicModule]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.IntrinsicModule object at 0x7fb07c7079d0>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-IntrinsicModule",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "IntrinsicModule",
+                "timestamp": 1692707221.240888
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.001878430999994407,
+                "max": 0.0018989320000031285,
+                "mean": 0.00188683160000096,
+                "stddev": 8.212277415772016e-06,
+                "rounds": 5,
+                "median": 0.0018833320000055664,
+                "iqr": 1.1876000009181098e-05,
+                "q1": 0.001881280999995738,
+                "q3": 0.0018931570000049192,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.001878430999994407,
+                "hd15iqr": 0.0018989320000031285,
+                "ops": 529.9890037878797,
+                "total": 0.0094341580000048,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-KindPattern]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-KindPattern]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.KindPattern object at 0x7fb07c3bf2d0>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-KindPattern",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "KindPattern",
+                "timestamp": 1692707222.96724
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.007520682000006218,
+                "max": 0.007605183999999099,
+                "mean": 0.007544482999998081,
+                "stddev": 3.443845598271574e-05,
+                "rounds": 5,
+                "median": 0.0075345829999946545,
+                "iqr": 2.6975499991976903e-05,
+                "q1": 0.007525482750001089,
+                "q3": 0.007552458249993066,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.007520682000006218,
+                "hd15iqr": 0.007605183999999099,
+                "ops": 132.54718713001995,
+                "total": 0.037722414999990406,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-LabelledDoExit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-LabelledDoExit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.LabelledDoExit object at 0x7fb07bfcf990>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-LabelledDoExit",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "LabelledDoExit",
+                "timestamp": 1692707224.792779
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.003719840999991675,
+                "max": 0.0037551410000133956,
+                "mean": 0.0037399812000018075,
+                "stddev": 1.7484654144933717e-05,
+                "rounds": 5,
+                "median": 0.003750242000009507,
+                "iqr": 3.1775000017830735e-05,
+                "q1": 0.0037214909999896406,
+                "q3": 0.0037532660000074713,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.003719840999991675,
+                "hd15iqr": 0.0037551410000133956,
+                "ops": 267.381023198597,
+                "total": 0.018699906000009037,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-MissingImplicit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-MissingImplicit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingImplicit object at 0x7fb08465d750>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-MissingImplicit",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "MissingImplicit",
+                "timestamp": 1692707226.543541
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0004020039999943492,
+                "max": 0.00043640499998787163,
+                "mean": 0.00041654459999165285,
+                "stddev": 1.7841028284560113e-05,
+                "rounds": 5,
+                "median": 0.00040620499999022286,
+                "iqr": 3.3425999998115685e-05,
+                "q1": 0.00040237899999340243,
+                "q3": 0.0004358049999915181,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.0004020039999943492,
+                "hd15iqr": 0.00043640499998787163,
+                "ops": 2400.7033100898175,
+                "total": 0.002082722999958264,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-MissingIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-MissingIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingIntent object at 0x7fb07c378990>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-MissingIntent",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "MissingIntent",
+                "timestamp": 1692707228.310757
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0005336079999977983,
+                "max": 0.0005693089999994072,
+                "mean": 0.0005471485999976267,
+                "stddev": 1.564682205399309e-05,
+                "rounds": 5,
+                "median": 0.0005406079999943358,
+                "iqr": 2.6025250008387957e-05,
+                "q1": 0.0005344337499941787,
+                "q3": 0.0005604590000025667,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.0005336079999977983,
+                "hd15iqr": 0.0005693089999994072,
+                "ops": 1827.6570569756327,
+                "total": 0.0027357429999881333,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-MissingOnly]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-MissingOnly]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingOnly object at 0x7fb07c27f790>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-MissingOnly",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "MissingOnly",
+                "timestamp": 1692707230.067698
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0018891300000092315,
+                "max": 0.001905930000006606,
+                "mean": 0.0018959298000027047,
+                "stddev": 7.6110676150026375e-06,
+                "rounds": 5,
+                "median": 0.001893529999989596,
+                "iqr": 1.3650750005922418e-05,
+                "q1": 0.0018892042500020523,
+                "q3": 0.0019028550000079747,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.0018891300000092315,
+                "hd15iqr": 0.001905930000006606,
+                "ops": 527.4456891803554,
+                "total": 0.009479649000013524,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-MissingPointerInit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-MissingPointerInit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingPointerInit object at 0x7fb07bf7cd90>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-MissingPointerInit",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "MissingPointerInit",
+                "timestamp": 1692707231.797977
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.04849859900001263,
+                "max": 0.04979251400000351,
+                "mean": 0.048937063600004646,
+                "stddev": 0.0005346330893704977,
+                "rounds": 5,
+                "median": 0.04882700200001011,
+                "iqr": 0.0007478339999984485,
+                "q1": 0.048500173250001666,
+                "q3": 0.049248007250000114,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.04849859900001263,
+                "hd15iqr": 0.04979251400000351,
+                "ops": 20.43440955455907,
+                "total": 0.24468531800002324,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[conv_gr_kernel_mod.F90-NakedLiteral]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[conv_gr_kernel_mod.F90-NakedLiteral]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.NakedLiteral object at 0x7fb08465d4d0>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-NakedLiteral",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "fortran-rule": "NakedLiteral",
+                "timestamp": 1692707233.919498
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.029847267999997484,
+                "max": 0.08209231300000397,
+                "mean": 0.04054624039999908,
+                "stddev": 0.02322595974579756,
+                "rounds": 5,
+                "median": 0.030286273999990954,
+                "iqr": 0.013309365000004902,
+                "q1": 0.03002727024999885,
+                "q3": 0.04333663525000375,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.029847267999997484,
+                "hd15iqr": 0.08209231300000397,
+                "ops": 24.663199106371962,
+                "total": 0.2027312019999954,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-AutoCharArrayIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-AutoCharArrayIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.AutoCharArrayIntent object at 0x7fb07bfcf610>]"
+            },
+            "param": "mesh_mod.F90-AutoCharArrayIntent",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "AutoCharArrayIntent",
+                "timestamp": 1692707235.900113
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004150851999995098,
+                "max": 0.004196051999997508,
+                "mean": 0.004175271599996222,
+                "stddev": 1.6619898324772725e-05,
+                "rounds": 5,
+                "median": 0.004176952000008782,
+                "iqr": 2.029999999919596e-05,
+                "q1": 0.0041654012499918736,
+                "q3": 0.0041857012499910695,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.004150851999995098,
+                "hd15iqr": 0.004196051999997508,
+                "ops": 239.50537732704737,
+                "total": 0.02087635799998111,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-ForbidUsage]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-ForbidUsage]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.ForbidUsage object at 0x7fb07bfcbf50>]"
+            },
+            "param": "mesh_mod.F90-ForbidUsage",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "ForbidUsage",
+                "timestamp": 1692707237.778333
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.008637332999995806,
+                "max": 0.008724734000011836,
+                "mean": 0.008680793600004223,
+                "stddev": 4.084017826643987e-05,
+                "rounds": 5,
+                "median": 0.008687434000009375,
+                "iqr": 7.780100001042456e-05,
+                "q1": 0.008639282999997278,
+                "q3": 0.008717084000007702,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 0.008637332999995806,
+                "hd15iqr": 0.008724734000011836,
+                "ops": 115.19684098922865,
+                "total": 0.04340396800002111,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-IntrinsicModule]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-IntrinsicModule]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.IntrinsicModule object at 0x7fb07c7079d0>]"
+            },
+            "param": "mesh_mod.F90-IntrinsicModule",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "IntrinsicModule",
+                "timestamp": 1692707239.553004
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004274754999997299,
+                "max": 0.004382257000003165,
+                "mean": 0.0043124558000016576,
+                "stddev": 4.092811809498076e-05,
+                "rounds": 5,
+                "median": 0.00429865600000312,
+                "iqr": 3.429974999491492e-05,
+                "q1": 0.004292455750004365,
+                "q3": 0.00432675549999928,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.004274754999997299,
+                "hd15iqr": 0.004382257000003165,
+                "ops": 231.88643463884677,
+                "total": 0.02156227900000829,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-KindPattern]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-KindPattern]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.KindPattern object at 0x7fb07c3bf2d0>]"
+            },
+            "param": "mesh_mod.F90-KindPattern",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "KindPattern",
+                "timestamp": 1692707241.270687
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.017432826000003843,
+                "max": 0.017861831000004713,
+                "mean": 0.017596767599999907,
+                "stddev": 0.0001633145861357578,
+                "rounds": 5,
+                "median": 0.01754842699999415,
+                "iqr": 0.00018817774999746462,
+                "q1": 0.01749552600000115,
+                "q3": 0.017683703749998614,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.017432826000003843,
+                "hd15iqr": 0.017861831000004713,
+                "ops": 56.82861891066887,
+                "total": 0.08798383799999954,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-LabelledDoExit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-LabelledDoExit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.LabelledDoExit object at 0x7fb07bfcf990>]"
+            },
+            "param": "mesh_mod.F90-LabelledDoExit",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "LabelledDoExit",
+                "timestamp": 1692707243.108848
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.008572911000001682,
+                "max": 0.008624611999991316,
+                "mean": 0.008590551199995388,
+                "stddev": 2.1284854475190184e-05,
+                "rounds": 5,
+                "median": 0.00857881099999247,
+                "iqr": 2.7625249988005862e-05,
+                "q1": 0.008577036000001925,
+                "q3": 0.008604661249989931,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.008572911000001682,
+                "hd15iqr": 0.008624611999991316,
+                "ops": 116.40696583014798,
+                "total": 0.042952755999976944,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-MissingImplicit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-MissingImplicit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingImplicit object at 0x7fb08465d750>]"
+            },
+            "param": "mesh_mod.F90-MissingImplicit",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "MissingImplicit",
+                "timestamp": 1692707244.805966
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0007109100000093349,
+                "max": 0.0007309089999978369,
+                "mean": 0.0007186293999978943,
+                "stddev": 9.905441952338808e-06,
+                "rounds": 5,
+                "median": 0.0007120089999972379,
+                "iqr": 1.7375500000582633e-05,
+                "q1": 0.0007112842499950034,
+                "q3": 0.000728659749995586,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.0007109100000093349,
+                "hd15iqr": 0.0007309089999978369,
+                "ops": 1391.5378357786783,
+                "total": 0.0035931469999894716,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-MissingIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-MissingIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingIntent object at 0x7fb07c378990>]"
+            },
+            "param": "mesh_mod.F90-MissingIntent",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "MissingIntent",
+                "timestamp": 1692707246.519723
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.002102726999993365,
+                "max": 0.002263728999992054,
+                "mean": 0.00216628799999512,
+                "stddev": 6.426102279581884e-05,
+                "rounds": 5,
+                "median": 0.0021480279999934737,
+                "iqr": 9.357699999412716e-05,
+                "q1": 0.0021178769999998792,
+                "q3": 0.0022114539999940064,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.002102726999993365,
+                "hd15iqr": 0.002263728999992054,
+                "ops": 461.61913836122096,
+                "total": 0.0108314399999756,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-MissingOnly]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-MissingOnly]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingOnly object at 0x7fb07c27f790>]"
+            },
+            "param": "mesh_mod.F90-MissingOnly",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "MissingOnly",
+                "timestamp": 1692707248.199136
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0043041750000014645,
+                "max": 0.00437087599999586,
+                "mean": 0.004322575199998369,
+                "stddev": 2.751834206657719e-05,
+                "rounds": 5,
+                "median": 0.0043123749999978145,
+                "iqr": 2.4850249992880435e-05,
+                "q1": 0.004306500000001989,
+                "q3": 0.00433135024999487,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.0043041750000014645,
+                "hd15iqr": 0.00437087599999586,
+                "ops": 231.3435750060236,
+                "total": 0.021612875999991843,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-MissingPointerInit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-MissingPointerInit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingPointerInit object at 0x7fb07bf7cd90>]"
+            },
+            "param": "mesh_mod.F90-MissingPointerInit",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "MissingPointerInit",
+                "timestamp": 1692707249.94296
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.03700964099999737,
+                "max": 0.03737204800000882,
+                "mean": 0.037167624399998545,
+                "stddev": 0.00013640343279500028,
+                "rounds": 5,
+                "median": 0.03717224499999361,
+                "iqr": 0.0001751282500102036,
+                "q1": 0.03706671749999302,
+                "q3": 0.03724184575000322,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.03700964099999737,
+                "hd15iqr": 0.03737204800000882,
+                "ops": 26.905136288453214,
+                "total": 0.18583812199999272,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[mesh_mod.F90-NakedLiteral]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[mesh_mod.F90-NakedLiteral]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.NakedLiteral object at 0x7fb08465d4d0>]"
+            },
+            "param": "mesh_mod.F90-NakedLiteral",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "fortran-rule": "NakedLiteral",
+                "timestamp": 1692707251.844533
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.03796975899999211,
+                "max": 0.03880137300001252,
+                "mean": 0.03825784380000243,
+                "stddev": 0.0003396184720795485,
+                "rounds": 5,
+                "median": 0.038234063000004426,
+                "iqr": 0.00045788300000637605,
+                "q1": 0.03797395899999856,
+                "q3": 0.038431842000004934,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.03796975899999211,
+                "hd15iqr": 0.03880137300001252,
+                "ops": 26.138430728810086,
+                "total": 0.19128921900001217,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-AutoCharArrayIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-AutoCharArrayIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.AutoCharArrayIntent object at 0x7fb07bfcf610>]"
+            },
+            "param": "ncdf_quad_mod.F90-AutoCharArrayIntent",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "AutoCharArrayIntent",
+                "timestamp": 1692707253.838762
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004306865999993192,
+                "max": 0.004465467999992256,
+                "mean": 0.00434714599999495,
+                "stddev": 6.675718464224537e-05,
+                "rounds": 5,
+                "median": 0.00431626499999993,
+                "iqr": 5.210125000942867e-05,
+                "q1": 0.004313165249989481,
+                "q3": 0.00436526649999891,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.004306865999993192,
+                "hd15iqr": 0.004465467999992256,
+                "ops": 230.03598222860737,
+                "total": 0.02173572999997475,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-ForbidUsage]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-ForbidUsage]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.ForbidUsage object at 0x7fb07bfcbf50>]"
+            },
+            "param": "ncdf_quad_mod.F90-ForbidUsage",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "ForbidUsage",
+                "timestamp": 1692707256.213358
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.008718435000005798,
+                "max": 0.00879873700000644,
+                "mean": 0.008760156200000323,
+                "stddev": 3.567307305145662e-05,
+                "rounds": 5,
+                "median": 0.008775236000005293,
+                "iqr": 6.200125000788148e-05,
+                "q1": 0.008724285749991623,
+                "q3": 0.008786286999999504,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.008718435000005798,
+                "hd15iqr": 0.00879873700000644,
+                "ops": 114.15321566982595,
+                "total": 0.04380078100000162,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-IntrinsicModule]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-IntrinsicModule]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.IntrinsicModule object at 0x7fb07c7079d0>]"
+            },
+            "param": "ncdf_quad_mod.F90-IntrinsicModule",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "IntrinsicModule",
+                "timestamp": 1692707258.387182
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004401068000007058,
+                "max": 0.004447569000006979,
+                "mean": 0.004418048600001612,
+                "stddev": 1.8889994188169288e-05,
+                "rounds": 5,
+                "median": 0.00441526800000247,
+                "iqr": 2.7075250010000218e-05,
+                "q1": 0.004402418749993586,
+                "q3": 0.0044294940000035865,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.004401068000007058,
+                "hd15iqr": 0.004447569000006979,
+                "ops": 226.34427335173163,
+                "total": 0.02209024300000806,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-KindPattern]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-KindPattern]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.KindPattern object at 0x7fb07c3bf2d0>]"
+            },
+            "param": "ncdf_quad_mod.F90-KindPattern",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "KindPattern",
+                "timestamp": 1692707260.473805
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.018097281000009957,
+                "max": 0.018174982999994427,
+                "mean": 0.01814094180000154,
+                "stddev": 3.6338674029114386e-05,
+                "rounds": 5,
+                "median": 0.01815968200000384,
+                "iqr": 6.472624998465903e-05,
+                "q1": 0.018103956000008026,
+                "q3": 0.018168682249992685,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.018097281000009957,
+                "hd15iqr": 0.018174982999994427,
+                "ops": 55.123929673811915,
+                "total": 0.09070470900000771,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-LabelledDoExit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-LabelledDoExit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.LabelledDoExit object at 0x7fb07bfcf990>]"
+            },
+            "param": "ncdf_quad_mod.F90-LabelledDoExit",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "LabelledDoExit",
+                "timestamp": 1692707262.725854
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.008769190999998955,
+                "max": 0.008883092999994346,
+                "mean": 0.008825912200001085,
+                "stddev": 4.5689500334278805e-05,
+                "rounds": 5,
+                "median": 0.008819592000008925,
+                "iqr": 7.35512500114055e-05,
+                "q1": 0.00879139174999466,
+                "q3": 0.008864943000006065,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.008769190999998955,
+                "hd15iqr": 0.008883092999994346,
+                "ops": 113.30273600499642,
+                "total": 0.044129561000005424,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-MissingImplicit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-MissingImplicit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingImplicit object at 0x7fb08465d750>]"
+            },
+            "param": "ncdf_quad_mod.F90-MissingImplicit",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "MissingImplicit",
+                "timestamp": 1692707264.934182
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0005131109999894079,
+                "max": 0.0005389119999961167,
+                "mean": 0.0005226313999969534,
+                "stddev": 1.1695169102318327e-05,
+                "rounds": 5,
+                "median": 0.0005163120000020172,
+                "iqr": 1.95002500049668e-05,
+                "q1": 0.0005135609999946666,
+                "q3": 0.0005330612499996334,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.0005131109999894079,
+                "hd15iqr": 0.0005389119999961167,
+                "ops": 1913.3944114452927,
+                "total": 0.002613156999984767,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-MissingIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-MissingIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingIntent object at 0x7fb07c378990>]"
+            },
+            "param": "ncdf_quad_mod.F90-MissingIntent",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "MissingIntent",
+                "timestamp": 1692707266.975427
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0011135170000073913,
+                "max": 0.0013005199999867045,
+                "mean": 0.0011637981999967906,
+                "stddev": 7.764709982166997e-05,
+                "rounds": 5,
+                "median": 0.0011290180000003147,
+                "iqr": 6.66272499927345e-05,
+                "q1": 0.001121916999998973,
+                "q3": 0.0011885442499917076,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.0011135170000073913,
+                "hd15iqr": 0.0013005199999867045,
+                "ops": 859.2554963590403,
+                "total": 0.005818990999983953,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-MissingOnly]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-MissingOnly]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingOnly object at 0x7fb07c27f790>]"
+            },
+            "param": "ncdf_quad_mod.F90-MissingOnly",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "MissingOnly",
+                "timestamp": 1692707269.147105
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004421969999995667,
+                "max": 0.004475871000011011,
+                "mean": 0.004456750800000009,
+                "stddev": 2.23956332880083e-05,
+                "rounds": 5,
+                "median": 0.004460471000001576,
+                "iqr": 3.320025000519422e-05,
+                "q1": 0.004442670749995159,
+                "q3": 0.004475871000000353,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.004421969999995667,
+                "hd15iqr": 0.004475871000011011,
+                "ops": 224.37871105559637,
+                "total": 0.022283754000000044,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-MissingPointerInit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-MissingPointerInit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingPointerInit object at 0x7fb07bf7cd90>]"
+            },
+            "param": "ncdf_quad_mod.F90-MissingPointerInit",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "MissingPointerInit",
+                "timestamp": 1692707271.286381
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.07472113000000036,
+                "max": 0.07627695300000426,
+                "mean": 0.07527823800000419,
+                "stddev": 0.0006290040716373957,
+                "rounds": 5,
+                "median": 0.07503653400000587,
+                "iqr": 0.0008589874999920255,
+                "q1": 0.0748289815000085,
+                "q3": 0.07568796900000052,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.07472113000000036,
+                "hd15iqr": 0.07627695300000426,
+                "ops": 13.284051627243777,
+                "total": 0.37639119000002097,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[ncdf_quad_mod.F90-NakedLiteral]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[ncdf_quad_mod.F90-NakedLiteral]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.NakedLiteral object at 0x7fb08465d4d0>]"
+            },
+            "param": "ncdf_quad_mod.F90-NakedLiteral",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "fortran-rule": "NakedLiteral",
+                "timestamp": 1692707273.931329
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.044648275000000126,
+                "max": 0.045198882999997636,
+                "mean": 0.04496125939999729,
+                "stddev": 0.0002449203677358037,
+                "rounds": 5,
+                "median": 0.04510228199998778,
+                "iqr": 0.0004048807499970053,
+                "q1": 0.044724775750001555,
+                "q3": 0.04512965649999856,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.044648275000000126,
+                "hd15iqr": 0.045198882999997636,
+                "ops": 22.2413698669673,
+                "total": 0.22480629699998644,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-AutoCharArrayIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-AutoCharArrayIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.AutoCharArrayIntent object at 0x7fb07bfcf610>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-AutoCharArrayIntent",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "AutoCharArrayIntent",
+                "timestamp": 1692707276.287158
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0021788330000021006,
+                "max": 0.0022706350000021303,
+                "mean": 0.0022044334000014486,
+                "stddev": 3.761756505695856e-05,
+                "rounds": 5,
+                "median": 0.002191632999995363,
+                "iqr": 3.195049999860089e-05,
+                "q1": 0.002183108000004097,
+                "q3": 0.002215058500002698,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.0021788330000021006,
+                "hd15iqr": 0.0022706350000021303,
+                "ops": 453.63130498718755,
+                "total": 0.011022167000007244,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-ForbidUsage]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-ForbidUsage]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.ForbidUsage object at 0x7fb07bfcbf50>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-ForbidUsage",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "ForbidUsage",
+                "timestamp": 1692707278.558558
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004568069000001174,
+                "max": 0.0046366700000106675,
+                "mean": 0.004608169800005157,
+                "stddev": 2.9178246184406415e-05,
+                "rounds": 5,
+                "median": 0.0046053700000072695,
+                "iqr": 4.850025000635583e-05,
+                "q1": 0.004587869750000806,
+                "q3": 0.004636370000007162,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.004568069000001174,
+                "hd15iqr": 0.0046366700000106675,
+                "ops": 217.00589244755713,
+                "total": 0.023040849000025787,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-IntrinsicModule]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-IntrinsicModule]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.IntrinsicModule object at 0x7fb07c7079d0>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-IntrinsicModule",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "IntrinsicModule",
+                "timestamp": 1692707280.530375
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.002294633999994744,
+                "max": 0.0023195350000122517,
+                "mean": 0.0023079741999993074,
+                "stddev": 1.0383341479729295e-05,
+                "rounds": 5,
+                "median": 0.00230863400000203,
+                "iqr": 1.7775250000795495e-05,
+                "q1": 0.0022992839999957937,
+                "q3": 0.002317059249996589,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.002294633999994744,
+                "hd15iqr": 0.0023195350000122517,
+                "ops": 433.28040668751845,
+                "total": 0.011539870999996538,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-KindPattern]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-KindPattern]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.KindPattern object at 0x7fb07c3bf2d0>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-KindPattern",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "KindPattern",
+                "timestamp": 1692707282.504698
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.009451040000001854,
+                "max": 0.009767044000000169,
+                "mean": 0.009586781799998789,
+                "stddev": 0.00013349660060796588,
+                "rounds": 5,
+                "median": 0.00956664099999216,
+                "iqr": 0.00022772899999523588,
+                "q1": 0.009469340000002546,
+                "q3": 0.009697068999997782,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.009451040000001854,
+                "hd15iqr": 0.009767044000000169,
+                "ops": 104.31029107183042,
+                "total": 0.047933908999993946,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-LabelledDoExit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-LabelledDoExit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.LabelledDoExit object at 0x7fb07bfcf990>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-LabelledDoExit",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "LabelledDoExit",
+                "timestamp": 1692707284.43934
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004635868999997683,
+                "max": 0.004655468999999357,
+                "mean": 0.004645028800001683,
+                "stddev": 7.260429064835759e-06,
+                "rounds": 5,
+                "median": 0.004643368000003534,
+                "iqr": 9.025000000661976e-06,
+                "q1": 0.004640819000002239,
+                "q3": 0.004649844000002901,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.004635868999997683,
+                "hd15iqr": 0.004655468999999357,
+                "ops": 215.28391815345424,
+                "total": 0.023225144000008413,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingImplicit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingImplicit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingImplicit object at 0x7fb08465d750>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-MissingImplicit",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "MissingImplicit",
+                "timestamp": 1692707286.439025
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00038700600001106977,
+                "max": 0.0004110069999967436,
+                "mean": 0.00039322599999991326,
+                "stddev": 1.0036794830462557e-05,
+                "rounds": 5,
+                "median": 0.00038970599999288424,
+                "iqr": 7.94950001647976e-06,
+                "q1": 0.00038768099999231254,
+                "q3": 0.0003956305000087923,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.00038700600001106977,
+                "hd15iqr": 0.0004110069999967436,
+                "ops": 2543.066836883168,
+                "total": 0.0019661299999995663,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingIntent]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingIntent]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingIntent object at 0x7fb07c378990>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-MissingIntent",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "MissingIntent",
+                "timestamp": 1692707288.403635
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008674190000022008,
+                "max": 0.0010102210000013656,
+                "mean": 0.0009119395999960034,
+                "stddev": 5.905725799241392e-05,
+                "rounds": 5,
+                "median": 0.0008895199999869874,
+                "iqr": 7.417700000189598e-05,
+                "q1": 0.0008698182499955465,
+                "q3": 0.0009439952499974424,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.0008674190000022008,
+                "hd15iqr": 0.0010102210000013656,
+                "ops": 1096.563851382682,
+                "total": 0.004559697999980017,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingOnly]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingOnly]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingOnly object at 0x7fb07c27f790>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-MissingOnly",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "MissingOnly",
+                "timestamp": 1692707290.279504
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.002302549000006593,
+                "max": 0.0023291500000084397,
+                "mean": 0.0023218896000003044,
+                "stddev": 1.0966366319206324e-05,
+                "rounds": 5,
+                "median": 0.002325049999996054,
+                "iqr": 8.901000008165738e-06,
+                "q1": 0.002319273999994209,
+                "q3": 0.002328175000002375,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.002324848999990081,
+                "hd15iqr": 0.0023291500000084397,
+                "ops": 430.6836983118702,
+                "total": 0.011609448000001521,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingPointerInit]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-MissingPointerInit]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.MissingPointerInit object at 0x7fb07bf7cd90>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-MissingPointerInit",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "MissingPointerInit",
+                "timestamp": 1692707292.269724
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.06875299999998674,
+                "max": 0.06994161800000143,
+                "mean": 0.06921224660000007,
+                "stddev": 0.00047219529952425594,
+                "rounds": 5,
+                "median": 0.06920610599999577,
+                "iqr": 0.0006554347499942992,
+                "q1": 0.06881930075000753,
+                "q3": 0.06947473550000183,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.06875299999998674,
+                "hd15iqr": 0.06994161800000143,
+                "ops": 14.448310076962578,
+                "total": 0.34606123300000036,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-rule",
+            "name": "test_fortran_rule[aerosol_ukca_kernel_mod.F90-NakedLiteral]",
+            "fullname": "performance-tests/class_test.py::test_fortran_rule[aerosol_ukca_kernel_mod.F90-NakedLiteral]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_rule": "UNSERIALIZABLE[<stylist.fortran.NakedLiteral object at 0x7fb08465d4d0>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-NakedLiteral",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "fortran-rule": "NakedLiteral",
+                "timestamp": 1692707294.702089
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.03866431900001999,
+                "max": 0.040310043999994605,
+                "mean": 0.03924741620000418,
+                "stddev": 0.0006970654485663323,
+                "rounds": 5,
+                "median": 0.038939021999993884,
+                "iqr": 0.0010519417499921246,
+                "q1": 0.038717210500010424,
+                "q3": 0.03976915225000255,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.03866431900001999,
+                "hd15iqr": 0.040310043999994605,
+                "ops": 25.479384296383145,
+                "total": 0.1962370810000209,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-style",
+            "name": "test_fortran_style[conv_gr_kernel_mod.F90-fortran_style0]",
+            "fullname": "performance-tests/file_test.py::test_fortran_style[conv_gr_kernel_mod.F90-fortran_style0]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/conv_gr_kernel_mod.F90')]",
+                "fortran_style": "UNSERIALIZABLE[<stylist.style.Style object at 0x7fb08465ef90>]"
+            },
+            "param": "conv_gr_kernel_mod.F90-fortran_style0",
+            "extra_info": {
+                "fortran-source": "conv_gr_kernel_mod.F90",
+                "timestamp": 1692707296.938838
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.10766838200001416,
+                "max": 0.11165084799998226,
+                "mean": 0.10974165639999,
+                "stddev": 0.0015025240191571122,
+                "rounds": 5,
+                "median": 0.11012892299999066,
+                "iqr": 0.0020085072499966827,
+                "q1": 0.10863319849998732,
+                "q3": 0.110641705749984,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.10766838200001416,
+                "hd15iqr": 0.11165084799998226,
+                "ops": 9.112310063511043,
+                "total": 0.54870828199995,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-style",
+            "name": "test_fortran_style[mesh_mod.F90-fortran_style0]",
+            "fullname": "performance-tests/file_test.py::test_fortran_style[mesh_mod.F90-fortran_style0]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/mesh_mod.F90')]",
+                "fortran_style": "UNSERIALIZABLE[<stylist.style.Style object at 0x7fb08465ef90>]"
+            },
+            "param": "mesh_mod.F90-fortran_style0",
+            "extra_info": {
+                "fortran-source": "mesh_mod.F90",
+                "timestamp": 1692707299.417791
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.13208118599999352,
+                "max": 0.13281549800001358,
+                "mean": 0.13260591459999774,
+                "stddev": 0.0003039418620372423,
+                "rounds": 5,
+                "median": 0.13274129699999548,
+                "iqr": 0.0003167810000164195,
+                "q1": 0.13247554199998746,
+                "q3": 0.13279232300000388,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.13208118599999352,
+                "hd15iqr": 0.13281549800001358,
+                "ops": 7.541141758393461,
+                "total": 0.6630295729999887,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-style",
+            "name": "test_fortran_style[ncdf_quad_mod.F90-fortran_style0]",
+            "fullname": "performance-tests/file_test.py::test_fortran_style[ncdf_quad_mod.F90-fortran_style0]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/ncdf_quad_mod.F90')]",
+                "fortran_style": "UNSERIALIZABLE[<stylist.style.Style object at 0x7fb08465ef90>]"
+            },
+            "param": "ncdf_quad_mod.F90-fortran_style0",
+            "extra_info": {
+                "fortran-source": "ncdf_quad_mod.F90",
+                "timestamp": 1692707302.079616
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.17198984600000244,
+                "max": 0.17397208599999203,
+                "mean": 0.17289590780000025,
+                "stddev": 0.0009558822291265277,
+                "rounds": 5,
+                "median": 0.17238047099999676,
+                "iqr": 0.0017281354999880705,
+                "q1": 0.17218259975000905,
+                "q3": 0.17391073524999712,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.17198984600000244,
+                "hd15iqr": 0.17397208599999203,
+                "ops": 5.783826885924703,
+                "total": 0.8644795390000013,
+                "iterations": 1
+            }
+        },
+        {
+            "group": "fortran-style",
+            "name": "test_fortran_style[aerosol_ukca_kernel_mod.F90-fortran_style0]",
+            "fullname": "performance-tests/file_test.py::test_fortran_style[aerosol_ukca_kernel_mod.F90-fortran_style0]",
+            "params": {
+                "perf_source_file": "UNSERIALIZABLE[PosixPath('/tmp/tmp0k3mugml/aerosol_ukca_kernel_mod.F90')]",
+                "fortran_style": "UNSERIALIZABLE[<stylist.style.Style object at 0x7fb08465ef90>]"
+            },
+            "param": "aerosol_ukca_kernel_mod.F90-fortran_style0",
+            "extra_info": {
+                "fortran-source": "aerosol_ukca_kernel_mod.F90",
+                "timestamp": 1692707305.403915
+            },
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.13013523400002214,
+                "max": 0.13297927600001458,
+                "mean": 0.13179385840000463,
+                "stddev": 0.001101443525084645,
+                "rounds": 5,
+                "median": 0.13195876099999282,
+                "iqr": 0.0015473482499857028,
+                "q1": 0.13107664750000936,
+                "q3": 0.13262399574999506,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 0.13013523400002214,
+                "hd15iqr": 0.13297927600001458,
+                "ops": 7.58760698062972,
+                "total": 0.6589692920000232,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2023-08-22T12:28:29.627182",
+    "version": "4.0.0"
+}
