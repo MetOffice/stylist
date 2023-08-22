@@ -219,7 +219,7 @@ class MissingIntent(FortranRule):
                 if type(part) in (Fortran2003.Function_Stmt,
                                   Fortran2003.Subroutine_Stmt):
                     stmt = part
-                if type(part) == Fortran2003.Specification_Part:
+                if type(part) is Fortran2003.Specification_Part:
                     specs = part
                     # we don't need to check the rest of the children
                     break
@@ -268,9 +268,9 @@ class MissingIntent(FortranRule):
                                             dummy_args.remove(arg_name)
 
             # get the type of block
-            if type(scope) == Fortran2003.Subroutine_Subprogram:
+            if type(scope) is Fortran2003.Subroutine_Subprogram:
                 unit_type = 'subroutine'
-            elif type(scope) == Fortran2003.Function_Subprogram:
+            elif type(scope) is Fortran2003.Function_Subprogram:
                 unit_type = 'function'
 
             # any remaining dummy arguments lack intent
@@ -355,7 +355,7 @@ class LabelledDoExit(FortranRule):
         # Above doesn't catch exits in inline if statements
         for statement in subject.find_all(Fortran2003.If_Stmt):
             action = statement.items[1]
-            if type(action) == Fortran2003.Exit_Stmt and action.items[
+            if type(action) is Fortran2003.Exit_Stmt and action.items[
                     1] is None:
                 issues.append(Issue('Usage of "exit" without label indicating '
                                     'which "do" construct is being exited '

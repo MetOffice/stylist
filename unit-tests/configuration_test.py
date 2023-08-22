@@ -18,6 +18,10 @@ from stylist.source import SourceTree, TextProcessor
 
 
 class DummySource(SourceTree):
+    @staticmethod
+    def get_name() -> str:
+        return "Dummy source"
+
     def get_tree(self):
         pass
 
@@ -26,11 +30,19 @@ class DummySource(SourceTree):
 
 
 class DummyProcOne(TextProcessor):
+    @staticmethod
+    def get_name() -> str:
+        return "Dummy processor one"
+
     def get_text(self) -> str:
         return "dummy text one"
 
 
 class DummyProcTwo(TextProcessor):
+    @staticmethod
+    def get_name() -> str:
+        return "Dummy processor two"
+
     def get_text(self) -> str:
         return "dummy text two"
 
@@ -126,6 +138,7 @@ class TestConfiguration:
         assert configuration.file_pipes == {}
         assert list(configuration.styles.keys()) == ['only_rules']
         style = configuration.styles['only_rules']
+        assert style.name == "only_rules"
         assert len(style.list_rules()) == 1
         assert isinstance(style.list_rules()[0], DummyRuleZero)
 
@@ -140,6 +153,7 @@ class TestConfiguration:
         assert configuration.file_pipes == {}
         assert list(configuration.styles.keys()) == ['only_multi_rules']
         style = configuration.styles['only_multi_rules']
+        assert style.name == "only_multi_rules"
         assert len(style.list_rules()) == 2
         assert isinstance(style.list_rules()[0], DummyRuleOne)
         assert cast(DummyRuleOne, style.list_rules()[0]).first == 1
@@ -159,6 +173,7 @@ class TestConfiguration:
         assert configuration.file_pipes == {}
         assert list(configuration.styles.keys()) == ['regex_rule']
         style = configuration.styles['regex_rule']
+        assert style.name == "regex_rule"
         assert len(style.list_rules()) == 1
         assert isinstance(style.list_rules()[0], DummyRuleOne)
         assert cast(DummyRuleOne, style.list_rules()[0]).first.pattern == r'.*'
