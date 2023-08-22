@@ -15,4 +15,5 @@ class StylistException(Exception):
     """
     Allows exceptions from stylist to be distinguished from other exceptions.
     """
-    pass
+    def __init__(self, message):
+        self.message = message

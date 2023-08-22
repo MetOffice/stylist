@@ -25,7 +25,7 @@ from stylist.source import SourceFactory
 from stylist.style import Style
 
 
-def _parse_cli() -> argparse.Namespace:
+def __parse_cli() -> argparse.Namespace:
     """
     Parse the command line for stylist arguments.
     """
@@ -63,6 +63,7 @@ IDs used in specifying extension pipelines:
                             help="File which configures the tool.")
     message = "Style to use for check. May be specified repeatedly."
     cli_parser.add_argument('-style',
+                            default=[],
                             action='append',
                             metavar='NAME',
                             help=message)
@@ -82,7 +83,7 @@ IDs used in specifying extension pipelines:
     return arguments
 
 
-def _process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
+def __process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
     """
     Examines files for style compliance.
 
@@ -106,11 +107,69 @@ def _process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
-def _configure(project_file: Path) -> Configuration:
+def __configure(project_file: Path) -> Configuration:
     configuration = load_configuration(project_file)
     # TODO /etc/fab.ini
     # TODO ~/.fab.ini - Path.home() / '.fab.ini'
     return configuration
+
+
+def perform(configuration: Configuration,
+            source: List[Path],
+            style: List[str],
+            map_extension: List[str],
+            verbose: bool):
+    """
+    Do the style checking.
+    """
+    if len(configuration.styles) == 0:
+        message = "No styles are defined by the configuration."
+        raise StylistException(message)
+
+    styles = []
+    if style:
+        for name in style:
+            if name in configuration.styles:
+                styles.append(configuration.styles[name])
+            else:
+                message = f"Style \"{name}\" is not defined by the" \
+                        " configuration."
+                raise StylistException(message)
+    else:
+        if len(configuration.styles) == 1:
+            # This structure is rather redundant since we know the dictionary
+            # has length 1 but it avoids some messy syntax.
+            #
+            for only_style in configuration.styles.values():
+                styles.append(only_style)
+        else:
+            message = "No style specified and more than one defined."
+            raise StylistException(message)
+
+    # Pipelines loaded from configuration file
+    #
+    for extension, pipe in configuration.file_pipes.items():
+        SourceFactory.add_extension(extension, pipe)
+    #
+    # Pipelines from command line.
+    #
+    for mapping in map_extension:
+        extension, pipe = ConfigTools.parse_pipe_description(mapping)
+        SourceFactory.add_extension(extension, pipe)
+
+    issues = __process(source, styles)
+
+    for issue in issues:
+        print(str(issue), file=sys.stderr)
+    if (len(issues) > 0) or verbose:
+        tally = len(issues)
+        if tally > 1:
+            plural = 's'
+        else:
+            plural = ''
+        print(f"Found {tally} issue{plural}")
+
+    return issues
 
 
 def main() -> None:
@@ -120,49 +179,19 @@ def main() -> None:
     logger = logging.getLogger('stylist')
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
-    arguments = _parse_cli()
+    arguments = __parse_cli()
 
     if arguments.verbose:
         logger.setLevel(logging.INFO)
     else:
         logger.setLevel(logging.WARNING)
 
-    configuration = _configure(arguments.configuration)
-
-    styles = []
-    if arguments.style is None:
-        if len(configuration.styles) == 1:
-            for style in configuration.styles.values():
-                styles.append(style)
-        else:
-            message = "No style specified and more than one defined."
-            raise StylistException(message)
-    else:
-        for name in arguments.style:
-            styles.append(configuration.styles[name])
-
-    # Pipelines loaded from configuration file
-    #
-    for extension, pipe in configuration.file_pipes.items():
-        SourceFactory.add_extension(extension, pipe)
-    #
-    # Pipelines from command line.
-    #
-    for mapping in arguments.map_extension:
-        extension, pipe = ConfigTools.parse_pipe_description(mapping)
-        SourceFactory.add_extension(extension, pipe)
-
-    issues = _process(arguments.source, styles)
-
-    for issue in issues:
-        print(str(issue), file=sys.stderr)
-    if (len(issues) > 0) or arguments.verbose:
-        tally = len(issues)
-        if tally > 1:
-            plural = 's'
-        else:
-            plural = ''
-        print(f"Found {tally} issue{plural}")
+    configuration = __configure(arguments.configuration)
+    issues = perform(configuration,
+                     arguments.source,
+                     arguments.style,
+                     arguments.map_extension,
+                     arguments.verbose)
 
     if issues:
         sys.exit(1)
