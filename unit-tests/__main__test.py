@@ -12,6 +12,7 @@ import sys
 import io
 import contextlib
 from unittest.mock import patch
+from tempfile import NamedTemporaryFile
 from pathlib import Path
 
 from pytest import raises
@@ -63,14 +64,48 @@ def test_cli_args_without_config():
     assert "required: -configuration" in error.getvalue()
 
 
+def test_cli_args_with_missing_config():
+    """
+    Checks command reports an error if -configuration does not exist.
+    """
+
+    argv = ["stylist", "-configuration", "nosuch.py", "source.f90"]
+    error = io.StringIO()
+
+    with patch.object(sys, "argv", argv):
+        with raises(SystemExit) as ex:
+            with contextlib.redirect_stderr(error):
+                _ = __parse_cli()
+    assert ex.value != 0
+    assert "configuration file does not exist" in error.getvalue()
+
+
+def test_cli_args_with_text_config():
+    """
+    Checks command reports an error if -configuration is not python.
+    """
+
+    with NamedTemporaryFile(suffix=".txt") as conf:
+        argv = ["stylist", "-configuration", conf.name, "source.f90"]
+        error = io.StringIO()
+
+        with patch.object(sys, "argv", argv):
+            with raises(SystemExit) as ex:
+                with contextlib.redirect_stderr(error):
+                    _ = __parse_cli()
+        assert ex.value != 0
+        assert "configuration must be a python file" in error.getvalue()
+
+
 def test_cli_args_with_config():
     """
     Checks command accepts -configuration and a source file.
     """
 
-    argv = ["stylist", "-configuration", "conf.py", "source.f90"]
+    with NamedTemporaryFile(suffix=".py") as conf:
+        argv = ["stylist", "-configuration", conf.name, "source.f90"]
 
-    with patch.object(sys, "argv", argv):
-        arguments = __parse_cli()
-    assert arguments.configuration == Path("conf.py")
-    assert arguments.source[0] == Path("source.f90")
+        with patch.object(sys, "argv", argv):
+            arguments = __parse_cli()
+        assert arguments.configuration == Path(conf.name)
+        assert arguments.source[0] == Path("source.f90")

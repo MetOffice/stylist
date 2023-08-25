@@ -81,6 +81,12 @@ IDs used in specifying extension pipelines:
 
     arguments = cli_parser.parse_args()
 
+    if not arguments.configuration.exists():
+        cli_parser.error("configuration file does not exist")
+
+    if arguments.configuration.suffix not in (".py", ".pyc"):
+        cli_parser.error("configuration must be a python file")
+
     return arguments
 
 
