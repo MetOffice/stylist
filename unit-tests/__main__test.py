@@ -7,12 +7,17 @@
 """
 Tests the reporting of error conditions.
 """
+
+import sys
+import io
+import contextlib
+from unittest.mock import patch
 from pathlib import Path
 
 from pytest import raises
 
 from stylist import StylistException
-from stylist.__main__ import perform
+from stylist.__main__ import perform, __parse_cli
 from stylist.configuration import Configuration
 from stylist.style import Style
 
@@ -40,3 +45,32 @@ def test_missing_style(tmp_path: Path):
         _ = perform(configuration, [tmp_path], ['missing'], [], verbose=False)
     assert ex.value.message \
            == 'Style "missing" is not defined by the configuration.'
+
+
+def test_cli_args_without_config():
+    """
+    Checks command reports an error if -configuration is not provided.
+    """
+
+    argv = ["stylist"]
+    error = io.StringIO()
+
+    with patch.object(sys, "argv", argv):
+        with raises(SystemExit) as ex:
+            with contextlib.redirect_stderr(error):
+                _ = __parse_cli()
+    assert ex.value != 0
+    assert "required: -configuration" in error.getvalue()
+
+
+def test_cli_args_with_config():
+    """
+    Checks command accepts -configuration and a source file.
+    """
+
+    argv = ["stylist", "-configuration", "conf.py", "source.f90"]
+
+    with patch.object(sys, "argv", argv):
+        arguments = __parse_cli()
+    assert arguments.configuration == Path("conf.py")
+    assert arguments.source[0] == Path("source.f90")

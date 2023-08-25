@@ -59,6 +59,7 @@ IDs used in specifying extension pipelines:
                             help="Produce a running commentary on progress.")
     cli_parser.add_argument('-configuration',
                             type=Path,
+                            required=True,
                             metavar='FILENAME',
                             help="File which configures the tool.")
     message = "Style to use for check. May be specified repeatedly."
