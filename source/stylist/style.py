@@ -24,7 +24,7 @@ class Style(ABC):
 
     def __init__(self, *rules: Rule) -> None:
         """
-        :param rules: Rules which make up this style.
+        :param *args: Rules which make up this style.
         """
         self.__rules = list(rules)
         self.__name = f"Unnamed style {self.__unnamed_tally}"
