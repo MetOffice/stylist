@@ -121,7 +121,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.IntrinsicModule" title="stylist.fortran.IntrinsicModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntrinsicModule</span></code></a>()</p></td>
 <td><p>Catches cases where an intrinsic module is used with the &quot;intrinsic&quot; keyword ommitted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.KindPattern" title="stylist.fortran.KindPattern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KindPattern</span></code></a>(*, integer, real)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.KindPattern" title="stylist.fortran.KindPattern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KindPattern</span></code></a>(*[, integer, real])</p></td>
 <td><p>Ensures kind names match a specified pattern.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.LabelledDoExit" title="stylist.fortran.LabelledDoExit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelledDoExit</span></code></a>()</p></td>
@@ -298,7 +298,7 @@ keyword ommitted.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.KindPattern">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">KindPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">KindPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Ensures kind names match a specified pattern.</p>
 <p>Patterns are set only for integer and real data types however Fortran
@@ -307,8 +307,8 @@ default pattern of “.*” is used to accept anything.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>integer</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>]) – Regular expression which integer kinds must match.</p></li>
-<li><p><strong>real</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>]) – Regular expression which real kinds must match.</p></li>
+<li><p><strong>integer</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Regular expression which integer kinds must match.</p></li>
+<li><p><strong>real</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Regular expression which real kinds must match.</p></li>
 </ul>
 </dd>
 </dl>
