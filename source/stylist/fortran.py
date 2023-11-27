@@ -393,6 +393,13 @@ class MissingPointerInit(FortranRule):
                                                   attribute_specification):
                 continue
 
+            # @todo This is quite ugly
+            #
+            potential_interface_block = data_declaration.parent.parent.parent
+            if isinstance(potential_interface_block,
+                          Fortran2003.Interface_Block):
+                continue
+
             for entity in fp_walk(data_declaration, entity_declaration):
                 if str(fp_get_child(entity, Fortran2003.Name)) in ignore_names:
                     continue
