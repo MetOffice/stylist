@@ -9,7 +9,7 @@ requires-python = '>=3.7, <4'
 license = {text = 'BSD 3-Clause License'}
 classifiers = ['Programming Language :: Python :: 3']
 dependencies = ['fparser >= 0.1.2']
-dynamic = ['version', 'authors', 'keywords', 'readme']
+dynamic = ['version', 'readme']
 
 
 [project.optional-dependencies]
