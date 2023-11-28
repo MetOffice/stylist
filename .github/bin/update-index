@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+##############################################################################
+# Add a new release's documentation to the documentation index page.
+#
+# Usage:
+#   update-index <index file> <release name>
+##############################################################################
+from argparse import ArgumentParser
+from pathlib import Path
+from xml.etree import ElementTree
+
+if __name__ == '__main__':
+    cli_parser = ArgumentParser(description="Add a new release to the index")
+    cli_parser.add_argument('index_file', type=Path,
+                            help="Filename of index file.")
+    cli_parser.add_argument('release',
+                            help="Release tag name")
+    arguments = cli_parser.parse_args()
+
+    ns = {'html': 'http://www.w3.org/1999/xhtml'}
+
+    ElementTree.register_namespace('', 'http://www.w3.org/1999/xhtml')
+    index_doc = ElementTree.parse(arguments.index_file)
+
+    release_list = index_doc.find('.//html:ul[@id="releases"]', namespaces=ns)
+    if release_list is None:
+        raise Exception("Unable to find release list")
+
+    last_child = list(release_list)[-1]
+    item_indent = release_list.text
+    list_indent = last_child.tail
+    last_child.tail = item_indent
+
+    new_release = ElementTree.SubElement(release_list, 'li')
+    new_release.tail = list_indent
+    new_anchor = ElementTree.SubElement(new_release, 'a')
+    new_anchor.attrib['href'] = arguments.release
+    new_anchor.text = arguments.release
+
+    document_text = ElementTree.tostring(index_doc.getroot(), encoding='unicode')
+    with arguments.index_file.open('w') as fhandle:
+        # Doctype is not preserved by the parser so we need to recreate it.
+        #
+        print('''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">''', file=fhandle)
+        print(document_text, file=fhandle)

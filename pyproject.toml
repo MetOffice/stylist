@@ -23,7 +23,7 @@ classifiers = [
 dev = ['check-manifest', 'flake8']
 test = ['pytest', 'pytest-cov', 'mypy']
 performance = ['pytest', 'pytest-benchmark', 'matplotlib']
-docs = ['sphinx',
+docs = ['sphinx < 7.0.0',
         'sphinx-autodoc-typehints',
         'sphinx-rtd-theme>=1.2.2']
 release = ['setuptools', 'wheel', 'twine']
