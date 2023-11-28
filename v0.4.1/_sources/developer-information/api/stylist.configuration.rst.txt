@@ -1,0 +1,36 @@
+stylist.configuration
+=====================
+
+.. automodule:: stylist.configuration
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      load_configuration
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConfigTools
+      Configuration
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stylist.fortran &mdash; Stylist 0.4.1.dev0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="stylist.issue" href="stylist.issue.html" />
+    <link rel="prev" title="stylist.engine" href="stylist.engine.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Stylist
+              <img src="../../_static/stylist.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.4.1.dev0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../user-manual/index.html">User Manual</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="stylist.html">stylist</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="stylist.html#stylist.StylistException"><code class="docutils literal notranslate"><span class="pre">StylistException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.configuration.html">stylist.configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.engine.html">stylist.engine</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">stylist.fortran</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.issue.html">stylist.issue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.rule.html">stylist.rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.source.html">stylist.source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stylist.style.html">stylist.style</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../environment.html">Create a Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../todo.html">Collected To-do items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Stylist</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Developer Information</a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Documentation</a></li>
+          <li class="breadcrumb-item"><a href="stylist.html">stylist</a></li>
+      <li class="breadcrumb-item active">stylist.fortran</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/developer-information/api/stylist.fortran.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stylist.fortran">
+<span id="stylist-fortran"></span><h1>stylist.fortran<a class="headerlink" href="#module-stylist.fortran" title="Permalink to this heading"></a></h1>
+<p>Rules relating to Fortran source.</p>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.AutoCharArrayIntent" title="stylist.fortran.AutoCharArrayIntent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoCharArrayIntent</span></code></a>()</p></td>
+<td><p>Checks that all automatically assigned character arrays used as subroutine or function arguments have intent(in) to avoid writing outside the given array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.ForbidUsage" title="stylist.fortran.ForbidUsage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForbidUsage</span></code></a>(name[, exceptions])</p></td>
+<td><p>Checks that no attempt is made to use the specific module unless it is in one of the excepted modules.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.FortranCharacterset" title="stylist.fortran.FortranCharacterset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranCharacterset</span></code></a>()</p></td>
+<td><p>Traps any characters which do not fall in the list of those allowed in Fortran source.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FortranRule</span></code></a>()</p></td>
+<td><p>Parent for style rules pertaining to Fortran source.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.IntrinsicModule" title="stylist.fortran.IntrinsicModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntrinsicModule</span></code></a>()</p></td>
+<td><p>Catches cases where an intrinsic module is used with the &quot;intrinsic&quot; keyword ommitted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.KindPattern" title="stylist.fortran.KindPattern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KindPattern</span></code></a>(*[, integer, real])</p></td>
+<td><p>Ensures kind names match a specified pattern.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.LabelledDoExit" title="stylist.fortran.LabelledDoExit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelledDoExit</span></code></a>()</p></td>
+<td><p>Catches cases where a &quot;do&quot; construct is exited but not explicitly named.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.MissingImplicit" title="stylist.fortran.MissingImplicit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingImplicit</span></code></a>([require_everywhere])</p></td>
+<td><p>Catches cases where code blocks which could have an <code class="docutils literal notranslate"><span class="pre">implicit</span></code> statement don't.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.MissingIntent" title="stylist.fortran.MissingIntent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingIntent</span></code></a>()</p></td>
+<td><p>Catches cases where a function or subroutine's dummy arguments don't have specified intent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.MissingOnly" title="stylist.fortran.MissingOnly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingOnly</span></code></a>([ignore])</p></td>
+<td><p>Catches cases where a &quot;use&quot; statement is present but has no &quot;only&quot; clause.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.MissingPointerInit" title="stylist.fortran.MissingPointerInit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingPointerInit</span></code></a>()</p></td>
+<td><p>Catches cases where a pointer is declared without being initialised.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stylist.fortran.NakedLiteral" title="stylist.fortran.NakedLiteral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NakedLiteral</span></code></a>([integers, reals])</p></td>
+<td><p>Checks that all literal values have their kind specified.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.AutoCharArrayIntent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">AutoCharArrayIntent</span></span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Checks that all automatically assigned character arrays used as
+subroutine or function arguments have intent(in) to avoid writing
+outside the given array.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.AutoCharArrayIntent.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.ForbidUsage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">ForbidUsage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exceptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Checks that no attempt is made to use the specific module unless it is in
+one of the excepted modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of module to forbid.</p></li>
+<li><p><strong>exceptions</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>]]) – names (or name patterns) in which module may be
+used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.ForbidUsage.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.FortranCharacterset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranCharacterset</span></span><a class="headerlink" href="#stylist.fortran.FortranCharacterset" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rule</span></code></a></p>
+<p>Traps any characters which do not fall in the list of those allowed in
+Fortran source. This takes into account the fact that there is no
+restriction on what may appear in comments or strings.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.FortranCharacterset.examine">
+<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranCharacterset.examine" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided source code object for issues.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – The source file to be examined.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.FortranRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranRule</span></span><a class="headerlink" href="#stylist.fortran.FortranRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rule</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Parent for style rules pertaining to Fortran source.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.FortranRule.examine">
+<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine" title="Permalink to this definition"></a></dt>
+<dd><p>Base for rules which scruitinise the parse tree of Fortran source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.FortranRule.examine_fortran">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.IntrinsicModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">IntrinsicModule</span></span><a class="headerlink" href="#stylist.fortran.IntrinsicModule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where an intrinsic module is used with the “intrinsic”
+keyword ommitted.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.IntrinsicModule.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.IntrinsicModule.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.KindPattern">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">KindPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Ensures kind names match a specified pattern.</p>
+<p>Patterns are set only for integer and real data types however Fortran
+supports many more. Logical and Complex for example. For those cases a
+default pattern of “.*” is used to accept anything.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>integer</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Regular expression which integer kinds must match.</p></li>
+<li><p><strong>real</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Pattern</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Regular expression which real kinds must match.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.KindPattern.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.LabelledDoExit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">LabelledDoExit</span></span><a class="headerlink" href="#stylist.fortran.LabelledDoExit" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where a “do” construct is exited but not explicitly named.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.LabelledDoExit.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.LabelledDoExit.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.MissingImplicit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingImplicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">require_everywhere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where code blocks which could have an <code class="docutils literal notranslate"><span class="pre">implicit</span></code> statement
+don’t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>require_everywhere</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – By default the rule checks only in places
+which require an <code class="docutils literal notranslate"><span class="pre">implicit</span></code> statement. Set this argument to check
+everywhere an <code class="docutils literal notranslate"><span class="pre">implicit</span></code> could exist.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.MissingImplicit.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.MissingIntent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingIntent</span></span><a class="headerlink" href="#stylist.fortran.MissingIntent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where a function or subroutine’s dummy arguments don’t
+have specified intent.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.MissingIntent.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingIntent.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.MissingOnly">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingOnly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where a “use” statement is present but has no “only” clause.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ignore</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – List of module names which are not required to have an
+“only” clause.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.MissingOnly.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.MissingPointerInit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingPointerInit</span></span><a class="headerlink" href="#stylist.fortran.MissingPointerInit" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Catches cases where a pointer is declared without being initialised.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.MissingPointerInit.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingPointerInit.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stylist.fortran.NakedLiteral">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">NakedLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
+<p>Checks that all literal values have their kind specified.</p>
+<p>Checking of integers and reals are controlled separately so you can have
+one and not the other.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stylist.fortran.NakedLiteral.examine_fortran">
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral.examine_fortran" title="Permalink to this definition"></a></dt>
+<dd><p>Examines the provided Fortran source code object for an issue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<a class="reference internal" href="stylist.source.html#stylist.source.FortranSource" title="stylist.source.FortranSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranSource</span></code></a>) – Source file to examine.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="stylist.issue.html#stylist.issue.Issue" title="stylist.issue.Issue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Issue</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Issues found with the source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stylist.engine.html" class="btn btn-neutral float-left" title="stylist.engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stylist.issue.html" class="btn btn-neutral float-right" title="stylist.issue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Crown Copyright.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
