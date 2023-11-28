@@ -9,7 +9,7 @@ requires-python = '>=3.7, <4'
 license = {text = 'BSD 3-Clause License'}
 classifiers = ['Programming Language :: Python :: 3']
 dependencies = ['fparser >= 0.1.2']
-dynamic = ['version']
+dynamic = ['version', 'readme']
 
 
 [project.optional-dependencies]
@@ -31,7 +31,7 @@ documentation = 'https://metoffice.github.io/stylist'
 repository = 'https://github.com/MetOffice/stylist/'
 
 [tool.setuptools.dynamic]
-readme = {file = 'README.md'}
+readme = {file = 'README.rst'}
 version = {attr = 'stylist.__version__'}
 
 [tool.setuptools.packages.find]
