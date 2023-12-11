@@ -8,17 +8,12 @@
 Tests the reporting of error conditions.
 """
 
-import sys
-import io
-import contextlib
-from unittest.mock import patch
-from tempfile import NamedTemporaryFile
 from pathlib import Path
-
-from pytest import raises
+from pytest import raises, fixture
 
 from stylist import StylistException
-from stylist.__main__ import perform, __parse_cli
+from stylist.__main__ import perform, __configure
+import stylist.__main__ as maintest
 from stylist.configuration import Configuration
 from stylist.style import Style
 
@@ -48,64 +43,95 @@ def test_missing_style(tmp_path: Path):
            == 'Style "missing" is not defined by the configuration.'
 
 
-def test_cli_args_without_config():
-    """
-    Checks command reports an error if -configuration is not provided.
-    """
+@fixture(scope="session")
+def site_config(tmp_path_factory):
+    site = tmp_path_factory.mktemp("data") / "site.py"
+    site.write_text("\n".join([
+        "from stylist.source import FilePipe, PlainText",
+        "from stylist.rule import LimitLineLength",
+        "from stylist.style import Style",
+        "txt = FilePipe(PlainText)",
+        "foo = Style(LimitLineLength(80))",
+    ]))
 
-    argv = ["stylist"]
-    error = io.StringIO()
-
-    with patch.object(sys, "argv", argv):
-        with raises(SystemExit) as ex:
-            with contextlib.redirect_stderr(error):
-                _ = __parse_cli()
-    assert ex.value != 0
-    assert "required: -configuration" in error.getvalue()
+    return site
 
 
-def test_cli_args_with_missing_config():
-    """
-    Checks command reports an error if -configuration does not exist.
-    """
+@fixture(scope="session")
+def user_config(tmp_path_factory):
+    user = tmp_path_factory.mktemp("data") / "user.py"
+    user.write_text("\n".join([
+        "from stylist.source import FilePipe, PlainText",
+        "from stylist.rule import TrailingWhitespace",
+        "from stylist.style import Style",
+        "txt = FilePipe(PlainText)",
+        "bar = Style(TrailingWhitespace())",
+    ]))
 
-    argv = ["stylist", "-configuration", "nosuch.py", "source.f90"]
-    error = io.StringIO()
-
-    with patch.object(sys, "argv", argv):
-        with raises(SystemExit) as ex:
-            with contextlib.redirect_stderr(error):
-                _ = __parse_cli()
-    assert ex.value != 0
-    assert "configuration file does not exist" in error.getvalue()
+    return user
 
 
-def test_cli_args_with_text_config():
-    """
-    Checks command reports an error if -configuration is not python.
-    """
+@fixture(scope="session")
+def project_config(tmp_path_factory):
+    project = tmp_path_factory.mktemp("data") / "project.py"
+    project.write_text("\n".join([
+        "from stylist.source import FilePipe, PlainText",
+        "from stylist.rule import LimitLineLength, TrailingWhitespace",
+        "from stylist.style import Style",
+        "txt = FilePipe(PlainText)",
+        "foo = Style(LimitLineLength(80), TrailingWhitespace)",
+    ]))
 
-    with NamedTemporaryFile(suffix=".txt") as conf:
-        argv = ["stylist", "-configuration", conf.name, "source.f90"]
-        error = io.StringIO()
-
-        with patch.object(sys, "argv", argv):
-            with raises(SystemExit) as ex:
-                with contextlib.redirect_stderr(error):
-                    _ = __parse_cli()
-        assert ex.value != 0
-        assert "configuration must be a python file" in error.getvalue()
+    return project
 
 
-def test_cli_args_with_config():
-    """
-    Checks command accepts -configuration and a source file.
-    """
+def test_no_configurations(tmp_path):
 
-    with NamedTemporaryFile(suffix=".py") as conf:
-        argv = ["stylist", "-configuration", conf.name, "source.f90"]
+    maintest.site_file = None
+    maintest.user_file = None
 
-        with patch.object(sys, "argv", argv):
-            arguments = __parse_cli()
-        assert arguments.configuration == Path(conf.name)
-        assert arguments.source[0] == Path("source.f90")
+    configuration = __configure(None)
+    assert configuration is None
+
+
+def test_site_only_configuration(site_config):
+
+    maintest.site_file = site_config
+    maintest.user_file = None
+
+    configuration = __configure(None)
+    assert configuration is not None
+    assert list(configuration.styles) == ["foo"]
+    assert len(configuration.styles["foo"].list_rules()) == 1
+
+
+def test_user_only_configuration(user_config):
+
+    maintest.site_file = None
+    maintest.user_file = user_config
+
+    configuration = __configure(None)
+    assert configuration is not None
+    assert list(configuration.styles) == ["bar"]
+    assert len(configuration.styles["bar"].list_rules()) == 1
+
+
+def test_user_and_site_configurations(site_config, user_config):
+
+    maintest.site_file = site_config
+    maintest.user_file = user_config
+
+    configuration = __configure(None)
+    assert configuration is not None
+    assert list(configuration.styles) == ["foo", "bar"]
+
+
+def test_all_configurations(site_config, user_config, project_config):
+
+    maintest.site_file = site_config
+    maintest.user_file = user_config
+
+    configuration = __configure(project_config)
+    assert configuration is not None
+    assert list(configuration.styles) == ["foo", "bar"]
+    assert len(configuration.styles["foo"].list_rules()) == 2

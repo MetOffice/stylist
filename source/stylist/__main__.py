@@ -25,6 +25,11 @@ from stylist.source import SourceFactory
 from stylist.style import Style
 
 
+# Paths to site-wide and per-user style files
+site_file = Path("/etc/stylist.py")
+user_file = Path.home() / ".stylist.py"
+
+
 def __parse_cli() -> argparse.Namespace:
     """
     Parse the command line for stylist arguments.
@@ -59,7 +64,6 @@ IDs used in specifying extension pipelines:
                             help="Produce a running commentary on progress.")
     cli_parser.add_argument('-configuration',
                             type=Path,
-                            required=True,
                             metavar='FILENAME',
                             help="File which configures the tool.")
     message = "Style to use for check. May be specified repeatedly."
@@ -80,12 +84,6 @@ IDs used in specifying extension pipelines:
                             help='Filename of source file or directory')
 
     arguments = cli_parser.parse_args()
-
-    if not arguments.configuration.exists():
-        cli_parser.error("configuration file does not exist")
-
-    if arguments.configuration.suffix not in (".py", ".pyc"):
-        cli_parser.error("configuration must be a python file")
 
     return arguments
 
@@ -115,9 +113,29 @@ def __process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
 
 
 def __configure(project_file: Path) -> Configuration:
-    configuration = load_configuration(project_file)
-    # TODO /etc/fab.ini
-    # TODO ~/.fab.ini - Path.home() / '.fab.ini'
+    """
+    Load configuration styles in order of specificity
+
+    Load the global site configuration, the per-user configuration, and
+    finally the configuration option provided on the command line.
+    More specific options are allowed to override more general ones,
+    allowing a configuration to built up gradually.
+    """
+
+    candidates = [site_file, user_file, project_file]
+
+    configuration = None
+
+    for target in candidates:
+        if target is None or not target.exists():
+            continue
+
+        style = load_configuration(target)
+        if configuration is None:
+            configuration = style
+        else:
+            configuration.overload(style)
+
     return configuration
 
 
@@ -194,6 +212,11 @@ def main() -> None:
         logger.setLevel(logging.WARNING)
 
     configuration = __configure(arguments.configuration)
+    if configuration is None:
+        # No valid configuration files have been found
+        # FIXME: proper exit handling
+        raise Exception("no valid style files found")
+
     issues = perform(configuration,
                      arguments.source,
                      arguments.style,
