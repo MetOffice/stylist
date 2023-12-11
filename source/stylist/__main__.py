@@ -13,7 +13,7 @@ from os import linesep
 from pathlib import Path
 import sys
 from textwrap import indent
-from typing import List, Sequence
+from typing import List, Sequence, Union
 
 from stylist import StylistException
 from stylist.configuration import (Configuration,
@@ -112,7 +112,7 @@ def __process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
-def __configure(project_file: Path) -> Configuration:
+def __configure(project_file: Path) -> Union[Configuration, None]:
     """
     Load configuration styles in order of specificity
 
