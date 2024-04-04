@@ -93,6 +93,7 @@ html_theme_options = {
         }
     ],
     "footer_start": ["crown-copyright"],
+    "footer_center": ["sphinx-version"],
     "footer_end": ["theme-version"]
 }
 
