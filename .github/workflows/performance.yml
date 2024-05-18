@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - master
-
+  workflow_run:
+    workflows: ["sphinx"]
+    types: [completed]
 
 
 jobs:

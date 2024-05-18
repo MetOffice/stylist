@@ -166,8 +166,8 @@ end {prog_unit} test
 
     def test_arguments_without_intent(self):
         """
-        Checks that the rule can cope with arguments which do not specify an
-        intent.
+        Checks that the rule can cope with arguments which should not specify
+        an intent.
         """
         source_text = dedent('''
                              subroutine my_sub( first, second )
@@ -184,6 +184,32 @@ end {prog_unit} test
                                 end subroutine their_sub
                              end module this_mod
                              ''').strip()
+        source_reader = SourceStringReader(source_text)
+        source = FortranSource(source_reader)
+
+        test_unit = stylist.fortran.MissingPointerInit()
+        issues = test_unit.examine(source)
+
+        issue_descriptions = [str(issue) for issue in issues]
+        assert issue_descriptions == []
+
+    def test_abstract_interface(self):
+        """
+        Checks that the rule can cope with arguments which are intent in and
+        user defined types.
+        """
+        source_text = dedent(
+            '''
+            module this_mod
+              abstract interface
+                subroutine their_sub( first, second )
+                  implicit none
+                  type(thang_type), intent(in), pointer :: first
+                  class(thang_type), pointer, intent(in) :: second
+                end subroutine their_sub
+              end interface
+            end module this_mod
+            ''').strip()
         source_reader = SourceStringReader(source_text)
         source = FortranSource(source_reader)
 

@@ -13,7 +13,7 @@ from os import linesep
 from pathlib import Path
 import sys
 from textwrap import indent
-from typing import List, Sequence
+from typing import List, Sequence, Union
 
 from stylist import StylistException
 from stylist.configuration import (Configuration,
@@ -23,6 +23,11 @@ from stylist.engine import CheckEngine
 from stylist.issue import Issue
 from stylist.source import SourceFactory
 from stylist.style import Style
+
+
+# Paths to site-wide and per-user style files
+site_file = Path("/etc/stylist.py")
+user_file = Path.home() / ".stylist.py"
 
 
 def __parse_cli() -> argparse.Namespace:
@@ -107,10 +112,30 @@ def __process(candidates: List[Path], styles: Sequence[Style]) -> List[Issue]:
     return issues
 
 
-def __configure(project_file: Path) -> Configuration:
-    configuration = load_configuration(project_file)
-    # TODO /etc/fab.ini
-    # TODO ~/.fab.ini - Path.home() / '.fab.ini'
+def __configure(project_file: Path) -> Union[Configuration, None]:
+    """
+    Load configuration styles in order of specificity
+
+    Load the global site configuration, the per-user configuration, and
+    finally the configuration option provided on the command line.
+    More specific options are allowed to override more general ones,
+    allowing a configuration to built up gradually.
+    """
+
+    candidates = [site_file, user_file, project_file]
+
+    configuration = None
+
+    for target in candidates:
+        if target is None or not target.exists():
+            continue
+
+        style = load_configuration(target)
+        if configuration is None:
+            configuration = style
+        else:
+            configuration.overload(style)
+
     return configuration
 
 
@@ -187,6 +212,11 @@ def main() -> None:
         logger.setLevel(logging.WARNING)
 
     configuration = __configure(arguments.configuration)
+    if configuration is None:
+        # No valid configuration files have been found
+        # FIXME: proper exit handling
+        raise Exception("no valid style files found")
+
     issues = perform(configuration,
                      arguments.source,
                      arguments.style,
