@@ -177,3 +177,57 @@ class TestConfiguration:
         assert len(style.list_rules()) == 1
         assert isinstance(style.list_rules()[0], DummyRuleOne)
         assert cast(DummyRuleOne, style.list_rules()[0]).first.pattern == r'.*'
+
+    def test_config_add_pipes(self, tmp_path: Path):
+        first_file = tmp_path / 'first.py'
+        first_file.write_text(dedent("""
+            from stylist.source import FilePipe
+            from configuration_test import DummySource
+            foo = FilePipe(DummySource)
+            """))
+
+        second_file = tmp_path / 'second.py'
+        second_file.write_text(dedent("""
+            from stylist.source import FilePipe
+            from configuration_test import DummyProcOne, DummySource
+            foo = FilePipe(DummySource, DummyProcOne)
+            """))
+
+        configuration = load_configuration(first_file)
+        assert list(configuration.file_pipes.keys()) == ['foo']
+        style = configuration.file_pipes['foo']
+        assert style.parser == DummySource
+        assert len(style.preprocessors) == 0
+        assert configuration.styles == {}
+
+        configuration.overload(load_configuration(second_file))
+        assert list(configuration.file_pipes.keys()) == ['foo']
+        style = configuration.file_pipes['foo']
+        assert style.parser == DummySource
+        assert len(style.preprocessors) == 1
+        assert configuration.styles == {}
+
+    def test_config_add_styles(self, tmp_path: Path):
+        first_file = tmp_path / 'first.py'
+        first_file.write_text(dedent("""
+            from stylist.style import Style
+            from configuration_test import DummyRuleZero
+            foo = Style(DummyRuleZero())
+            """))
+
+        second_file = tmp_path / 'second.py'
+        second_file.write_text(dedent("""
+            from stylist.style import Style
+            from configuration_test import DummyRuleOne
+            foo = Style(DummyRuleOne(1))
+            """))
+
+        configuration = load_configuration(first_file)
+        assert list(configuration.styles.keys()) == ['foo']
+        style = configuration.styles['foo']
+        assert isinstance(style.list_rules()[0], DummyRuleZero)
+
+        configuration.overload(load_configuration(second_file))
+        assert list(configuration.styles.keys()) == ['foo']
+        style = configuration.styles['foo']
+        assert isinstance(style.list_rules()[0], DummyRuleOne)
