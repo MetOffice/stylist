@@ -1,112 +1,399 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stylist.fortran &mdash; Stylist 0.5.dev1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>stylist.fortran &#8212; Stylist 0.5.dev1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer-information/api/stylist.fortran';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="stylist.issue" href="stylist.issue.html" />
-    <link rel="prev" title="stylist.engine" href="stylist.engine.html" /> 
-</head>
+    <link rel="prev" title="stylist.engine" href="stylist.engine.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            Stylist
-              <img src="../../_static/stylist.png" class="logo" alt="Logo"/>
-          </a>
-              <div class="version">
-                0.5.dev1
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../user-manual/index.html">User Manual</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Information</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../overview.html">Overview</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="stylist.html">stylist</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="stylist.html#stylist.StylistException"><code class="docutils literal notranslate"><span class="pre">StylistException</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.configuration.html">stylist.configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.engine.html">stylist.engine</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">stylist.fortran</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.issue.html">stylist.issue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.rule.html">stylist.rule</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.source.html">stylist.source</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stylist.style.html">stylist.style</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../environment.html">Create a Development Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../rules.html">Rules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../todo.html">Collected To-do items</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#indices-and-tables">Indices and tables</a></li>
-</ul>
-</li>
-</ul>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-        </div>
-      </div>
-    </nav>
+  
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stylist</a>
-      </nav>
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/stylist.png" class="logo__image only-light" alt="Stylist 0.5.dev1 documentation - Home"/>
+    <script>document.write(`<img src="../../_static/stylist.png" class="logo__image only-dark" alt="Stylist 0.5.dev1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user-manual/index.html">
+                        User Manual
+                      </a>
+                    </li>
+                
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Developer Information</a></li>
-          <li class="breadcrumb-item"><a href="../api.html">API Documentation</a></li>
-          <li class="breadcrumb-item"><a href="stylist.html">stylist</a></li>
-      <li class="breadcrumb-item active">stylist.fortran</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/developer-information/api/stylist.fortran.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Developer Information
+                      </a>
+                    </li>
+                
   </ul>
-  <hr/>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MetOffice/stylist" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user-manual/index.html">
+                        User Manual
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Developer Information
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MetOffice/stylist" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API Documentation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="stylist.html">stylist</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="stylist.configuration.html">stylist.configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stylist.engine.html">stylist.engine</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">stylist.fortran</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stylist.issue.html">stylist.issue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stylist.rule.html">stylist.rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stylist.source.html">stylist.source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stylist.style.html">stylist.style</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Create a Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Collected To-do items</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Developer Information</a></li>
+    
+    
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    
+    
+    <li class="breadcrumb-item"><a href="stylist.html" class="nav-link">stylist</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">stylist.fortran</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="module-stylist.fortran">
-<span id="stylist-fortran"></span><h1>stylist.fortran<a class="headerlink" href="#module-stylist.fortran" title="Permalink to this heading"></a></h1>
+<span id="stylist-fortran"></span><h1>stylist.fortran<a class="headerlink" href="#module-stylist.fortran" title="Permalink to this heading">#</a></h1>
 <p>Rules relating to Fortran source.</p>
 <p class="rubric">Classes</p>
-<table class="autosummary longtable docutils align-default">
+<table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stylist.fortran.AutoCharArrayIntent" title="stylist.fortran.AutoCharArrayIntent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoCharArrayIntent</span></code></a>()</p></td>
 <td><p>Checks that all automatically assigned character arrays used as subroutine or function arguments have intent(in) to avoid writing outside the given array.</p></td>
@@ -148,14 +435,14 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.AutoCharArrayIntent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">AutoCharArrayIntent</span></span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">AutoCharArrayIntent</span></span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Checks that all automatically assigned character arrays used as
 subroutine or function arguments have intent(in) to avoid writing
 outside the given array.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.AutoCharArrayIntent.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.AutoCharArrayIntent.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -174,7 +461,7 @@ outside the given array.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.ForbidUsage">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">ForbidUsage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exceptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">ForbidUsage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exceptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Checks that no attempt is made to use the specific module unless it is in
 one of the excepted modules.</p>
@@ -189,7 +476,7 @@ used.</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.ForbidUsage.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.ForbidUsage.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -208,14 +495,14 @@ used.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.FortranCharacterset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranCharacterset</span></span><a class="headerlink" href="#stylist.fortran.FortranCharacterset" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranCharacterset</span></span><a class="headerlink" href="#stylist.fortran.FortranCharacterset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rule</span></code></a></p>
 <p>Traps any characters which do not fall in the list of those allowed in
 Fortran source. This takes into account the fact that there is no
 restriction on what may appear in comments or strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.FortranCharacterset.examine">
-<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranCharacterset.examine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranCharacterset.examine" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided source code object for issues.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -234,12 +521,12 @@ restriction on what may appear in comments or strings.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.FortranRule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranRule</span></span><a class="headerlink" href="#stylist.fortran.FortranRule" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">FortranRule</span></span><a class="headerlink" href="#stylist.fortran.FortranRule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="stylist.rule.html#stylist.rule.Rule" title="stylist.rule.Rule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rule</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Parent for style rules pertaining to Fortran source.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.FortranRule.examine">
-<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine" title="Permalink to this definition">#</a></dt>
 <dd><p>Base for rules which scruitinise the parse tree of Fortran source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -256,7 +543,7 @@ restriction on what may appear in comments or strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.FortranRule.examine_fortran">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine_fortran" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.FortranRule.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -275,13 +562,13 @@ restriction on what may appear in comments or strings.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.IntrinsicModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">IntrinsicModule</span></span><a class="headerlink" href="#stylist.fortran.IntrinsicModule" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">IntrinsicModule</span></span><a class="headerlink" href="#stylist.fortran.IntrinsicModule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where an intrinsic module is used with the “intrinsic”
 keyword ommitted.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.IntrinsicModule.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.IntrinsicModule.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.IntrinsicModule.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -300,7 +587,7 @@ keyword ommitted.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.KindPattern">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">KindPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">KindPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Ensures kind names match a specified pattern.</p>
 <p>Patterns are set only for integer and real data types however Fortran
@@ -316,7 +603,7 @@ default pattern of “.*” is used to accept anything.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.KindPattern.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.KindPattern.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -335,12 +622,12 @@ default pattern of “.*” is used to accept anything.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.LabelledDoExit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">LabelledDoExit</span></span><a class="headerlink" href="#stylist.fortran.LabelledDoExit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">LabelledDoExit</span></span><a class="headerlink" href="#stylist.fortran.LabelledDoExit" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where a “do” construct is exited but not explicitly named.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.LabelledDoExit.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.LabelledDoExit.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.LabelledDoExit.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -359,7 +646,7 @@ default pattern of “.*” is used to accept anything.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.MissingImplicit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingImplicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">require_everywhere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingImplicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">require_everywhere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where code blocks which could have an <code class="docutils literal notranslate"><span class="pre">implicit</span></code> statement
 don’t.</p>
@@ -372,7 +659,7 @@ everywhere an <code class="docutils literal notranslate"><span class="pre">impli
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.MissingImplicit.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingImplicit.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -391,13 +678,13 @@ everywhere an <code class="docutils literal notranslate"><span class="pre">impli
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.MissingIntent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingIntent</span></span><a class="headerlink" href="#stylist.fortran.MissingIntent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingIntent</span></span><a class="headerlink" href="#stylist.fortran.MissingIntent" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where a function or subroutine’s dummy arguments don’t
 have specified intent.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.MissingIntent.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingIntent.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingIntent.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -416,7 +703,7 @@ have specified intent.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.MissingOnly">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingOnly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingOnly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where a “use” statement is present but has no “only” clause.</p>
 <dl class="field-list simple">
@@ -427,7 +714,7 @@ have specified intent.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.MissingOnly.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingOnly.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -446,12 +733,12 @@ have specified intent.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.MissingPointerInit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingPointerInit</span></span><a class="headerlink" href="#stylist.fortran.MissingPointerInit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">MissingPointerInit</span></span><a class="headerlink" href="#stylist.fortran.MissingPointerInit" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Catches cases where a pointer is declared without being initialised.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.MissingPointerInit.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingPointerInit.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.MissingPointerInit.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -470,14 +757,14 @@ have specified intent.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stylist.fortran.NakedLiteral">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">NakedLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stylist.fortran.</span></span><span class="sig-name descname"><span class="pre">NakedLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#stylist.fortran.FortranRule" title="stylist.fortran.FortranRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">FortranRule</span></code></a></p>
 <p>Checks that all literal values have their kind specified.</p>
 <p>Checking of integers and reals are controlled separately so you can have
 one and not the other.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stylist.fortran.NakedLiteral.examine_fortran">
-<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral.examine_fortran" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">examine_fortran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stylist.fortran.NakedLiteral.examine_fortran" title="Permalink to this definition">#</a></dt>
 <dd><p>Examines the provided Fortran source code object for an issue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -497,34 +784,170 @@ one and not the other.</p>
 </section>
 
 
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="stylist.engine.html" class="btn btn-neutral float-left" title="stylist.engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="stylist.issue.html" class="btn btn-neutral float-right" title="stylist.issue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2022, Crown Copyright.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="stylist.engine.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">stylist.engine</p>
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    </a>
+    <a class="right-next"
+       href="stylist.issue.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">stylist.issue</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-</body>
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.AutoCharArrayIntent"><code class="docutils literal notranslate"><span class="pre">AutoCharArrayIntent</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.AutoCharArrayIntent.examine_fortran"><code class="docutils literal notranslate"><span class="pre">AutoCharArrayIntent.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.ForbidUsage"><code class="docutils literal notranslate"><span class="pre">ForbidUsage</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.ForbidUsage.examine_fortran"><code class="docutils literal notranslate"><span class="pre">ForbidUsage.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.FortranCharacterset"><code class="docutils literal notranslate"><span class="pre">FortranCharacterset</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.FortranCharacterset.examine"><code class="docutils literal notranslate"><span class="pre">FortranCharacterset.examine()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.FortranRule"><code class="docutils literal notranslate"><span class="pre">FortranRule</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.FortranRule.examine"><code class="docutils literal notranslate"><span class="pre">FortranRule.examine()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.FortranRule.examine_fortran"><code class="docutils literal notranslate"><span class="pre">FortranRule.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.IntrinsicModule"><code class="docutils literal notranslate"><span class="pre">IntrinsicModule</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.IntrinsicModule.examine_fortran"><code class="docutils literal notranslate"><span class="pre">IntrinsicModule.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.KindPattern"><code class="docutils literal notranslate"><span class="pre">KindPattern</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.KindPattern.examine_fortran"><code class="docutils literal notranslate"><span class="pre">KindPattern.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.LabelledDoExit"><code class="docutils literal notranslate"><span class="pre">LabelledDoExit</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.LabelledDoExit.examine_fortran"><code class="docutils literal notranslate"><span class="pre">LabelledDoExit.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingImplicit"><code class="docutils literal notranslate"><span class="pre">MissingImplicit</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingImplicit.examine_fortran"><code class="docutils literal notranslate"><span class="pre">MissingImplicit.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingIntent"><code class="docutils literal notranslate"><span class="pre">MissingIntent</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingIntent.examine_fortran"><code class="docutils literal notranslate"><span class="pre">MissingIntent.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingOnly"><code class="docutils literal notranslate"><span class="pre">MissingOnly</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingOnly.examine_fortran"><code class="docutils literal notranslate"><span class="pre">MissingOnly.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingPointerInit"><code class="docutils literal notranslate"><span class="pre">MissingPointerInit</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.MissingPointerInit.examine_fortran"><code class="docutils literal notranslate"><span class="pre">MissingPointerInit.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.NakedLiteral"><code class="docutils literal notranslate"><span class="pre">NakedLiteral</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stylist.fortran.NakedLiteral.examine_fortran"><code class="docutils literal notranslate"><span class="pre">NakedLiteral.examine_fortran()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/developer-information/api/stylist.fortran.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+
+<p class="copyright">
+
+&copy; Crown Copyright 2024, Met Office. All rights reserved.
+
+</p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>
