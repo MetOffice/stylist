@@ -23,7 +23,7 @@ from stylist import __version__ as STYLIST_VERSION  # noqa: E402
 # -- Project information -----------------------------------------------------
 
 project = 'Stylist'
-copyright = '2022, Crown Copyright'
+copyright = '2024, Met Office. All rights reserved'
 author = 'Stylist Developers'
 
 # Headline version for archiving purposes.
@@ -82,7 +82,20 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages. See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
+
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/MetOffice/stylist",
+            "icon": "fa-brands fa-github"
+        }
+    ],
+    "footer_start": ["crown-copyright"],
+    "footer_center": ["sphinx-version"],
+    "footer_end": ["theme-version"]
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
