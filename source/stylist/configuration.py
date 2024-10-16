@@ -9,6 +9,8 @@ Handles configuration parameters coming from various potential sources.
 
 Configuration may be defined by software or read from a Windows .ini file.
 """
+from __future__ import annotations
+
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from typing import Dict, List, Tuple, Type
@@ -36,6 +38,10 @@ class Configuration:
 
     def add_style(self, name: str, style: Style):
         self._styles[name] = style
+
+    def overload(self, other: Configuration) -> None:
+        self._pipes = {**self._pipes, **other._pipes}
+        self._styles = {**self._styles, **other._styles}
 
     @property
     def file_pipes(self) -> Dict[str, FilePipe]:

@@ -38,7 +38,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.11
 
       - name: Cache pip
         uses: actions/cache@v2
@@ -97,6 +97,8 @@ jobs:
           set -x
           rsync -a stylist/documentation/build/html/ gh-pages/${{github.ref_name}}
           git -C gh-pages add ${{github.ref_name}}
+          stylist/.github/bin/update-index gh-pages/index.html ${{github.ref_name}}
+          git -C gh-pages add index.html
 
       - name: Commit documentation
         if: github.event_name == 'push'

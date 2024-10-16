@@ -8,9 +8,8 @@ Rules relating to Fortran source.
 """
 import re
 from abc import ABC, abstractmethod
-from collections import defaultdict
 from typing import (Container, Dict, List, Optional, Pattern, Sequence, Type,
-                    Union)
+                    Union, Any, cast)
 
 import fparser.two.Fortran2003 as Fortran2003  # type: ignore
 import fparser.two.Fortran2008 as Fortran2008  # type: ignore
@@ -393,6 +392,13 @@ class MissingPointerInit(FortranRule):
                                                   attribute_specification):
                 continue
 
+            # @todo This is quite ugly
+            #
+            potential_interface_block = data_declaration.parent.parent.parent
+            if isinstance(potential_interface_block,
+                          Fortran2003.Interface_Block):
+                continue
+
             for entity in fp_walk(data_declaration, entity_declaration):
                 if str(fp_get_child(entity, Fortran2003.Name)) in ignore_names:
                     continue
@@ -532,8 +538,8 @@ class KindPattern(FortranRule):
                       " not fit the pattern /{pattern}/."
 
     def __init__(self, *,  # There are no positional arguments.
-                 integer: Union[str, Pattern],
-                 real: Union[str, Pattern]):
+                 integer: Optional[Union[str, Pattern]] = None,
+                 real: Optional[Union[str, Pattern]] = None):
         """
         Patterns are set only for integer and real data types however Fortran
         supports many more. Logical and Complex for example. For those cases a
@@ -542,13 +548,16 @@ class KindPattern(FortranRule):
         :param integer: Regular expression which integer kinds must match.
         :param real: Regular expression which real kinds must match.
         """
-        self._patterns: Dict[str, Pattern] \
-            = defaultdict(lambda: re.compile(r'.*'))
-        if isinstance(integer, str):
+        self._patterns: Dict[str, Optional[Pattern]] = {'logical': None}
+        if integer is None:
+            pass
+        elif isinstance(integer, str):
             self._patterns['integer'] = re.compile(integer)
         else:
             self._patterns['integer'] = integer
-        if isinstance(real, str):
+        if real is None:
+            pass
+        elif isinstance(real, str):
             self._patterns['real'] = re.compile(real)
         else:
             self._patterns['real'] = real
@@ -575,19 +584,34 @@ class KindPattern(FortranRule):
                           (Fortran2003.Data_Component_Def_Stmt,
                            Fortran2003.Type_Declaration_Stmt)):
                 type_spec: Fortran2003.Intrinsic_Type_Spec = candidate.items[0]
+                data_type: str = type_spec.items[0].lower()
+
+                if self._patterns.get(data_type) is None:
+                    continue
+                pattern = cast(Pattern[Any], self._patterns[data_type])
+
                 kind_selector: Fortran2003.Kind_Selector = type_spec.items[1]
+                if kind_selector is None:
+                    entity_declaration = candidate.items[2]
+                    message = self._ISSUE_TEMPLATE.format(
+                        type=data_type,
+                        kind='',
+                        name=entity_declaration,
+                        pattern=pattern.pattern)
+                    issues.append(Issue(message,
+                                        line=_line(candidate)))
+                    continue
 
                 if isinstance(kind_selector, Fortran2003.Kind_Selector):
-                    data_type: str = type_spec.items[0].lower()
                     kind: str = str(kind_selector.children[1])
-                    match = self._patterns[data_type].match(kind)
+                    match = pattern.match(kind)
                     if match is None:
                         entity_declaration = candidate.items[2]
                         message = self._ISSUE_TEMPLATE.format(
                             type=data_type,
                             kind=kind,
                             name=entity_declaration,
-                            pattern=self._patterns[data_type].pattern)
+                            pattern=pattern.pattern)
                         issues.append(Issue(message,
                                             line=_line(candidate)))
 
@@ -601,7 +625,8 @@ class AutoCharArrayIntent(FortranRule):
     subroutine or function arguments have intent(in) to avoid writing
     outside the given array.
     """
-    def _message(self, name, intent):
+    @staticmethod
+    def __message(name, intent):
         return (f"Arguments of type character(*) must have intent IN, but "
                 f"{name} has intent {intent}.")
 
@@ -630,6 +655,9 @@ class AutoCharArrayIntent(FortranRule):
             if not type_spec.items[0] == "CHARACTER":
                 continue
             param_value = type_spec.items[1]
+            # If no length is specified we don't care
+            if param_value is None:
+                continue
             # This might be a length selector, if so get the param value
             if isinstance(param_value, Fortran2003.Length_Selector):
                 param_value = param_value.items[1]
@@ -654,7 +682,7 @@ class AutoCharArrayIntent(FortranRule):
             if intent_attr.items[1].string == "IN":
                 continue
             issues.append(Issue(
-                self._message(
+                self.__message(
                     declaration.items[2].string,
                     intent_attr.items[1]
                 ),
@@ -686,22 +714,35 @@ class NakedLiteral(FortranRule):
             candidates.extend(fp_walk(subject.get_tree(),
                                       Fortran2003.Real_Literal_Constant))
 
-        for constant in candidates:
-            if constant.items[1] is None:
-                if isinstance(constant.parent, Fortran2003.Assignment_Stmt):
-                    name = str(fp_get_child(constant.parent, Fortran2003.Name))
-                    message = f'Literal value assigned to "{name}"' \
-                              ' without kind'
-                elif isinstance(constant.parent.parent,
-                                (Fortran2003.Entity_Decl,
-                                 Fortran2003.Component_Decl)):
-                    name = str(fp_get_child(constant.parent.parent,
+        for literal in candidates:
+            if literal.items[1] is not None:  # Skip when kind is present
+                continue
+
+            name: Optional[str] = None
+            parent = literal.parent
+            while parent is not None:
+                if isinstance(parent, Fortran2003.Part_Ref):
+                    name = str(fp_get_child(parent,
                                             Fortran2003.Name))
+                    message = f'Literal value index used with "{name}"' \
+                              ' without kind'
+                    break
+                elif isinstance(parent, (Fortran2003.Assignment_Stmt,
+                                         Fortran2003.Entity_Decl,
+                                         Fortran2003.Component_Decl)):
+                    array_slice = fp_get_child(parent, Fortran2003.Part_Ref)
+                    if array_slice is None:
+                        name = str(fp_get_child(parent, Fortran2003.Name))
+                    else:
+                        name = str(fp_get_child(array_slice, Fortran2003.Name))
                     message = f'Literal value assigned to "{name}"' \
                               ' without kind'
+                    break
                 else:
-                    message = 'Literal value without "kind"'
-                issues.append(Issue(message, line=_line(constant)))
+                    parent = parent.parent
+            if name is None:
+                message = 'Literal value without "kind"'
+            issues.append(Issue(message, line=_line(literal)))
 
         return issues
 
