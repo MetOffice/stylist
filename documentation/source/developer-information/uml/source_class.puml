@@ -1,0 +1,88 @@
+skinparam class {
+    BackgroundColor<<unwritten>> AlliceBlue
+    BorderColor<<unwritten>> LightSkyBlue
+}
+
+
+abstract class source.SourceText {
+    +{abstract}get_text(): String
+}
+
+
+source.TextProcessor *-- source.SourceText
+abstract class source.TextProcessor {
+    +<<create>>__init__(source: SourceText)
+    +{abstract}{static}get_name(): String
+    +{abstract}get_text(): String
+}
+source.SourceText <|-- source.TextProcessor
+
+
+class source.CPreProcessor {
+    +{static}get_name(): String
+    +get_text(): String
+}
+source.TextProcessor <|-- source.CPreProcessor
+
+
+class source.FortranPreProcessor {
+    +{static}get_name(): String
+    +get_text(): String
+}
+source.TextProcessor <|-- source.FortranPreProcessor
+
+
+class source.pFUnitProcessor {
+    +{static}get_name(): String
+    +get_text(): String
+}
+source.TextProcessor <|-- source.pFUnitProcessor
+
+
+class source.FileReader {
+    +<<create>>__init__(source_file: Path|TextIO)
+    +get_text(): String
+}
+source.SourceText <|-- source.FileReader
+
+
+class source.StringReader {
+    +<<create>>__init__(source_string: String)
+    +get_text(): String
+}
+source.SourceText <|-- source.StringReader
+
+
+source.SourceTree *-- source.SourceText
+abstract class source.SourceTree {
+    +<<create>>__init__( text: SourceText )
+    +{abstract}get_tree()
+    +{abstract}get_tree_error(): String
+    +get_text(): String
+    }
+
+
+class source.FortranSource {
+    +get_tree(): fparser.Fortran2003.Program
+    +get_tree_error(): String
+    +get_first_statement(root: fparser.Fortran2003.Block): fparser.Fortran2003.StmtBlock
+    +path( path: String, root: root: fparser.Fortran2003.Block ): fparser.Fortran2003.Base<<list>>
+    +find_all(find_node: fparser.Fortran2003.Base<<type>>, root: fparser.Fortran2003.Base): fparser.Fortran2003.Base<<list>>
+    +{static}print_tree(root: fparser.Fortran2003.Base, indent: Integer = 0)
+    }
+source.SourceTree <|-- source.FortranSource
+
+
+class source.CSource <<unwritten>> {
+    +get_tree()
+    +get_tree_error()
+    }
+source.SourceTree <|-- source.CSource
+
+
+class source.PlainText {
+    +{static}get_name(): String
+    +get_tree(): String<<generator>>
+    +get_tree_error(): String<<optional>>
+}
+source.SourceTree <|-- source.PlainText

@@ -1,0 +1,33 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' stylist.source module
+
+class source.FilePipe {
+    +<<create>>__init__(parser: SourceTree<<type>>, preprocessors: TextProcessor<<type>><<vararg>>)
+}
+
+
+source.FilePipe "*" --o source.SourceFactory
+class source.SourceFactory {
+    +{class}add_extension_mapping(extension: String, pipe: source.FilePipe)
+    +{class}get_extensions(): String<<iterable>>
+    +{class}read_file(source_file: Path|TextIO): source.SourceTree
+}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' stylist.engine module
+
+class engine.CheckEngine {
+    -styles: Style<<collection>>
+    +__init__( styles: Style<<collection>>)
+    +check( filename: String <<collection>> ): Issue<<collection>>
+    }
+style.Style "+" -o engine.CheckEngine
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' stylist.issue module
+
+class issue.Issue {
+    -description: String
+    +__init__( description: String )
+    +__str__(): String
+    }
