@@ -1,0 +1,30 @@
+skinparam class {
+    BackgroundColor<<unwritten>> AlliceBlue
+    BorderColor<<unwritten>> LightSkyBlue
+}
+
+rule.Rule "*" --o style.Style
+abstract class style.Style {
+    +<<create>>__init__( rules: Rule<<collection>> )
+    +<<property>>name(): String
+    +<<setter>>name(new: String)
+    +list_rules(): Rule<<collection>>
+    +check( source: SourceTree ): issue.Issue<<collection>>
+    }
+
+class LFRicStyle {
+    +__init__()
+    }
+style.Style <|-- LFRicStyle
+
+class UMStyle <<unwritten>> {
+    +__init__()
+    }
+style.Style <|-- UMStyle
+
+class style.BespokeStyle <<unwritten>> {
+    +__init__()
+    +addRule( rule: Rule )
+    +removeRule( rule: Rule )
+    }
+style.Style <|-- style.BespokeStyle

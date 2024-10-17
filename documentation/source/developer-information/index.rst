@@ -12,10 +12,12 @@ your taste.
    :maxdepth: 2
 
    overview
-   api
+   design
    environment
    rules
    todo
+   future
+   api
 
 A lot of our process is dictated by the GitHub platform used to host the
 project. For details about that, such as how change requests are handled,

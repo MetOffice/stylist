@@ -47,7 +47,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx_autodoc_typehints',
     'sphinx.ext.todo',
-    'sphinx.ext.coverage'
+    'sphinx.ext.coverage',
+    'sphinxcontrib.plantuml'
 ]
 
 # Paths to directories containing templates. Relative to this directory.
@@ -71,6 +72,10 @@ autodoc_default_options = {
 
 autoclass_content = 'both'
 
+
+# -- Integrated PlantUML configuration ---------------------------------------
+
+plantuml_output_format = 'svg'
 
 # -- Todo configuration ------------------------------------------------------
 

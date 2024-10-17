@@ -25,6 +25,8 @@ test = ['pytest', 'pytest-cov', 'mypy']
 performance = ['pytest', 'pytest-benchmark', 'matplotlib']
 docs = ['sphinx < 7.0.0',
         'sphinx-autodoc-typehints',
+        'sphinxcontrib-plantuml>=0.30.0',
+        'pillow>=11.0.0',
         'pydata-sphinx-theme>=0.15.2']
 release = ['setuptools', 'wheel', 'twine']
 

@@ -89,31 +89,3 @@ class issue.Issue {
     }
 
 @enduml
-
-
-@startuml Styler Sequence Diagram
-
-participant UserInterface
-
-UserInterface -> style.LFRicStyle : <<instantiate>>
-activate style.LFRicStyle
-
-style.LFRicStyle -> rule.MissingImplicit : MissingImplicit(None)
-activate rule.MissingImplicit
-
-UserInterface -> engine.CheckEngine : CheckEngine(LFRicStyle)
-activate engine.CheckEngine
-
-UserInterface -> engine.CheckEngine : check(SourceFile)
-
-engine.CheckEngine -> style.LFRicStyle : check(Program)
-
-style.LFRicStyle -> style.MissingImplicit : examine(Program)
-
-style.MissingImplicit --> style.Style : Issues[]
-
-style.Style --> engine.CheckEngine : Issues[]
-
-engine.CheckEngine --> UserInterface : Issues[]
-
-@enduml
