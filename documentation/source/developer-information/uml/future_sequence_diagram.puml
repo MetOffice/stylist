@@ -1,26 +1,42 @@
 @startuml Styler Sequence Diagram
 
 participant UserInterface
+participant engine.CheckEngine as CheckEngine
+participant "source.SourceFactory" as SourceFactory
+participant "fortran_source:source.FortranSource" as FortranSource
+participant "my_style:style.LFRicstyle" as LFRicStyle
+participant "missing_implict:rule.MissingImplicit" as MissingImplicit
 
-UserInterface -> style.LFRicStyle : <<instantiate>>
-activate style.LFRicStyle
+activate SourceFactory
 
-style.LFRicStyle -> rule.MissingImplicit : MissingImplicit(None)
-activate rule.MissingImplicit
+UserInterface -\ LFRicStyle : <<create>>
+activate LFRicStyle
 
-UserInterface -> engine.CheckEngine : CheckEngine(LFRicStyle)
-activate engine.CheckEngine
+LFRicStyle -\ MissingImplicit : MissingImplicit(None) <<create>>
+activate MissingImplicit
 
-UserInterface -> engine.CheckEngine : check(SourceFile)
+UserInterface -\ CheckEngine : CheckEngine(my_style)
+activate CheckEngine
 
-engine.CheckEngine -> style.LFRicStyle : check(Program)
+UserInterface -> SourceFactory : SourceFactory(filename)
+SourceFactory -\ FortranSource : <<create>>
+activate FortranSource
+SourceFactory --> UserInterface : fortran_source
 
-style.LFRicStyle -> style.MissingImplicit : examine(Program)
+UserInterface -> CheckEngine : check(fortran_source)
 
-style.MissingImplicit --> style.Style : Issues[]
+CheckEngine -> LFRicStyle : check(fortran_source)
 
-style.Style --> engine.CheckEngine : Issues[]
+LFRicStyle -> MissingImplicit : examine(fortran_source)
 
-engine.CheckEngine --> UserInterface : Issues[]
+alt "Implicit statement is missing"
+MissingImplicit -\ FortranSource : insert_statement(Implicit(None))
+end
+
+MissingImplicit --> LFRicStyle : Issue <<sequence>>
+
+LFRicStyle --> CheckEngine : Issue <<sequence>>
+
+CheckEngine --> UserInterface : Issue <<sequence>>
 
 @enduml

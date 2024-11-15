@@ -1,30 +1,32 @@
 @startuml Checker Sequence Diagram
 participant UserInterface
-participant "missing_implicit:rule.MissingImplicit" as MissingImplicit
-participant "my_style:rule.LFRicStyle" as LFRicStyle
 participant engine.CheckEngine as CheckEngine
-participant source.SourceFactory
+participant "my_style:rule.LFRicStyle" as LFRicStyle
+participant "rule.MissingImplicit" as MissingImplicit
+participant source.SourceFactory as SourceFactory
 participant "some_text:source.SourceFileReader" as SourceFileReader
 participant "source_tree:source.FortranSource" as FortranSource
 
-UserInterface -\ MissingImplicit : <<create>>
-activate MissingImplicit
+activate SourceFactory
 
-UserInterface -\ LFRicStyle : LFRicStyle(mising_implicit) <<create>>
+UserInterface -\ LFRicStyle : LFRicStyle() <<create>>
 activate LFRicStyle
+
+LFRicStyle -\ MissingImplicit : <<create>>
+activate MissingImplicit
 
 UserInterface -\ CheckEngine : CheckEngine(my_style) <<create>>
 activate CheckEngine
 
-UserInterface -> source.SourceFactory: read_file(filename)
+UserInterface -> SourceFactory: read_file(filename)
 
-source.SourceFactory -\ SourceFileReader: SourceFileReader(filename) <<create>>
+SourceFactory -\ SourceFileReader: SourceFileReader(filename) <<create>>
 activate SourceFileReader
 
-source.SourceFactory -\ FortranSource: FortranSource(some_text) <<create>>
+SourceFactory -\ FortranSource: FortranSource(some_text) <<create>>
 activate FortranSource
 
-source.SourceFactory --> UserInterface: source_tree
+SourceFactory --> UserInterface: source_tree
 
 UserInterface -> CheckEngine : check(source_tree)
 

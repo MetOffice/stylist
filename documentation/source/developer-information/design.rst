@@ -1,3 +1,5 @@
+.. _design-page:
+
 Design
 ======
 

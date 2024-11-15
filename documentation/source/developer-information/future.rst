@@ -23,19 +23,28 @@ Coerce Code
 
 At the moment the tool is able to highlight problems with the source code.
 This is useful but for a sub-set of problems there is an obvious remedy
-which could be enacted. For instance, a missing `intent` specification could
-be fixed by imposing a default `intent none`.
+which could be enacted. For instance, a missing ``intent`` specification could
+be fixed by imposing a default, e.g. ``intent none``.
 
 Issue `#57`_ has more details.
 
 .. _#57: https://github.com/MetOffice/stylist/issues/57
 
-A proposed design is given here:
+The general design is very similar to the existing one, outlined in the
+:ref:`design-page`. The difference being that ``Rule`` objects can mutate the
+parse tree as they go.
 
-.. uml:: uml/future_class_diagram.puml
-    :caption: UML class diagram of potential coercive implementation.
+It may be necessary to have failing and non-failing issues. In this case a code
+coercion would be reported as a non-failing issue which may be viewed or
+suppressed. Faults which cannot be coerced would still raise failing issues which
+cannot be ignored.
+
+It's not clear how line-by-line text rules would mutate the text form and how
+the resulting parse tree would be regenerated after they had.
 
 And an example of operation:
 
 .. uml:: uml/future_sequence_diagram.puml
     :caption: UML sequence diagram of example operation.
+    :align: center
+    :width: 100%
