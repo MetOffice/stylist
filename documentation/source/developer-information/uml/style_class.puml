@@ -2,8 +2,11 @@ skinparam class {
     BackgroundColor<<unwritten>> AlliceBlue
     BorderColor<<unwritten>> LightSkyBlue
 }
+skinparam groupInheritance 2
 
-rule.Rule "*" --o style.Style
+left to right direction
+
+rule.Rule "*" -o style.Style
 abstract class style.Style {
     +<<create>>__init__( rules: Rule<<collection>> )
     +<<property>>name(): String

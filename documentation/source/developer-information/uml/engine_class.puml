@@ -28,6 +28,8 @@ style.Style "+" -o engine.CheckEngine
 
 class issue.Issue {
     -description: String
-    +__init__( description: String )
+    -filename: Path <<optional>>
+    -line: Integer <<optional>>
+    +__init__( description: String, line: Integer <<optional>>, filename: Path <<optional>> )
     +__str__(): String
     }

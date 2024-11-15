@@ -15,6 +15,7 @@ for different purposes.
 .. uml::  uml/style_class.puml
     :caption: UML class diagram showing "style" module classes.
     :align: center
+    :width: 100%
 
 Source is presented either line-by-line as strings from the text file or as an
 abstract syntax tree, gained by parsing the source.
@@ -24,14 +25,20 @@ abstract syntax tree, gained by parsing the source.
     :align: center
     :width: 100%
 
-Operation is orchestrated through the `Engine` class. It makes use of a
+The line based ``SourceText`` can come from either a file or a string buffer.
+This text can have preprocessors applied to it using the decorator pattern.
+
+Operation is orchestrated through the ``Engine`` class. It makes use of a
 factory class to create the correct source object from a file.
 
 .. uml:: uml/engine_class.puml
     :caption: UML class diagram showing various orchestration classes.
     :align: center
+    :width: 100%
 
 Sample operation is shown in the following sequence diagram:
 
 .. uml:: uml/sequence_diagram.puml
     :caption: UML sequence diagram showing example operation.
+    :align: center
+    :width: 100%

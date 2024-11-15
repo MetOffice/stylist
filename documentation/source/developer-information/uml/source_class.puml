@@ -4,62 +4,62 @@ skinparam class {
 }
 
 
-abstract class source.SourceText {
-    +{abstract}get_text(): String
-}
-
-
-source.TextProcessor *-- source.SourceText
-abstract class source.TextProcessor {
-    +<<create>>__init__(source: SourceText)
-    +{abstract}{static}get_name(): String
-    +{abstract}get_text(): String
-}
-source.SourceText <|-- source.TextProcessor
-
-
-class source.CPreProcessor {
+class source.CPreProcessor <<concrete-decorator>> {
     +{static}get_name(): String
     +get_text(): String
 }
 source.TextProcessor <|-- source.CPreProcessor
 
 
-class source.FortranPreProcessor {
+class source.FortranPreProcessor <<concrete-decorator>> {
     +{static}get_name(): String
     +get_text(): String
 }
 source.TextProcessor <|-- source.FortranPreProcessor
 
 
-class source.pFUnitProcessor {
+class source.pFUnitProcessor <<concrete-decorator>> {
     +{static}get_name(): String
     +get_text(): String
 }
 source.TextProcessor <|-- source.pFUnitProcessor
 
 
-class source.FileReader {
+abstract class source.TextProcessor <<decorator>> {
+    +<<create>>__init__(source: SourceText)
+    +{abstract}{static}get_name(): String
+    +{abstract}get_text(): String
+}
+source.TextProcessor *-- source.SourceText
+
+
+class source.FileReader <<concrete-component>> {
     +<<create>>__init__(source_file: Path|TextIO)
     +get_text(): String
 }
 source.SourceText <|-- source.FileReader
 
 
-class source.StringReader {
+class source.StringReader <<concrete-component>> {
     +<<create>>__init__(source_string: String)
     +get_text(): String
 }
 source.SourceText <|-- source.StringReader
 
 
-source.SourceTree *-- source.SourceText
+abstract class source.SourceText <<component>> {
+    +{abstract}get_text(): String
+}
+source.SourceText <|-- source.TextProcessor
+
+
 abstract class source.SourceTree {
     +<<create>>__init__( text: SourceText )
     +{abstract}get_tree()
     +{abstract}get_tree_error(): String
     +get_text(): String
     }
+source.SourceTree *---- source.SourceText
 
 
 class source.FortranSource {

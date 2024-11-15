@@ -1,25 +1,41 @@
 @startuml Checker Sequence Diagram
 participant UserInterface
+participant "missing_implicit:rule.MissingImplicit" as MissingImplicit
+participant "my_style:rule.LFRicStyle" as LFRicStyle
+participant engine.CheckEngine as CheckEngine
+participant source.SourceFactory
+participant "some_text:source.SourceFileReader" as SourceFileReader
+participant "source_tree:source.FortranSource" as FortranSource
 
-UserInterface -> style.LFRicStyle : <<instantiate>>
-activate style.LFRicStyle
+UserInterface -\ MissingImplicit : <<create>>
+activate MissingImplicit
 
-style.LFRicStyle -> rule.MissingImplicit : MissingImplicit(None)
-activate rule.MissingImplicit
+UserInterface -\ LFRicStyle : LFRicStyle(mising_implicit) <<create>>
+activate LFRicStyle
 
-UserInterface -> engine.CheckEngine : CheckEngine(LFRicStyle)
-activate engine.CheckEngine
+UserInterface -\ CheckEngine : CheckEngine(my_style) <<create>>
+activate CheckEngine
 
-UserInterface -> engine.CheckEngine : check(SourceFile)
+UserInterface -> source.SourceFactory: read_file(filename)
 
-engine.CheckEngine -> style.LFRicStyle : check(Program)
+source.SourceFactory -\ SourceFileReader: SourceFileReader(filename) <<create>>
+activate SourceFileReader
 
-style.LFRicStyle -> rule.MissingImplicit : examine(Program)
+source.SourceFactory -\ FortranSource: FortranSource(some_text) <<create>>
+activate FortranSource
 
-rule.MissingImplicit --> style.Style : Issues[]
+source.SourceFactory --> UserInterface: source_tree
 
-style.Style --> engine.CheckEngine : Issues[]
+UserInterface -> CheckEngine : check(source_tree)
 
-engine.CheckEngine --> UserInterface : Issues[]
+CheckEngine -> FortranSource : get_tree()
+FortranSource --> CheckEngine : root:Program
+
+CheckEngine -> LFRicStyle : check(root)
+LFRicStyle -> MissingImplicit : examine(root)
+MissingImplicit --> LFRicStyle : Issues[]
+LFRicStyle --> CheckEngine : Issues[]
+
+CheckEngine --> UserInterface : Issues[]
 
 @enduml

@@ -2,6 +2,7 @@ skinparam class {
     BackgroundColor<<unwritten>> AlliceBlue
     BorderColor<<unwritten>> LightSkyBlue
 }
+skinparam groupInheritance 2
 
 abstract class rule.Rule {
     +{abstract}examine(subject: source.SourceTree): issue.Issue<<collection>>
@@ -21,7 +22,7 @@ abstract class rule.FortranRule {
     +examine(subject: source.SourceTree): issue.Issue<<collection>>
     +{abstract}examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
     }
-rule.Rule <|-- rule.FortranRule
+rule.Rule <|--- rule.FortranRule
 
 class rule.MissingVisibility <<unwritten>> {
     +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
@@ -38,11 +39,6 @@ class rule.MissingLegalNotice <<unwritten>> {
     +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
     }
 rule.FortranRule <|-- rule.MissingLegalNotice
-
-class rule.CommaSpace <<unwritten>> {
-    +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
-}
-rule.FortranRule <|-- rule.CommaSpace
 
 abstract class rule.CRule <<unwritten>> {
     +examine( subject: SourceTree ): Issue<<collection>>
