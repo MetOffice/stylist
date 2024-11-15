@@ -27,7 +27,8 @@ docs = ['sphinx < 7.0.0',
         'sphinx-autodoc-typehints',
         'sphinxcontrib-plantuml>=0.30.0',
         'pillow>=11.0.0',
-        'pydata-sphinx-theme>=0.15.2']
+        'pydata-sphinx-theme>=0.15.2',
+        'sphinxcontrib.plantuml']
 release = ['setuptools', 'wheel', 'twine']
 
 [project.scripts]

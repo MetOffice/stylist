@@ -51,6 +51,33 @@ As always it is also possible to install from the project source using
 ``pip install --editable .``. The source may be obtained by downloading a
 tarball or by cloning the repository.
 
+Development
+-----------
+
+If you are interested in developing this tool then a few useful prerequisite
+lists are provided.
+
++--------------------------------+-------------------------------+
+|  Command                       | Tool Set                      |
++================================+===============================+
+| ``pip install .[dev]``         | For development.              |
++--------------------------------+-------------------------------+
+| ``pip install .[test]``        | For testing.                  |
++--------------------------------+-------------------------------+
+| ``pip install .[performance]`` | For monitoring performance.   |
++--------------------------------+-------------------------------+
+| ``pip install .[docs]``        | For generating documentation. |
++--------------------------------+-------------------------------+
+| ``pip install .[release]``     | For creating releases.        |
++--------------------------------+-------------------------------+
+
+Note that the documenatation requires the `PlantUML`_ tool to be installed.
+
+Until `PEP725`_ or similar is adopted this cannot be expressed in the
+``pyproject.toml`` file so it is noted here.
+
+.. _PlantUML: https://plantuml.com/
+.. _PEP725: https://peps.python.org/pep-0725/
 
 Usage
 ~~~~~
