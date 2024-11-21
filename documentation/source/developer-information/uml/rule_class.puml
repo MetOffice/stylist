@@ -1,0 +1,47 @@
+skinparam class {
+    BackgroundColor<<unwritten>> AlliceBlue
+    BorderColor<<unwritten>> LightSkyBlue
+}
+skinparam groupInheritance 2
+
+abstract class rule.Rule {
+    +{abstract}examine(subject: source.SourceTree): issue.Issue<<collection>>
+    }
+
+class rule.FortranCharacterset {
+    +examine( subject: source.SourceTree ): issue.Issue<<collection>>
+}
+rule.Rule <|-- rule.FortranCharacterset
+
+class rule.TrailingWhitespace {
+    +examine( subject: source.SourceTree ): issue.Issue<<collection>>
+}
+rule.Rule ^-- rule.TrailingWhitespace
+
+abstract class rule.FortranRule {
+    +examine(subject: source.SourceTree): issue.Issue<<collection>>
+    +{abstract}examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
+    }
+rule.Rule <|--- rule.FortranRule
+
+class rule.MissingVisibility <<unwritten>> {
+    +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
+    }
+rule.FortranRule <|-- rule.MissingVisibility
+
+class rule.MissingImplicit {
+    +<<create>>__init__(require_everywhere: Bool = False)
+    +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
+    }
+rule.FortranRule <|-- rule.MissingImplicit
+
+class rule.MissingLegalNotice <<unwritten>> {
+    +examine_fortran(subject: source.FortranSource): issue.Issue<<collection>>
+    }
+rule.FortranRule <|-- rule.MissingLegalNotice
+
+abstract class rule.CRule <<unwritten>> {
+    +examine( subject: SourceTree ): Issue<<collection>>
+    +{abstract}examine_c(subject: source.CSource): issue.Issue<collection>
+    }
+rule.Rule <|-- rule.CRule

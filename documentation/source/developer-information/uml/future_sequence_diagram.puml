@@ -1,0 +1,42 @@
+@startuml Styler Sequence Diagram
+
+participant UserInterface
+participant engine.CheckEngine as CheckEngine
+participant "source.SourceFactory" as SourceFactory
+participant "fortran_source:source.FortranSource" as FortranSource
+participant "my_style:style.LFRicstyle" as LFRicStyle
+participant "missing_implict:rule.MissingImplicit" as MissingImplicit
+
+activate SourceFactory
+
+UserInterface -\ LFRicStyle : <<create>>
+activate LFRicStyle
+
+LFRicStyle -\ MissingImplicit : MissingImplicit(None) <<create>>
+activate MissingImplicit
+
+UserInterface -\ CheckEngine : CheckEngine(my_style)
+activate CheckEngine
+
+UserInterface -> SourceFactory : SourceFactory(filename)
+SourceFactory -\ FortranSource : <<create>>
+activate FortranSource
+SourceFactory --> UserInterface : fortran_source
+
+UserInterface -> CheckEngine : check(fortran_source)
+
+CheckEngine -> LFRicStyle : check(fortran_source)
+
+LFRicStyle -> MissingImplicit : examine(fortran_source)
+
+alt "Implicit statement is missing"
+MissingImplicit -\ FortranSource : insert_statement(Implicit(None))
+end
+
+MissingImplicit --> LFRicStyle : Issue <<sequence>>
+
+LFRicStyle --> CheckEngine : Issue <<sequence>>
+
+CheckEngine --> UserInterface : Issue <<sequence>>
+
+@enduml
