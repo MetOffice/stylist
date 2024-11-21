@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Ideas For Future Work &#8212; Stylist 0.5.dev1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer-information/future';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Collected To-do items" href="todo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.dev1" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/stylist.png" class="logo__image only-light" alt="Stylist 0.5.dev1 documentation - Home"/>
+    <img src="../_static/stylist.png" class="logo__image only-dark pst-js-only" alt="Stylist 0.5.dev1 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user-manual/index.html">
+    User Manual
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Developer Information
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MetOffice/stylist" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user-manual/index.html">
+    User Manual
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Developer Information
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MetOffice/stylist" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Create a Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Collected To-do items</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ideas For Future Work</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Documentation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/stylist.html">stylist</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.configuration.html">stylist.configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.engine.html">stylist.engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.fortran.html">stylist.fortran</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.issue.html">stylist.issue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.rule.html">stylist.rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.source.html">stylist.source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/stylist.style.html">stylist.style</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Developer Information</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Ideas For Future Work</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="ideas-for-future-work">
+<h1>Ideas For Future Work<a class="headerlink" href="#ideas-for-future-work" title="Permalink to this heading">#</a></h1>
+<p>Any ideas for substantial future work should be documented on this page.</p>
+<section id="parse-tree-traversal-efficiency">
+<h2>Parse Tree Traversal Efficiency<a class="headerlink" href="#parse-tree-traversal-efficiency" title="Permalink to this heading">#</a></h2>
+<p>Every rule is individually responsible for traversing its search space, be
+that line-by-line for textual rules or node-by-node for parse tree rules.</p>
+<p>This means the lines of the source file or nodes of the parse tree are
+visited by each rule in turn. This could be inefficient. There may be a
+means of turning this inside out and have each line or node visited only
+once and each rule see the entity in turn.</p>
+<p>See issue <a class="reference external" href="https://github.com/MetOffice/stylist/issues/46">#46</a> for me details.</p>
+</section>
+<section id="coerce-code">
+<h2>Coerce Code<a class="headerlink" href="#coerce-code" title="Permalink to this heading">#</a></h2>
+<p>At the moment the tool is able to highlight problems with the source code.
+This is useful but for a sub-set of problems there is an obvious remedy
+which could be enacted. For instance, a missing <code class="docutils literal notranslate"><span class="pre">intent</span></code> specification could
+be fixed by imposing a default, e.g. <code class="docutils literal notranslate"><span class="pre">intent</span> <span class="pre">none</span></code>.</p>
+<p>Issue <a class="reference external" href="https://github.com/MetOffice/stylist/issues/57">#57</a> has more details.</p>
+<p>The general design is very similar to the existing one, outlined in the
+<a class="reference internal" href="design.html#design-page"><span class="std std-ref">Design</span></a>. The difference being that <code class="docutils literal notranslate"><span class="pre">Rule</span></code> objects can mutate the
+parse tree as they go.</p>
+<p>It may be necessary to have failing and non-failing issues. In this case a code
+coercion would be reported as a non-failing issue which may be viewed or
+suppressed. Faults which cannot be coerced would still raise failing issues which
+cannot be ignored.</p>
+<p>It’s not clear how line-by-line text rules would mutate the text form and how
+the resulting parse tree would be regenerated after they had.</p>
+<p>And an example of operation:</p>
+<figure class="align-center" id="id3">
+<p class="plantuml">
+<object data="../_images/plantuml-973e68b13f11827e735b8a057db5f8d4f1283932.svg" type="image/svg+xml" style="width:100%">
+<a href="../_images/plantuml-973e68b13f11827e735b8a057db5f8d4f1283932.png"><img src="../_images/plantuml-973e68b13f11827e735b8a057db5f8d4f1283932.png" alt="&#64;startuml Styler Sequence Diagram
+
+participant UserInterface
+participant engine.CheckEngine as CheckEngine
+participant &quot;source.SourceFactory&quot; as SourceFactory
+participant &quot;fortran_source:source.FortranSource&quot; as FortranSource
+participant &quot;my_style:style.LFRicstyle&quot; as LFRicStyle
+participant &quot;missing_implict:rule.MissingImplicit&quot; as MissingImplicit
+
+activate SourceFactory
+
+UserInterface -\ LFRicStyle : &lt;&lt;create&gt;&gt;
+activate LFRicStyle
+
+LFRicStyle -\ MissingImplicit : MissingImplicit(None) &lt;&lt;create&gt;&gt;
+activate MissingImplicit
+
+UserInterface -\ CheckEngine : CheckEngine(my_style)
+activate CheckEngine
+
+UserInterface -&gt; SourceFactory : SourceFactory(filename)
+SourceFactory -\ FortranSource : &lt;&lt;create&gt;&gt;
+activate FortranSource
+SourceFactory --&gt; UserInterface : fortran_source
+
+UserInterface -&gt; CheckEngine : check(fortran_source)
+
+CheckEngine -&gt; LFRicStyle : check(fortran_source)
+
+LFRicStyle -&gt; MissingImplicit : examine(fortran_source)
+
+alt &quot;Implicit statement is missing&quot;
+MissingImplicit -\ FortranSource : insert_statement(Implicit(None))
+end
+
+MissingImplicit --&gt; LFRicStyle : Issue &lt;&lt;sequence&gt;&gt;
+
+LFRicStyle --&gt; CheckEngine : Issue &lt;&lt;sequence&gt;&gt;
+
+CheckEngine --&gt; UserInterface : Issue &lt;&lt;sequence&gt;&gt;
+
+&#64;enduml
+" style="width: 100.0%"/></a>
+
+</object></p>
+<figcaption>
+<p><span class="caption-text">UML sequence diagram of example operation.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="todo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Collected To-do items</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Documentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parse-tree-traversal-efficiency">Parse Tree Traversal Efficiency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coerce-code">Coerce Code</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/developer-information/future.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+
+<p class="copyright">
+
+&copy; Crown Copyright 2024, Met Office. All rights reserved.
+
+</p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
