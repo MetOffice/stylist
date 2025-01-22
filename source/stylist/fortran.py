@@ -783,3 +783,58 @@ class ForbidUsage(FortranRule):
                     message = f"Attempt to use forbidden module '{use_module}'"
                     issues.append(Issue(message, line=use.item.span[0]))
         return issues
+
+
+class KeywordCase(FortranRule):
+    """
+    Ensures Fortran keywords match a specified case pattern.
+    
+    By default, enforces lowercase keywords if no pattern is provided.
+    """
+    _ISSUE_TEMPLATE = "Keyword '{keyword}' does not match the pattern /{pattern}/."
+
+    def __init__(self, pattern: Optional[Union[str, Pattern]] = None):
+        """
+        :param pattern: Regular expression which keywords must match. 
+                       Defaults to lowercase if not specified.
+        """
+        if pattern is None:
+            self._pattern = re.compile(r'^[a-z]+$')
+        elif isinstance(pattern, str):
+            self._pattern = re.compile(pattern)
+        else:
+            self._pattern = pattern
+
+    def examine_fortran(self, subject: FortranSource) -> List[Issue]:
+        issues: List[Issue] = []
+
+        # Get all statements from the parse tree
+        tree = subject.get_tree()
+        if tree is None:
+            return []
+
+        # Walk through all nodes looking for keywords
+        for node in fp_walk(tree, Fortran2003.StmtBase):
+            # Get the raw text of the statement
+            stmt_text = str(node)
+            
+            # Extract keywords - this is a simplified approach
+            # Would need to be enhanced for more complex keyword detection
+            words = stmt_text.split()
+            for word in words:
+                # Basic check for Fortran keywords
+                if word.upper() in {'PROGRAM', 'SUBROUTINE', 'FUNCTION', 
+                                  'MODULE', 'CONTAINS', 'USE', 'IMPLICIT',
+                                  'INTEGER', 'REAL', 'CHARACTER', 'LOGICAL',
+                                  'INTENT', 'ALLOCATABLE', 'POINTER',
+                                  'DIMENSION', 'TYPE', 'END'}:
+                    if not self._pattern.match(word):
+                        issues.append(Issue(
+                            self._ISSUE_TEMPLATE.format(
+                                keyword=word,
+                                pattern=self._pattern.pattern
+                            ),
+                            line=_line(node)
+                        ))
+
+        return issues
