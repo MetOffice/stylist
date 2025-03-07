@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 [project]
 name='stylist'
 description="Flexible source code style checking tool"
-requires-python = '>=3.7, <4'
+requires-python = '>=3.9'
 license = {text = 'BSD 3-Clause License'}
 dependencies = ['fparser >= 0.1.2']
 dynamic = ['version', 'readme']
