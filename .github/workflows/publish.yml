@@ -11,18 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
           python-version: "3.7"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
       - name: Prepare environment
         run: |
           python3 -m pip install --upgrade pip
           pip install -e .[release]
+
       - name: Create packages
         run: |
           python3 setup.py sdist
           python3 setup.py bdist_wheel
+
       - name: Publish packages
         run: |
           python3 -m twine dist/*

@@ -21,22 +21,36 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
     - name: Prepare environment
       run: |
         python3 -m pip install --upgrade pip
         pip install -e .
+
     - name: Lint with flake8
       run: |
         pip install -e .[dev]
         flake8 . --count --show-source --statistics
+
     - name: Check with MyPy
       run: |
         pip install -e .[test]
         mypy source unit-tests system-tests
+
     - name: Test with pytest
       run: |
         pip install .[test]
