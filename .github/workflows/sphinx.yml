@@ -23,20 +23,20 @@ jobs:
       # Preparation
       #
       - name: Check out source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: stylist
           fetch-depth: 1
 
       - name: Checkout pages
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: gh-pages
           fetch-depth: 1
           path: gh-pages
 
       - name: Install Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
