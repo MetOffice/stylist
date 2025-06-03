@@ -9,7 +9,7 @@ class UMStyle--><rect fill="#FFFFFF" filter="url(#f95ld292jj84z)" height="66.742
 link rule.Rule to style.Style--><path d="M222,286.23 C222,265.77 222,245.31 222,224.84 " fill="none" id="rule.Rule-&gt;style.Style" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#FFFFFF" points="222,211.75,218,217.75,222,223.75,226,217.75,222,211.75" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="7" x="214.1469" y="275.5691">*</text><!--MD5=[c693117753b3c61d61b0dcd269410cad]
 reverse link style.Style to LFRicStyle--><path d="M407,201.5 C407,201.5 460.14,229.31 500.82,250.6 " fill="none" id="style.Style&lt;-LFRicStyle" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5f175bcb4011dfcc7c6443c580446ebf]
 reverse link style.Style to UMStyle--><path d="M407,201.5 C407,201.5 426.11,277.91 466,322.5 C474.6,332.12 485.44,340.61 496.35,347.77 " fill="none" id="style.Style&lt;-UMStyle" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[62b6c7d9e17f7abe83fc35c7069b225e]
-reverse link style.Style to style.BespokeStyle--><path d="M407,201.5 C407,201.5 434.91,188.3 465.76,173.7 " fill="none" id="style.Style&lt;-style.BespokeStyle" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[957d28ccb8063c443b547b859b02b669]
+reverse link style.Style to style.BespokeStyle--><path d="M407,201.5 C407,201.5 434.91,188.3 465.76,173.7 " fill="none" id="style.Style&lt;-style.BespokeStyle" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[47d2e955e2f39abf8950d84adde1e36a]
 @startuml
 skinparam class {
     BackgroundColor<<unwritten>> AlliceBlue
@@ -51,7 +51,7 @@ PlantUML version 1.2020.02(Sun Mar 01 10:22:07 UTC 2020)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
-Java Version: 11.0.25+9
+Java Version: 17.0.15+6
 Operating System: Linux
 Default Encoding: UTF-8
 Language: en
