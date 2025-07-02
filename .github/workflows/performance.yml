@@ -14,22 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: stylist
           fetch-depth: 1
 
       - name: Checkout pages
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: gh-pages
           fetch-depth: 1
           path: gh-pages
 
       - name: Set Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.7
+          python-version: 3.9
 
       - name: Cache pip
         uses: actions/cache@v4
